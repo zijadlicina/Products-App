@@ -20,11 +20,11 @@ exports.createUser = (req,res) => {
   const phone = req.body.phone;
    
   const user = {
-      name: req.body.name,
-      surname: req.body.surname,
-      username: req.body.username,
-      email: req.body.email,
-      phone: req.body.phone
+      Name: req.body.name,
+      Surname: req.body.surname,
+      Username: req.body.username,
+      Email: req.body.email,
+      Phone: req.body.phone
   };
 
   console.log(name + surname + username + email + phone);
