@@ -2,6 +2,10 @@
 
 Describe...
 
+ fix-update
+Napredni razvoj softvera-1
+
 // testiranje pull request-a
 
-Napredni razvoj softvera
+
+ master
