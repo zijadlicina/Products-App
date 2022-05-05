@@ -1,6 +1,6 @@
 # This is README file for our project
 
-Describe...
+Describe... Napredni razvoj softvera.
 
  fix-update
 Napredni razvoj softvera-1
