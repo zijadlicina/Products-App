@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
             type: Sequelize.STRING,
             allowNull: false
         },
-        Email: {
+        Address: {
             type: Sequelize.STRING,
             allowNull: false
         },
@@ -28,9 +28,21 @@ module.exports = (sequelize, DataTypes) => {
             type: Sequelize.STRING,
             allowNull: false
         },
+        Email: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
+        Password: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
+        Access: {
+            type: Sequelize.STRING,
+            allowNull: true,
+            default: ""
+        },
         createdAt: Sequelize.DATE,
         updatedAt: Sequelize.DATE
-
     },{freezeTableName: true});
     return Users;
 };
