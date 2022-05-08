@@ -79,8 +79,8 @@ exports.getUserLogin = async (req, res) => {
         const alert = "Invalid Credentionals";
         return res.render("login", { alert: alert, alertExist: true });
       }
-    ///  if (username === "admin") return res.redirect('/admin').render('admin', {user})
-    //  else return res.redirect('/dashboard').render("dashboard", { user });
+      ///  if (username === "admin") return res.redirect('/admin').render('admin', {user})
+      //  else return res.redirect('/dashboard').render("dashboard", { user });
       res.redirect(`/dashboard`);
     })
     .catch((err) => {
