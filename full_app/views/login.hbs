@@ -1,0 +1,24 @@
+    <div class="wrapper">
+        <div id="zaformu">
+          <div class="first">
+            <h4>Sign In</h4>
+          </div>
+          {{#if alertExist}}
+              <div>
+                  <h8 style="color: red;">
+                      {{alert}}
+                  </h8>
+              </div>
+          {{/if}}
+          <form action="/login" method="post">
+            <input type="text" id="login"  name="username" placeholder="Username" required="true">
+            <input type="password" id="password"  name="password" placeholder="Password" required="true">
+            <input type="submit" class="fadeIn fourth" value="Sign In">
+          </form>
+          <div>
+            <a>Don't have an account yet?</a>
+            <a href="/contact">Contact Us</a>
+      </div>
+        </div>
+      </div>
+    </div>

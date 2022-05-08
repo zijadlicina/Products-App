@@ -1,0 +1,1 @@
+Za frontend koristimo html, css (bootstrap)

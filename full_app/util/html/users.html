@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<HTML>
+
+<HEAD>
+    <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <TITLE>Users site</TITLE>
+    <link rel="stylesheet" type="text/css" href="users.css">
+</HEAD>
+
+<BODY>
+  
+        <div class="container">
+            <h2>User 1</h2>
+            <form name="myForm" action="/action_page.php" method="get">
+                <div class="naziv">
+                <label for="name">Name:</label>
+            </div>
+
+                <div class="box">
+                <input type="text" id="name" name="name"><br><br>
+            </div>
+
+                <div class="naziv">
+                <label for="password">Password:</label>
+            </div>
+
+                <div class="box">
+                <input type="password" id="password" name="password"><br><br>
+            </div>
+
+                <div class="naziv">
+                <label for="select">Select:</label>
+            </div>
+
+                <div class="box">
+                <select name="Access" id="acces1">
+                <option value="access1">Access_1</option>
+                <option value="access2">Access_2</option>
+                <option value="access3">Access_3</option>
+                </select>
+  <br><br>
+</div>
+  <div class="input-box button">
+                <input type="button" onclick="formUpdate()" value="Update">
+                <input type="button" onclick="formDelete()" value="Delete">
+  </div>
+              </form>
+        </div>
+        
+  
+</BODY>
+
+</HTML>
