@@ -79,9 +79,9 @@ exports.getUserLogin = async (req, res) => {
         const alert = "Invalid Credentionals";
         return res.render("login", { alert: alert, alertExist: true });
       }
-    ///  if (username === "admin") return res.redirect('/admin').render('admin', {user})
-    //  else return res.redirect('/dashboard').render("dashboard", { user });
-      res.redirect(`/dashboard`);
+      if (user.access === "admin") return res.redirect('/admin').render('admin', {user})
+      else return res.redirect('/dashboard').render("dashboard", { user });
+      // res.redirect(`/dashboard`);
     })
     .catch((err) => {
       res.status(500).send({
