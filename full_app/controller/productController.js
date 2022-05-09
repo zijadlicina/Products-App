@@ -95,3 +95,29 @@ exports.deleteProduct = (req, res) => {
         });
       });
   };
+
+// PUT method for oneProduct
+// change quantity of the product
+exports.updateQuantity = (req, res) => {
+    Product.update({
+        unit: req.body.quantity
+        },
+        { where: 
+            { id: req.body.id }
+        }
+    )
+    .then(num => {
+        if (num == 1) {
+            let object = {status:"Product quantity changed!"}
+            res.send(object);
+        } else {
+            let object = {status:"Can't update quantity of the product!"}
+            res.send(object);
+        }
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: "Error updating product quantity!"
+        });
+    });
+};

@@ -18,8 +18,6 @@ const Product = require('../models/Product')(db, Sequelize);
 db.user = User;
 db.product = Product;
 
-
-
 // encrypting password
 User.beforeCreate((user, options) => {
    const salt = bcrypt.genSaltSync();

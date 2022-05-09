@@ -66,6 +66,7 @@ app.delete("/products", productController.deleteAllProducts); // deletes all pro
 app.delete("/products/:id", productController.deleteProduct); // deletes one product
 app.get("/products", productController.getAllProducts); // gets all products
 app.get("/products/:id", productController.getProduct); // gets one product
+app.put("/products", productController.updateQuantity); // updates quantity of the product
 
 // add which data can be updated
 
