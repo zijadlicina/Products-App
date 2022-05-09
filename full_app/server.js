@@ -35,6 +35,15 @@ app.get("/home", (req, res) => res.render("home"));
 app.get("/login", (req, res) => res.render("login"));
 app.get("/dashboard", dashboardAuth, (req, res) => res.render("dashboard"));
 
+app.get("/admin", (req, res) => res.render("admin"));
+app.get("/admin/createUser", (req, res) => res.render("createUser"));
+
+/* app.get("/admin/createUser", (req, res) => {
+    res.render("createUser", {
+      style: 'admin.css'
+    });
+}); */
+
 app.post("/login", urlencodedParser, [ 
   check('username', 'This username must be 4+ characters long')
   .exists()
