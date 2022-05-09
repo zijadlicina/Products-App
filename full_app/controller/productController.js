@@ -2,7 +2,6 @@
 
 const sequelize = require("../config/db");
 const { Sequelize } = require("sequelize");
-const { check, validationResult } = require("express-validator");
 
 const Product = require("../models/Product")(sequelize, Sequelize);
 Product.sync();
@@ -95,6 +94,36 @@ exports.deleteProduct = (req, res) => {
         });
       });
   };
+
+// PUT method for updating product
+exports.updateProduct = (req, res) => {
+  Product.update({
+        name: req.body.name,
+        category: req.body.category,
+        quantity: req.body.quantity,
+        unit: req.body.quantity,
+        warehouse: req.body.warehouse,
+        city: req.body.city
+      },
+      { where: 
+          { id: req.body.id }
+      }
+    )
+    .then(num => {
+        if (num == 1) {
+            let object = {status:"Product changed successfully!"}
+            res.send(object);
+        } else {
+            let object = {status:"Can't update the product!"}
+            res.send(object);
+        }
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: "Error updating product!"
+        });
+    });
+};
 
 // PUT method for oneProduct
 // change quantity of the product
