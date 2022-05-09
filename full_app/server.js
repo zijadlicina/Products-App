@@ -15,6 +15,7 @@ const { Sequelize } = require("sequelize");
 
 // for automatic creating tables
 const db = require('./config/db');
+const { user } = require("./config/db");
 db.user = require("./models/User")(sequelize, Sequelize);
 db.sync(() => console.log(`Kreirane tabele i uneseni podaci!`));
 //
@@ -59,6 +60,15 @@ app.delete("/user", userController.deleteUser); // deletes user with specified i
 app.get("/", userController.getAllUsers); // gets all users
 app.get("/user", userController.getUser); // gets user with specified id; id is sent in req body
 //app.put('/user/:id', userController.updateUser) // updates user with specified id
+app.put("/user/updateName", userController.updateName); // updates user name
+app.put("/user/updateSurname", userController.updateSurname); // updates user surname
+app.put("/user/updateUsername", userController.updateUsername); // updates user username
+app.put("/user/updateAddress", userController.updateAddress); // updates user address
+app.put("/user/updateEmail", userController.updateEmail); // updates user email
+app.put("/user/updatePhone", userController.updatePhone); // updates user phone
+app.put("/user/updatePassword", userController.updatePassword); // updates user password; // should add pass validation
+app.put("/user/updateAccess", userController.updateAccess); // updates user access
+
 
 // products routes
 app.post("/products", productController.createProduct); // creates new product
@@ -67,8 +77,6 @@ app.delete("/products/:id", productController.deleteProduct); // deletes one pro
 app.get("/products", productController.getAllProducts); // gets all products
 app.get("/products/:id", productController.getProduct); // gets one product
 app.put("/products", productController.updateQuantity); // updates quantity of the product
-
-// add which data can be updated
 
 // add initialization of the base
 
