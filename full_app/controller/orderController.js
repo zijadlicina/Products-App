@@ -93,3 +93,59 @@ exports.getOrder = (req, res) => {
 };
 
 // add updating orders
+
+// PUT method for updating pickup-date
+exports.updatePickupDate = (req, res) => {
+    Order.update({
+        pickup_date: req.body.pickup_date
+    },
+    {
+        where:
+         { id: req.body.id }
+    }).
+        then(num => {
+            if(num == 1) {
+                let object = { status: "Order pickup date updated successfully!"};
+                res.send(object);
+            } else {
+                let object = { status: "Can't update order's pickup date!"};
+                res.send(object);
+            }
+        }).
+            catch(err => {
+                res.status(500).send({
+                    message: "Error updating order's pickup date!"
+                });
+            });
+};
+
+// PUT method for updating order
+exports.updateOrder = (req, res) => {
+    const order = {
+        name: req.body.name,
+        productId: req.body.productId,
+        userId: req.body.userId,
+        order_date: req.body.order_date,
+        pickup_date: req.body.pickup_date
+    };
+ 
+    Order.update(order, {
+        where: {
+            id: req.body.id
+        }
+    }).
+        then(num => {
+            if(num == 1) {
+                let object = { status: "Order updated successfully!"};
+                res.send(object);
+            } else {
+                let object = { status: "Can't update order!"};
+                res.send(object);
+            }
+        }).
+            catch(err => {
+                res.status(500).send({
+                    message: "Error updating order!"
+                });
+            });
+};

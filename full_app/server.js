@@ -10,6 +10,9 @@ const app = express();
 
 const userController = require("./controller/userController");
 const productController = require("./controller/productController");
+const orderController = require("./controller/orderController");
+const branchController = require("./controller/branchController");
+
 const sequelize = require("./config/db");
 const { Sequelize } = require("sequelize");
 
@@ -73,10 +76,20 @@ app.put("/user/updateAccess", userController.updateAccess); // updates user acce
 // products routes
 app.post("/products", productController.createProduct); // creates new product
 app.delete("/products", productController.deleteAllProducts); // deletes all products
-app.delete("/products/:id", productController.deleteProduct); // deletes one product
+app.delete("/products/", productController.deleteProduct); // deletes one product
 app.get("/products", productController.getAllProducts); // gets all products
-app.get("/products/:id", productController.getProduct); // gets one product
+app.get("/products/", productController.getProduct); // gets one product
 app.put("/products/updateQuantity", productController.updateQuantity); // updates quantity of the product
+
+// orders routes
+app.post("/orders", orderController.createOrder); // creates order
+app.delete("/orders", orderController.deleteAllOrders); // deletes all orders
+app.get("/orders", orderController.getAllOrders); // gets all orders
+
+
+// branch routes
+app.get("/branches", branchController.getAllBranches); // gets all branches
+
 
 // add initialization of the base
 

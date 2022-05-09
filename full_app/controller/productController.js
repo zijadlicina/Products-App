@@ -111,7 +111,7 @@ exports.updateProduct = (req, res) => {
     )
     .then(num => {
         if (num == 1) {
-            let object = {status:"Product changed successfully!"}
+            let object = {status:"Product updated successfully!"}
             res.send(object);
         } else {
             let object = {status:"Can't update the product!"}
