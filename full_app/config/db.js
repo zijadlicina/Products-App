@@ -14,7 +14,10 @@ db.authenticate().then(()=> {
 
 
 const User = require('../models/User')(db, Sequelize);
+const Product = require('../models/Product')(db, Sequelize);
 db.user = User;
+db.product = Product;
+
 
 
 // encrypting password
