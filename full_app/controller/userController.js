@@ -97,11 +97,11 @@ exports.deleteAllUsers = (req, res) => {
     truncate: false,
   })
     .then((nums) => {
-      res.send({ message: "Table user is destroyed!" });
+      res.send({ message: "Table users is destroyed!" });
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Error destroying table user.",
+        message: err.message || "Error destroying table users.",
       });
     });
 };

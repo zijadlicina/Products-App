@@ -9,6 +9,7 @@ const { dashboardAuth } = require('./controller/AuthController')
 const app = express();
 
 const userController = require("./controller/userController");
+const productController = require("./controller/productController");
 const sequelize = require("./config/db");
 const { Sequelize } = require("sequelize");
 
@@ -58,6 +59,13 @@ app.delete("/user", userController.deleteUser); // deletes user with specified i
 app.get("/", userController.getAllUsers); // gets all users
 app.get("/user", userController.getUser); // gets user with specified id; id is sent in req body
 //app.put('/user/:id', userController.updateUser) // updates user with specified id
+
+// products routes
+app.post("/products", productController.createProduct); // creates new product
+app.delete("/products", productController.deleteAllProducts); // deletes all products
+app.delete("/products/:id", productController.deleteProduct); // deletes one product
+app.get("/products", productController.getAllProducts); // gets all products
+app.get("/products/:id", productController.getProduct); // gets one product
 
 // add which data can be updated
 
