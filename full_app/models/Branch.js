@@ -1,8 +1,8 @@
 const Sequelize = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-  const Orders = sequelize.define(
-    "orders",
+  const Branches = sequelize.define(
+    "branches",
     {
       id: {
         type: Sequelize.INTEGER,
@@ -14,21 +14,13 @@ module.exports = (sequelize, DataTypes) => {
         type: Sequelize.STRING,
         allowNull: true
       },
-      productId: {
-        type: Sequelize.INTEGER,
-        allowNull: false
+      city: {
+          type: Sequelize.STRING,
+          allowNull: false
       },
-      userId: {
-        type: Sequelize.INTEGER,
+      address: {
+          type: Sequelize.STRING,
         allowNull: false
-      },
-      order_date: {
-        type: Sequelize.DATE,
-        allowNull: false
-      },
-      pickup_date: {
-        type: Sequelize.DATE,
-        allowNull: true
       },
       createdAt: Sequelize.DATE,
       updatedAt: Sequelize.DATE,
