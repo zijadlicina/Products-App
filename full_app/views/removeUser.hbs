@@ -1,0 +1,19 @@
+  {{#if alert}}
+  <div>
+    <br>
+    <h4 style="color: green">{{alert}}</h4 >
+  </div>
+  {{/if}}
+{{#if data}}
+<div class="wrapper">
+<h5>Are you sure that you want to remove user: </h5>
+<h4 style="color: red;">{{data.username}}</h4>
+<form action="/admin/users/remove/{{data.id}}" method="post">
+    <div class="input-box button">
+      <input type="submit" value="Delete User" />
+    </div>
+</div>
+{{/if}}
+   <div class="input-box button">
+      <a type="button" href="/admin/users"> <-Users</a>
+    </div>

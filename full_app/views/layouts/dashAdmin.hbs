@@ -1,0 +1,35 @@
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Admin Site</title>
+    <link type="text/css" rel="stylesheet" href="/css/style.css" />
+    <link type="text/css" rel="stylesheet" href="/css/tabela.css" />
+    <link type="text/css" rel="stylesheet" href="/css/admin.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  </head>
+  <body>
+    <nav>
+      <input type="checkbox" id="check" />
+      <label for="check">
+        <i class="fas fa-bars" id="btn"></i>
+        <i class="fas fa-times" id="cancel"></i>
+      </label>
+      <img src="/images/logo3.png" />
+      <ul>
+        <li><a href="#">Log out</a></li>
+        <li><a href="/admin/users">Users</a></li>
+        <li><a href="/admin/logging">Logging</a></li>
+
+      </ul>
+    </nav>
+    <section class="home" id="home">
+
+      <div class="content">
+        {{{body}}}
+      </div>
+
+    </section>
+
+  </body>
+</html>
