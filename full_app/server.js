@@ -1,21 +1,35 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const path = require('path')
 const { check, validationResult } = require("express-validator")
 const exphbs = require("express-handlebars");
 require("dotenv").config();
+const app = express();
+
+//
+const urlencodedParser = bodyParser.urlencoded({ extended: false });
+app.use(urlencodedParser);
+app.use(bodyParser.json());
+
+// Static files
+app.use(express.static(path.join(__dirname, "public")));
+
+// Template Engine
+app.engine("hbs", exphbs.engine({ extname: ".hbs" }));
+app.set("view engine", "hbs");
 
 const { dashboardAuth } = require('./controller/AuthController')
 
-const app = express();
+const userRouter = require("./api/routes/userRoute");
+app.use("/admin", userRouter);
 
-const userController = require("./controller/userController");
+/*
 const productController = require("./controller/productController");
 const orderController = require("./controller/orderController");
 const branchController = require("./controller/branchController");
-
+*/
 const sequelize = require("./config/db");
 const { Sequelize } = require("sequelize");
-
 // for automatic creating tables
 const db = require('./config/db');
 const { user } = require("./config/db");
@@ -23,21 +37,14 @@ db.user = require("./models/User")(sequelize, Sequelize);
 db.sync(() => console.log(`Kreirane tabele i uneseni podaci!`));
 //
 
-const urlencodedParser = bodyParser.urlencoded({ extended: false });
-app.use(urlencodedParser);
-app.use(bodyParser.json());
-
-// Static files
-app.use(express.static("public"));
-
-// Template Engine
-app.engine("hbs", exphbs.engine({ extname: ".hbs" }));
-app.set("view engine", "hbs");
-
+/*
 app.get("", (req, res) => res.render("home"));
 app.get("/home", (req, res) => res.render("home"));
+
 //-------------------
 app.get("/login", (req, res) => res.render("login"));
+app.get("/users", (req, res) => res.render("users", { layout: "dashAdmin" }));
+
 app.get("/dashboard", dashboardAuth, (req, res) => res.render("dashboard"));
 
 app.get("/admin", (req, res) => res.render("admin"));
@@ -47,7 +54,10 @@ app.get("/admin/createUser", (req, res) => res.render("createUser"));
     res.render("createUser", {
       style: 'admin.css'
     });
-}); */
+}); 
+
+*---
+
 
 app.post("/login", urlencodedParser, [ 
   check('username', 'This username must be 4+ characters long')
@@ -55,22 +65,6 @@ app.post("/login", urlencodedParser, [
   .isLength({ min: 4 })
 ], userController.getUserLogin); // gets user username and password, login
 
-
-// users routes
-app.post("/user", userController.createUser); // creates new user
-app.delete("/", userController.deleteAllUsers); // deletes all users
-app.delete("/user", userController.deleteUser); // deletes user with specified id; id is sent in req body
-app.get("/", userController.getAllUsers); // gets all users
-app.get("/user", userController.getUser); // gets user with specified id; id is sent in req body
-//app.put('/user/:id', userController.updateUser) // updates user with specified id
-app.put("/user/updateName", userController.updateName); // updates user name
-app.put("/user/updateSurname", userController.updateSurname); // updates user surname
-app.put("/user/updateUsername", userController.updateUsername); // updates user username
-app.put("/user/updateAddress", userController.updateAddress); // updates user address
-app.put("/user/updateEmail", userController.updateEmail); // updates user email
-app.put("/user/updatePhone", userController.updatePhone); // updates user phone
-app.put("/user/updatePassword", userController.updatePassword); // updates user password; // should add pass validation
-app.put("/user/updateAccess", userController.updateAccess); // updates user access
 
 
 // products routes
@@ -89,7 +83,7 @@ app.get("/orders", orderController.getAllOrders); // gets all orders
 
 // branch routes
 app.get("/branches", branchController.getAllBranches); // gets all branches
-
+*/
 
 // add initialization of the base
 

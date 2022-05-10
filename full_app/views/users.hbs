@@ -1,0 +1,31 @@
+<div class="table-container">
+  <h1 class="heading">Users</h1>
+    <div >
+      <a type="button" href="/admin/users/add" >+ add User</a>
+   </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Username</th>
+        <th>Operations</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      {{#each users}}
+      <tr>
+        <td data-label="ID">{{this.id}}</td>
+        <td data-label="Username">{{this.username}}</td>
+        <td data-label="Operations">
+            <a href="#" type="button" style="color: white">View</a>
+            <a href="#" type="button" style="color: white">Edit</a>
+            <a href="#" type="button" style="color: white">Delete</a>
+        </td>
+
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+</div>

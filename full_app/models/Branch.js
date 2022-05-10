@@ -12,20 +12,20 @@ module.exports = (sequelize, DataTypes) => {
       },
       name: {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: true,
       },
       city: {
-          type: Sequelize.STRING,
-          allowNull: false
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       address: {
-          type: Sequelize.STRING,
-        allowNull: false
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       createdAt: Sequelize.DATE,
       updatedAt: Sequelize.DATE,
     },
     { freezeTableName: true }
   );
-  return Orders;
+  return Branches;
 };

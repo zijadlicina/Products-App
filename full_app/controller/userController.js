@@ -1,7 +1,5 @@
-"use strict";
-
 const sequelize = require("../config/db");
-const { Sequelize } = require("sequelize");
+const { Sequelize, where, Op } = require("sequelize");
 const { check, validationResult } = require("express-validator");
 
 const User = require("../models/User")(sequelize, Sequelize);
@@ -9,20 +7,21 @@ User.sync();
 
 //POST method for oneUser
 exports.createUser = (req, res) => {
+  const { name, surname, username, address, phone, password, email, access} = req.body;
   const user = {
-    name: req.body.name,
-    surname: req.body.surname,
-    username: req.body.username,
-    address: req.body.address,
-    phone: req.body.phone,
-    email: req.body.email,
-    password: req.body.password,
+    name,
+    surname,
+    username,
+    address,
+    phone,
+    password,
+    email,
+    access,
   };
-  console.log(user);
   User.create(user)
     .then((data) => {
-      let object = { status: "User created!" };
-      res.send(object);
+      const alert = "User successfully added!"
+      res.render("addUser", {layout: "dashAdmin", alert})
     })
     .catch((err) => {
       res.status(500).send({
@@ -32,10 +31,18 @@ exports.createUser = (req, res) => {
 };
 
 //GET method for allUsers
-exports.getAllUsers = (req, res) => {
-  User.findAll().then((users) => {
-    res.send(users);
-  });
+exports.getAllUsers = async (req, res) => {
+  await User.findAll({ where: { username: { [Op.not]: "admin" } } })
+    .then((rows) => {
+      let users = [];
+      rows.forEach((element) => {
+        users.push(element.dataValues);
+      });
+      res.render("users", { layout: "dashAdmin", users });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 // GET method for oneUser
@@ -77,15 +84,17 @@ exports.getUserLogin = async (req, res) => {
     .then((user) => {
       if (user == null) {
         const alert = "Invalid Credentionals";
-        return res.render("login", { alert: alert, alertExist: true });
+        return res.redirect("/login", { alert: alert, alertExist: true });
       }
-      if (user.access === "admin") return res.redirect('/admin').render('admin', {user})
-      else return res.redirect('/dashboard').render("dashboard", { user });
+      if (user.access === "admin")
+        return res.redirect("/admin").render("admin", { user });
+      //     else return res.redirect('/dashboard').render("dashboard", { user });
       // res.redirect(`/dashboard`);
+      res.render("admin", { layout: "dashAdmin" });
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error getting user username: " + username,
+        message: "Error getting user with username: " + username,
       });
     });
 };
@@ -135,192 +144,224 @@ exports.deleteUser = (req, res) => {
 
 // PUT method for updating name
 exports.updateName = (req, res) => {
-  User.update({
-    name: req.body.name
-  },
-  {
-    where: {
-      id: req.body.id
+  User.update(
+    {
+      name: req.body.name,
+    },
+    {
+      where: {
+        id: req.body.id,
+      },
     }
-  }).then(num => {
-    if(num==1){
-      let object = { status: "User name changed successfully!"};
-      res.send(object);
-    }else{
-      let object = { status: "Can't update user's name!"};
-      res.send(object);
-    }
-  }).catch(err => {
-    res.status(500).send({
-      message: "Error updating user's name!"
+  )
+    .then((num) => {
+      if (num == 1) {
+        let object = { status: "User name changed successfully!" };
+        res.send(object);
+      } else {
+        let object = { status: "Can't update user's name!" };
+        res.send(object);
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error updating user's name!",
+      });
     });
-  });
 };
 
 // PUT method for updating surname
 exports.updateSurname = (req, res) => {
-  User.update({
-    surname: req.body.surname
-  },
-  {
-    where: {
-      id: req.body.id
+  User.update(
+    {
+      surname: req.body.surname,
+    },
+    {
+      where: {
+        id: req.body.id,
+      },
     }
-  }).then(num => {
-    if(num==1){
-      let object = { status: "User surname changed successfully!"};
-      res.send(object);
-    }else{
-      let object = { status: "Can't update user's surname!"};
-      res.send(object);
-    }
-  }).catch(err => {
-    res.status(500).send({
-      message: "Error updating user's surname!"
+  )
+    .then((num) => {
+      if (num == 1) {
+        let object = { status: "User surname changed successfully!" };
+        res.send(object);
+      } else {
+        let object = { status: "Can't update user's surname!" };
+        res.send(object);
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error updating user's surname!",
+      });
     });
-  });
 };
 
 // PUT method for updating username
 exports.updateUsername = (req, res) => {
-  User.update({
-    username: req.body.username
-  },
-  {
-    where: {
-      id: req.body.id
+  User.update(
+    {
+      username: req.body.username,
+    },
+    {
+      where: {
+        id: req.body.id,
+      },
     }
-  }).then(num => {
-    if(num==1){
-      let object = { status: "User username changed successfully!"};
-      res.send(object);
-    }else{
-      let object = { status: "Can't update user's username!"};
-      res.send(object);
-    }
-  }).catch(err => {
-    res.status(500).send({
-      message: "Error updating user's username!"
+  )
+    .then((num) => {
+      if (num == 1) {
+        let object = { status: "User username changed successfully!" };
+        res.send(object);
+      } else {
+        let object = { status: "Can't update user's username!" };
+        res.send(object);
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error updating user's username!",
+      });
     });
-  });
 };
 
 // PUT method for updating address
 exports.updateAddress = (req, res) => {
-  User.update({
-    address: req.body.address
-  },
-  {
-    where: {
-      id: req.body.id
+  User.update(
+    {
+      address: req.body.address,
+    },
+    {
+      where: {
+        id: req.body.id,
+      },
     }
-  }).then(num => {
-    if(num==1){
-      let object = { status: "User address changed successfully!"};
-      res.send(object);
-    }else{
-      let object = { status: "Can't update user's address!"};
-      res.send(object);
-    }
-  }).catch(err => {
-    res.status(500).send({
-      message: "Error updating user's address!"
+  )
+    .then((num) => {
+      if (num == 1) {
+        let object = { status: "User address changed successfully!" };
+        res.send(object);
+      } else {
+        let object = { status: "Can't update user's address!" };
+        res.send(object);
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error updating user's address!",
+      });
     });
-  });
 };
 
 // PUT method for updating email
 exports.updateEmail = (req, res) => {
-  User.update({
-    email: req.body.email
-  },
-  {
-    where: {
-      id: req.body.id
+  User.update(
+    {
+      email: req.body.email,
+    },
+    {
+      where: {
+        id: req.body.id,
+      },
     }
-  }).then(num => {
-    if(num==1){
-      let object = { status: "User email changed successfully!"};
-      res.send(object);
-    }else{
-      let object = { status: "Can't update user's email!"};
-      res.send(object);
-    }
-  }).catch(err => {
-    res.status(500).send({
-      message: "Error updating user's email!"
+  )
+    .then((num) => {
+      if (num == 1) {
+        let object = { status: "User email changed successfully!" };
+        res.send(object);
+      } else {
+        let object = { status: "Can't update user's email!" };
+        res.send(object);
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error updating user's email!",
+      });
     });
-  });
 };
 
 // PUT method for updating phone
 exports.updatePhone = (req, res) => {
-  User.update({
-    phone: req.body.phone
-  },
-  {
-    where: {
-      id: req.body.id
+  User.update(
+    {
+      phone: req.body.phone,
+    },
+    {
+      where: {
+        id: req.body.id,
+      },
     }
-  }).then(num => {
-    if(num==1){
-      let object = { status: "User phone changed successfully!"};
-      res.send(object);
-    }else{
-      let object = { status: "Can't update user's phone!"};
-      res.send(object);
-    }
-  }).catch(err => {
-    res.status(500).send({
-      message: "Error updating user's phone"
+  )
+    .then((num) => {
+      if (num == 1) {
+        let object = { status: "User phone changed successfully!" };
+        res.send(object);
+      } else {
+        let object = { status: "Can't update user's phone!" };
+        res.send(object);
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error updating user's phone",
+      });
     });
-  });
 };
 
 // PUT method for updating password
 exports.updatePassword = (req, res) => {
-  User.update({
-    password: req.body.password
-  },
-  {
-    where: {
-      id: req.body.id
+  User.update(
+    {
+      password: req.body.password,
+    },
+    {
+      where: {
+        id: req.body.id,
+      },
     }
-  }).then(num => {
-    if(num==1){
-      let object = { status: "User password changed successfully!"};
-      res.send(object);
-    }else{
-      let object = { status: "Can't update user's password!"};
-      res.send(object);
-    }
-  }).catch(err => {
-    res.status(500).send({
-      message: "Error updating user's password"
+  )
+    .then((num) => {
+      if (num == 1) {
+        let object = { status: "User password changed successfully!" };
+        res.send(object);
+      } else {
+        let object = { status: "Can't update user's password!" };
+        res.send(object);
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error updating user's password",
+      });
     });
-  });
 };
 
 // PUT method for updating access
 exports.updateAccess = (req, res) => {
-  User.update({
-    access: req.body.access
-  },
-  {
-    where: {
-      id: req.body.id
+  User.update(
+    {
+      access: req.body.access,
+    },
+    {
+      where: {
+        id: req.body.id,
+      },
     }
-  }).then(num => {
-    if(num==1){
-      let object = { status: "User access changed successfully!"};
-      res.send(object);
-    }else{
-      let object = { status: "Can't update user's access!"};
-      res.send(object);
-    }
-  }).catch(err => {
-    res.status(500).send({
-      message: "Error updating user's access!"
+  )
+    .then((num) => {
+      if (num == 1) {
+        let object = { status: "User access changed successfully!" };
+        res.send(object);
+      } else {
+        let object = { status: "Can't update user's access!" };
+        res.send(object);
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error updating user's access!",
+      });
     });
-  });
 };
