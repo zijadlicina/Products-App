@@ -17,10 +17,18 @@ app.use(express.static(path.join(__dirname, "public")));
 // Template Engine
 app.engine("hbs", exphbs.engine({ extname: ".hbs" }));
 app.set("view engine", "hbs");
+// creating one handlebars-helper command for fronted - "select"
+var hbs = exphbs.create({})
+hbs.handlebars.registerHelper("select", function (selected, options) {
+  return options
+    .fn(this)
+    .replace(new RegExp(' value="' + selected + '"'), '$& selected="selected"');
+});
 
-const { dashboardAuth } = require('./controller/AuthController')
-
-const userRouter = require("./api/routes/userRoute");
+// routes
+const adminRouter = require("./api/routes/adminRouter");
+app.use("/admin", adminRouter);
+const userRouter = require("./api/routes/userRouter");
 app.use("/admin", userRouter);
 
 /*
@@ -37,7 +45,13 @@ db.user = require("./models/User")(sequelize, Sequelize);
 db.sync(() => console.log(`Kreirane tabele i uneseni podaci!`));
 //
 
+
+///------------------ovo se postepeno odkomentarise----------------
+//-------------jer sada je jedino dostupna ruta: localhost:5000/admin/*
+
 /*
+const { dashboardAuth } = require('./controller/AuthController')
+
 app.get("", (req, res) => res.render("home"));
 app.get("/home", (req, res) => res.render("home"));
 

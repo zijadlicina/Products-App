@@ -1,15 +1,27 @@
-    const express = require('express')
-    const router = express.Router()
+const express = require("express");
+const router = express.Router();
 
-    const userController = require('../../controller/userController')
+const adminController = require("../../controller/adminController");
 
-    // create, update, delete, find
-    router.route("/").get((req, res) => res.render("admin", {layout: "dashAdmin"}))    
-    router.route("/users").get(userController.getAllUsers);
-    router.route("/users/add").get((req, res) => res.render("addUser", {layout: "dashAdmin"}))
-      .post(userController.createUser);
-     //router.route('/:id').get(OneUser)
-    /*
+// create, update, delete, find
+router
+  .route("/")
+  .get((req, res) => res.render("admin", { layout: "dashAdmin" }));
+router.route("/users").get(adminController.getAllUsers);
+router
+  .route("/users/add")
+  .get((req, res) => res.render("addUser", { layout: "dashAdmin" }))
+  .post(adminController.createUser);
+router
+  .route("/users/edit/:id")
+  .get(adminController.editUser) // route for opening handlebars file of this route
+  .post(adminController.updateUser);
+router
+  .route("/users/remove/:id")
+  .get(adminController.removeUser) // route for opening handlebars file of this route
+  .post(adminController.deleteUser);
+  
+  /*
 app.post("/user", userController.createUser); // creates new user
 app.delete("/", userController.deleteAllUsers); // deletes all users
 app.delete("/user", userController.deleteUser); // deletes user with specified id; id is sent in req body
@@ -25,4 +37,4 @@ app.put("/user/updatePhone", userController.updatePhone); // updates user phone
 app.put("/user/updatePassword", userController.updatePassword); // updates user password; // should add pass validation
 app.put("/user/updateAccess", userController.updateAccess); // updates user access
 */
-module.exports = router
+module.exports = router;

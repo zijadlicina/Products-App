@@ -1,8 +1,14 @@
 <div class="table-container">
   <h1 class="heading">Users</h1>
-    <div >
-      <a type="button" href="/admin/users/add" >+ add User</a>
-   </div>
+  <div>
+    <a type="button" href="/admin/users/add">+ add User</a>
+  </div>
+   {{#if alert}}
+  <div>
+    <br>
+    <h4 style="color: green">{{alert}}</h4 >
+  </div>
+  {{/if}}
   <table class="table">
     <thead>
       <tr>
@@ -14,16 +20,28 @@
     <tbody>
 
       {{#each users}}
-      <tr>
-        <td data-label="ID">{{this.id}}</td>
-        <td data-label="Username">{{this.username}}</td>
-        <td data-label="Operations">
-            <a href="#" type="button" style="color: white">View</a>
-            <a href="#" type="button" style="color: white">Edit</a>
-            <a href="#" type="button" style="color: white">Delete</a>
-        </td>
+        <tr>
+          <td data-label="ID">{{this.id}}</td>
+          <td data-label="Username">{{this.username}}</td>
+          <td data-label="Operations">
+            <a
+              href="/admin/users/view/{{this.id}}"
+              type="button"
+              style="color: white"
+            >View</a>
+            <a
+              href="/admin/users/edit/{{this.id}}"
+              type="button"
+              style="color: white"
+            >Edit</a>
+            <a
+              href="/admin/users/remove/{{this.id}}"
+              type="button"
+              style="color: white"
+            >Delete</a>
+          </td>
 
-      </tr>
+        </tr>
       {{/each}}
     </tbody>
   </table>
