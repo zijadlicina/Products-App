@@ -9,11 +9,16 @@ const { dashboardAuth } = require('./controller/AuthController')
 const app = express();
 
 const userController = require("./controller/userController");
+const productController = require("./controller/productController");
+const orderController = require("./controller/orderController");
+const branchController = require("./controller/branchController");
+
 const sequelize = require("./config/db");
 const { Sequelize } = require("sequelize");
 
 // for automatic creating tables
 const db = require('./config/db');
+const { user } = require("./config/db");
 db.user = require("./models/User")(sequelize, Sequelize);
 db.sync(() => console.log(`Kreirane tabele i uneseni podaci!`));
 //
@@ -58,8 +63,33 @@ app.delete("/user", userController.deleteUser); // deletes user with specified i
 app.get("/", userController.getAllUsers); // gets all users
 app.get("/user", userController.getUser); // gets user with specified id; id is sent in req body
 //app.put('/user/:id', userController.updateUser) // updates user with specified id
+app.put("/user/updateName", userController.updateName); // updates user name
+app.put("/user/updateSurname", userController.updateSurname); // updates user surname
+app.put("/user/updateUsername", userController.updateUsername); // updates user username
+app.put("/user/updateAddress", userController.updateAddress); // updates user address
+app.put("/user/updateEmail", userController.updateEmail); // updates user email
+app.put("/user/updatePhone", userController.updatePhone); // updates user phone
+app.put("/user/updatePassword", userController.updatePassword); // updates user password; // should add pass validation
+app.put("/user/updateAccess", userController.updateAccess); // updates user access
 
-// add which data can be updated
+
+// products routes
+app.post("/products", productController.createProduct); // creates new product
+app.delete("/products", productController.deleteAllProducts); // deletes all products
+app.delete("/products/", productController.deleteProduct); // deletes one product
+app.get("/products", productController.getAllProducts); // gets all products
+app.get("/products/", productController.getProduct); // gets one product
+app.put("/products/updateQuantity", productController.updateQuantity); // updates quantity of the product
+
+// orders routes
+app.post("/orders", orderController.createOrder); // creates order
+app.delete("/orders", orderController.deleteAllOrders); // deletes all orders
+app.get("/orders", orderController.getAllOrders); // gets all orders
+
+
+// branch routes
+app.get("/branches", branchController.getAllBranches); // gets all branches
+
 
 // add initialization of the base
 

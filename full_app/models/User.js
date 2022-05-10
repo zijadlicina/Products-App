@@ -1,4 +1,5 @@
 const Sequelize = require("sequelize");
+const bcrypt = require("bcrypt");
 
 module.exports = (sequelize, DataTypes) => {
   const Users = sequelize.define(
@@ -51,5 +52,17 @@ module.exports = (sequelize, DataTypes) => {
     },
     { freezeTableName: true }
   );
+
+  // password encryption
+  Users.beforeCreate((user, options) => {
+    const salt = bcrypt.genSaltSync();
+    user.password = bcrypt.hashSync(user.password, salt);
+  });
+
+  // password validation
+  Users.prototype.validPassword = function(password){
+    return bcrypt.compareSync(password, this.password);
+  };
+
   return Users;
 };
