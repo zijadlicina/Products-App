@@ -20,6 +20,12 @@ router
   .route("/users/remove/:id")
   .get(adminController.removeUser) // route for opening handlebars file of this route
   .post(adminController.deleteUser);
+  /*
+router
+  .route("/users/view/:id")
+  .get(adminController.viewUser) // route for opening handlebars file of this route
+  .post(adminController.deleteUser);
+  */
   
   /*
 app.post("/user", userController.createUser); // creates new user

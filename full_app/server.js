@@ -29,7 +29,9 @@ hbs.handlebars.registerHelper("select", function (selected, options) {
 const adminRouter = require("./api/routes/adminRouter");
 app.use("/admin", adminRouter);
 const userRouter = require("./api/routes/userRouter");
-app.use("/admin", userRouter);
+app.use("/user", userRouter);
+const warehouseRouter = require("./api/routes/warehouseRouter");
+app.use("/warehouse", warehouseRouter);
 
 /*
 const productController = require("./controller/productController");

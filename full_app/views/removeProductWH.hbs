@@ -1,0 +1,19 @@
+  {{#if alert}}
+  <div>
+    <br>
+    <h4 style="color: green">{{alert}}</h4 >
+  </div>
+  {{/if}}
+{{#if data}}
+<div class="wrapper">
+<h5>Are you sure that you want to remove product: </h5>
+<h4 style="color: red;">{{data.name}}</h4>
+<form action="/warehouse/products/remove/{{data.id}}" method="post">
+    <div class="input-box button">
+      <input type="submit" value="Delete Product" />
+    </div>
+</div>
+{{/if}}
+   <div class="input-box button">
+      <a type="button" href="/warehouse/products"> <-Users</a>
+    </div>

@@ -1,0 +1,39 @@
+ <div class="wrapper">
+            <h2>Add new product</h2>
+            {{#if alert}}
+            <div>
+                <br>
+                <h4 style="color: green">{{alert}}</h4 >
+            </div>
+            {{/if}}
+            <form action="/warehouse/products/add" method="post">
+                <div class="input-box">
+                    <input type="text" placeholder="Name:" required name="name">
+                </div>
+                <div class="input-box">
+                    <input type="text" placeholder="category:" name="category">
+                </div>
+                <div class="input-box">
+                    <input type="text" placeholder="Quantity:" name="quantity" required>
+                </div>
+                <div class="input-box">
+                    <input type="text" placeholder="Unit:" name="unit">
+                </div>
+                <div class="input-box">
+                  <select name="warehouse" class="select" placeholder="Branches:" required>
+                    <option value="Poslovnica A" value="poslovnica_a">Poslovnica A</option>
+                    <option value="Poslovnica B" value="poslovnica_b">Poslovnica B</option>
+                  </select>  
+                </div>
+                <div class="input-box">
+                    <input type="text" placeholder="City:" name="city">
+                </div>
+                <div class="input-box button">
+                    <input type="Submit" value="Add">
+                </div>
+               
+            </form> 
+            <div class="input-box button">
+                <a type="button" href="/warehouse/products"> <-Products</a>
+             </div>
+        </div>

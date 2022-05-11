@@ -1,0 +1,68 @@
+    <h1 >Products Cart</h1>
+    <div class="wrapper">
+    {{#if alert}}
+    <div>
+        <br>
+        <h4 style="color: green">{{alert}}</h4 >
+    </div>
+    {{/if}}
+        <div id="table" >
+             <hr>
+             <div class="table-responsive">
+                 <table class="table activitites">
+                     <thead>
+                         <tr>
+                             <th scope="col" class="text-uppercase header">ID</th>
+                             <th scope="col" class="text-uppercase header">Name</th>
+                             <th scope="col" class="text-uppercase">Quantity</th>
+                             <th scope="col" class="text-uppercase">Operations</th>
+                             
+                         </tr>
+                     </thead>
+                     <tbody>
+                        {{#each products}}
+                         <tr>
+                             <td >{{this.id}}</td> 
+                             <td class="item" >
+                                 <div class="d-flex">
+                                     <div class="pl-2">
+                                         {{this.name}}
+                                         <div class="d-flex flex-column justify-content-center">
+                                         </div>
+                                     </div>
+                             </td>
+                             <td class="d-flex flex-column"><span class="red">{{this.quantity}} </span>
+                             </td>
+                             <td class="font-weight-bold">
+                                 <button type="button" class="btn btn-light">
+                                    <a href="/warehouse/products/quantity/{{this.id}}">Quantity</a></button>
+                                 <button type="button" class="btn btn-light">
+                                    <a href="/warehouse/products/edit/{{this.id}}">Edit</a></button>
+                                 <button type="button" class="btn btn-dark">
+                                    <a href="/warehouse/products/remove/{{this.id}}">Delete</a></button>
+                             </td>
+                         </tr>
+                         <tr colspan="3">
+                            <td class="item">  </td>                                                   
+                            <td class="d-flex flex-column"> </td>
+                            <td class="font-weight-bold">                                                              
+                             </td>
+                         </tr>
+                        {{/each}}
+                     </tbody>
+                 </table>
+             </div>
+     </div> 
+ 
+     <div class="d-flex justify-content-between">
+         <div class="text-muted">
+            
+         </div>
+         <div class="d-flex flex-column justify-content-end align-items-end">
+             <div class="d-flex px-3 pr-md-5 py-1 subtotal">
+                 <button class="btn" class="px-4"><a href="/warehouse/products/add"> ADD NEW PRODUCT+</a></button>
+             </div>
+         </div>
+     </div>
+ 
+ </div>

@@ -1,5 +1,5 @@
 @import url('https://googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
-
+/*
 *{
     margin:0;
     padding: 0;
@@ -13,6 +13,7 @@ body{
     justify-content: center;
     background: #808080;
 }
+*/
 .wrapper{
     position: relative;
     max-width: 430px;
