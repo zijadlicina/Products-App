@@ -12,11 +12,15 @@ db.authenticate().then(()=> {
    console.log('error:' + err);
 })
 
-/* 
+
 const User = require('../models/User')(db, Sequelize);
 const Product = require('../models/Product')(db, Sequelize);
-db.user = User;
-db.product = Product; */
+const Order = require('../models/Order')(db, Sequelize);
+const Branch = require('../models/Branch')(db, Sequelize);
+db.users = User;
+db.products = Product; 
+db.orders = Order;
+db.branches = Branch;
 
 db.sync( () => console.log(`Kreirane tabele i uneseni podaci!`));
 
