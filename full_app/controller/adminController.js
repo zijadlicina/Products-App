@@ -82,7 +82,6 @@ exports.editUser = (req, res) => {
 exports.updateUser = (req, res) => {
   let userId = req.params.id;
   const object = {...req.body, id: userId}
-  console.log(object)
   User.update(object, { where: { id: userId } })
     .then((user) => {
       const data = object

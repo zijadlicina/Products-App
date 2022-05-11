@@ -1,0 +1,42 @@
+ <div class="wrapper">
+            <h2>Edit product</h2>
+            {{#if alert}}
+            <div>
+                <br>
+                <h4 style="color: green">{{alert}}</h4 >
+            </div>
+            {{/if}}
+            {{#if data}}
+            <form action="/warehouse/products/edit/{{data.id}}" method="post">
+                <div class="input-box">
+                    <input type="text" placeholder="Name:" required name="name" value="{{data.name}}" required/>
+                </div>
+                <div class="input-box">
+                    <input type="text" placeholder="category:" name="category" value="{{data.category}}"/>
+                </div>
+                <div class="input-box">
+                    <input type="text" placeholder="Quantity:" name="quantity" value="{{data.quantity}}" required/>
+                </div>
+                <div class="input-box">
+                    <input type="text" placeholder="Unit:" name="unit" value="{{data.unit}}"/>
+                </div>
+                <div class="input-box">
+                {{#select data.access}}
+                  <select name="warehouse" class="select" placeholder="Branches:" required>
+                    <option value="Poslovnica A" value="poslovnica_a" selected>Poslovnica A</option>
+                    <option value="Poslovnica B" value="poslovnica_b">Poslovnica B</option>
+                  </select>  
+                {{/select}}
+                </div>
+                <div class="input-box">
+                    <input type="text" placeholder="City:" name="city" value="{{data.city}}">
+                </div>
+                <div class="input-box button">
+                    <input type="Submit" value="Edit">
+                </div>
+            </form> 
+            {{/if}}
+            <div class="input-box button">
+                <a type="button" href="/warehouse/products"> <-Products</a>
+             </div>
+        </div>
