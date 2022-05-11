@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true
       },
       price: {
-        type: Sequelize.STRING,
+        type: Sequelize.DOUBLE,
         allowNull: true
       },
       warehouse: {
