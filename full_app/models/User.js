@@ -52,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     { freezeTableName: true }
   );
-
+/*
   // password encryption
   Users.beforeCreate((user, options) => {
     const salt = bcrypt.genSaltSync();
@@ -63,6 +63,6 @@ module.exports = (sequelize, DataTypes) => {
   Users.prototype.validPassword = function(password){
     return bcrypt.compareSync(password, this.password);
   };
-
+*/
   return Users;
 };

@@ -21,7 +21,7 @@
                     <input type="text" placeholder="Unit:" name="unit" value="{{data.unit}}"/>
                 </div>
                 <div class="input-box">
-                {{#select data.access}}
+                {{#select data.warehouse}}
                   <select name="warehouse" class="select" placeholder="Branches:" required>
                     <option value="Poslovnica A" value="poslovnica_a" selected>Poslovnica A</option>
                     <option value="Poslovnica B" value="poslovnica_b">Poslovnica B</option>
@@ -36,7 +36,9 @@
                 </div>
             </form> 
             {{/if}}
-            <div class="input-box button">
-                <a type="button" href="/warehouse/products"> <-Products</a>
-             </div>
+             <div>
+                <button>
+                    <a type="button" href="/warehouse/products" style="color: black; text-decoration: none"><b>&nbsp <- PRODUCTS &nbsp</b> </a> <br></button>
+                <br>
+            </div>
         </div>

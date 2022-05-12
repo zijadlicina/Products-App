@@ -26,6 +26,8 @@ hbs.handlebars.registerHelper("select", function (selected, options) {
 });
 
 // routes
+const homeRouter = require("./api/routes/homeRouter");
+app.use("/", homeRouter);
 const adminRouter = require("./api/routes/adminRouter");
 app.use("/admin", adminRouter);
 const userRouter = require("./api/routes/userRouter");
