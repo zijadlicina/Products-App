@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap');
+
+body{
+   font-family: 'Open Sans', sans-serif;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+}
+
+nav{
+    height: 80px;
+    background: #808080;
+}
+nav img{
+    width: 150px;
+    position: absolute;
+    top: 2px;
+    left: 1%;
+}
+nav ul{
+    float: right;
+    margin-right:25px ;
+}
+
+nav ul li{
+    display: inline-block ;
+    line-height: 80px;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    position: relative;
+    color: white;
+    font-size: 18px;
+    text-transform: uppercase;
+}
+nav ul li a:before{
+    position: absolute;
+    content: '';
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 100%;
+    background:white;
+    transform: scaleX(0);
+  }
+
+  label #btn, 
+  label #cancel{
+      color: white;
+      font-size: 30px;
+      float: right;
+      line-height: 80px;
+      margin-right: 40px;
+      cursor: pointer;
+      display: none;
+  }
+  #check{
+      display: none;
+  }
+  @media (max-width:1118px) {
+      nav img{
+          left: 8%;
+      }
+    }
+
+
+  @media (max-width: 944px) {
+      nav img {
+          left: 6%;
+         top: 20px;
+          width: 130px;}
+  }
+  nav ul li a {
+      font-size: 17px;
+  }
+
+  @media (max-width: 860px) {
+    label #btn {
+        display: block;
+    }
+
+
+ul{
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background: #808080;
+    top: 80px;
+    left: -100%;
+    text-align: center;
+    transition: all .5s;
+}
+
+nav ul li{
+    display: block;
+    margin: 50px 0;
+    line-height: 30px;
+}
+
+nav ul li a {
+    font-size: 20px;
+}
+#check:checked ~ ul {
+    left: 0;
+}
+#check:checked ~ label #btn {
+    display: none;
+}
+#check:checked ~ label #cancel {
+    display: block;
+}
+}
+
+
+
+
+.content{
+    position: absolute;
+    top: 35%;
+    left: 25%;
+    transform: translate(-25%, -35%);
+    z-index: -1;
+
+    width: 50%;
+    color: rgb(191, 87, 22);
+  }
+  .content .title{
+    font-size: 25px;
+    font-weight: normal;
+  }
+
+  h2{
+      font-size: 40px;
+  }
+
+  .img3 {
+    width: 20%;
+    height: auto;
+    position: fixed;
+  top: 25%;
+  right: 10%;
+  }
+
+.txt{
+    vertical-align: bottom;
+}
