@@ -24,4 +24,7 @@ router
   .route("/products/quantity/:id")
   .get(warehouseController.editQuantityProduct) // route for opening handlebars file of this route
   .post(warehouseController.updateQuantityProduct);
+router.route("/branches")
+  .get(warehouseController.getAllBranches); // route for opening handlebars file of this route
+//.post(warehouseController.updateQuantityProduct);
 module.exports = router;

@@ -3,7 +3,7 @@ const { Sequelize, where, Op } = require("sequelize");
 const { check, validationResult } = require("express-validator");
 
 const Product = require("../models/Product")(sequelize, Sequelize);
-Product.sync();
+const Branch = require("../models/Branch")(sequelize, Sequelize);
 
 // POST methods for oneProduct
 exports.createProduct = (req, res) => {
@@ -129,7 +129,7 @@ exports.updateQuantityProduct = (req, res) => {
       product.update({ quantity: req.body.quantity }).then((num) => {
         if (num) {
           const data = num.dataValues;
-        //  console.log(data);
+          //  console.log(data);
           const alert = "Product quantity changed!";
           res.render("productQuantityWH", {
             layout: "dashAdminWH",
@@ -147,4 +147,16 @@ exports.updateQuantityProduct = (req, res) => {
         message: "Error updating product quantity!",
       });
     });
+};
+
+// GET method for allBranches
+exports.getAllBranches = (req, res) => {
+  console.log("daaa");
+  Branch.findAll().then((rows) => {
+    let branches = [];
+    rows.forEach((element) => {
+      branches.push(element.dataValues);
+    });
+    res.render("branchesWH", { layout: "dashAdminWH", branches });
+  });
 };
