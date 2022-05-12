@@ -22,6 +22,15 @@ db.products = Product;
 db.orders = Order;
 db.branches = Branch;
 
+const User = require('../models/User')(db, Sequelize);
+const Product = require('../models/Product')(db, Sequelize);
+const Branch = require("../models/Branch")(db, Sequelize);
+const Order = require("../models/Order")(db, Sequelize);
+db.user = User;
+db.product = Product; 
+db.user = Branch;
+db.product = Order; 
+
 db.sync( () => console.log(`Kreirane tabele i uneseni podaci!`));
 
 module.exports = db;

@@ -133,42 +133,6 @@ exports.deleteUser = (req, res) => {
 };
 /*--------------------------------------------------------------------------------------------------------*/
 
-// POST method for oneUser - LOGIN
-exports.getUserLogin = async (req, res) => {
-  const errorsOfValidation = validationResult(req);
-  if (!errorsOfValidation.isEmpty()) {
-    const alert = errorsOfValidation;
-    return res.render("login", {
-      alert: alert.errors[0].msg,
-      alertExist: true,
-    });
-  }
-  let username = req.body.username;
-  let password = req.body.password;
-  User.findOne({
-    where: {
-      username: username,
-      password: password,
-    },
-  })
-    .then((user) => {
-      if (user == null) {
-        const alert = "Invalid Credentionals";
-        return res.redirect("/login", { alert: alert, alertExist: true });
-      }
-      if (user.access === "admin")
-        return res.redirect("/admin").render("admin", { user });
-      //     else return res.redirect('/dashboard').render("dashboard", { user });
-      // res.redirect(`/dashboard`);
-      res.render("admin", { layout: "dashAdmin" });
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Error getting user with username: " + username,
-      });
-    });
-};
-
 //DELETE method for allUsers
 exports.deleteAllUsers = (req, res) => {
   User.destroy({
