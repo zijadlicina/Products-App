@@ -1,5 +1,6 @@
 const Sequelize = require("sequelize");
 
+// novo ime baze u phpSql
 const db = new Sequelize("products", "root", "", {
    host: "localhost",
    dialect: "mysql"
@@ -11,7 +12,6 @@ db.authenticate().then(()=> {
 }).catch(err => {
    console.log('error:' + err);
 })
-
 
 const User = require('../models/User')(db, Sequelize);
 const Product = require('../models/Product')(db, Sequelize);
