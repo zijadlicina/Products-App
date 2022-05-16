@@ -5,6 +5,8 @@ const { check, validationResult } = require("express-validator");
 const Product = require("../models/Product")(sequelize, Sequelize);
 const Branch = require("../models/Branch")(sequelize, Sequelize);
 
+const db = require("../config/db");
+
 // POST methods for oneProduct
 exports.createProduct = (req, res) => {
   const product = {
@@ -151,7 +153,6 @@ exports.updateQuantityProduct = (req, res) => {
 
 // GET method for allBranches
 exports.getAllBranches = (req, res) => {
-  console.log("daaa");
   Branch.findAll().then((rows) => {
     let branches = [];
     rows.forEach((element) => {
@@ -160,3 +161,128 @@ exports.getAllBranches = (req, res) => {
     res.render("branchesWH", { layout: "dashAdminWH", branches });
   });
 };
+
+// GET method for allBranches
+exports.getProductsOfBranchView = (req, res) => {
+  const branchId = req.params.id;
+  console.log(branchId);
+  db.branches.findOne({ where: { id: branchId } }).then((branch) => {
+    branch.getProducts().then((products) => {
+      let productsO = [];
+      products.forEach((element) => {
+        // let product = { ...element, quantity:  };
+        let product = { ...element.dataValues, branchId };
+        productsO.push(product);
+      });
+      res.render("branchProductsWHView", {
+        layout: "dashAdminWH",
+        branchId,
+        productsO,
+      });
+    });
+  });
+};
+
+// GET method for allBranches
+exports.getProductsToAddToBranch = (req, res) => {
+  const branchId = req.params.id;
+  console.log(branchId);
+  db.branches.findOne({ where: { id: branchId } }).then((branch) => {
+    branch.getProducts().then((products) => {
+      db.products.findAll().then((productsAll) => {
+        let array1 = [];
+        products.forEach((elem) => {
+          array1.push(elem.dataValues);
+        });
+        let array2 = [];
+        productsAll.forEach((elem) => {
+          array2.push(elem.dataValues);
+        });
+        let array3 = [];
+        array2.forEach((elem1) => {
+          let j = 0;
+          for (; j < array1.length; j++) {
+            if (array1[j].id === elem1.id) break;
+          }
+          if (j == array1.length) array3.push(elem1);
+        });
+        let productsO = [];
+        array3.forEach((element) => {
+          // let product = { ...element, quantity:  };
+          let product = { ...element, branchId };
+          productsO.push(product);
+        });
+        res.render("branchProductsWH", {
+          layout: "dashAdminWH",
+          branchId,
+          productsO,
+        });
+      });
+    });
+  });
+  /*
+  //--------------------
+  Product.findAll().then((rows) => {
+    let products = [];
+    rows.forEach((element) => {
+      products.push(element.dataValues);
+    });
+    let productsO = [];
+    products.forEach((element) => {
+        // let product = { ...element, quantity:  };
+        let product = { ...element, branchId };
+            productsO.push(product);
+        });
+    })
+    /*
+    res.render("branchProductsWH", {
+      layout: "dashAdminWH",
+      branchId,
+      productsO,
+    });
+    
+   */
+};
+
+// GET method for allBranches
+exports.addProductToBranch = async (req, res) => {
+  const { quantity, unit } = req.body;
+  let productId = req.params.id;
+  let branchId = req.params.branchId;
+  db.products.findAll().then((products) => {
+    if (products) {
+      products.forEach((element) => {
+        if (element.id == productId) {
+          console.log(element);
+          db.branches.findOne({ where: { id: branchId } }).then((branch) => {
+            branch.addProduct(element, { through: { quantity, unit } });
+            res.redirect(`/warehouse/branches/brancheproducts/${branchId}`)
+          });
+        }
+      });
+    }
+  });
+};
+
+/*Branch.findOne({ where: { id: branchId } }).then((branch) => {
+    Product.findOne({ where: { id: productId } }).then((product) => {
+
+    });
+  });
+  /*
+  /*
+ Product.findAll().then((products) => {
+   const newBranc = {name: "posl_c", city: "zen", address: "ulica"}
+   db.products.findAll().then((products) => {
+     if (products) {
+       products.forEach((elem) => {
+         db.branches.create(newBranc)
+           .then((branch) => {
+             branch.addProduct(elem);
+           })
+           .catch((err) => console.log(err));
+       });
+     }
+   });
+ });
+ */

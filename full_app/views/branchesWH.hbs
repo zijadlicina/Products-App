@@ -1,5 +1,14 @@
 <div class="table-container">
   <h1 class="heading">Branches</h1>
+  <div>
+    <button><a
+        type="button"
+        href="/warehouse/branhces/addproductbranch"
+        style="color: black; "
+      ><b>&nbspADD PRODUCT TO THE BRANCH +&nbsp</b> </a>
+      <br /></button>
+    <br />
+  </div>
   <table class="table">
     <thead>
       <tr>
@@ -9,14 +18,30 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td data-label="ID">1</td>
-        <td data-label="Name">Poslovnica A</td>
-        <td>
-          <input type="button" onclick="formUpdate()" value="Edit" />
-          <input type="button" onclick="formDelete()" value="Delete" /></td>
+      {{#each branches}}
+        <tr>
+          <td data-label="ID">{{this.id}}</td>
+          <td data-label="name">{{this.name}}</td>
+          <td data-label="Operations">
+            <a
+              href="/warehouse/branches/viewproducts/{{this.id}}"
+              type="button"
+              style="color: black"
+            >View</a>
+            <a
+              href="/warehouse/branches/brancheproducts/{{this.id}}"
+              type="button"
+              style="color: black"
+            >Add product</a>
+            <a
+              href="/admin/users/remove/{{this.id}}"
+              type="button"
+              style="color: red"
+            >Delete</a>
+          </td>
 
-      </tr>
+        </tr>
+      {{/each}}
     </tbody>
   </table>
 </div>
