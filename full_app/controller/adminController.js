@@ -3,7 +3,6 @@ const { Sequelize, where, Op } = require("sequelize");
 const { check, validationResult } = require("express-validator");
 
 const User = require("../models/User")(sequelize, Sequelize);
-User.sync();
 
 //POST method for oneUser
 exports.createUser = (req, res) => {

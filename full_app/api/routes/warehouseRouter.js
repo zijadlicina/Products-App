@@ -24,7 +24,16 @@ router
   .route("/products/quantity/:id")
   .get(warehouseController.editQuantityProduct) // route for opening handlebars file of this route
   .post(warehouseController.updateQuantityProduct);
-router.route("/branches")
-  .get(warehouseController.getAllBranches); // route for opening handlebars file of this route
-//.post(warehouseController.updateQuantityProduct);
-module.exports = router;
+router.route("/branches").get(warehouseController.getAllBranches); // route for opening handlebars file of this route
+
+router
+  .route("/branches/viewproducts/:id")
+  .get(warehouseController.getProductsOfBranchView);
+router
+  .route("/branches/brancheproducts/:id")
+  .get(warehouseController.getProductsToAddToBranch) // route for opening handlebars file of this route
+router
+  .route("/branches/addProduct/:branchId/:id")
+  .post(warehouseController.addProductToBranch);
+
+  module.exports = router;
