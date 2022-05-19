@@ -20,6 +20,7 @@ const Product = require("../models/Product")(db, Sequelize);
 const Order = require("../models/Order")(db, Sequelize);
 const Branch = require("../models/Branch")(db, Sequelize);
 const branchProduct = require("../models/BranchProduct")(db, Sequelize);
+const orderProduct = require("../models/OrderProduct")(db, Sequelize);
 db.users = User;
 db.products = Product;
 db.orders = Order;
@@ -32,6 +33,16 @@ db.branchProduct = db.branches.belongsToMany(db.products, {
 });
 db.products.belongsToMany(db.branches, {
   through: branchProduct,
+  foreign_key: "product_id",
+});
+User.hasMany(Order) 
+Order.belongsTo(User, { foreign_key: "user_id"});
+db.orderproducts = db.orders.belongsToMany(db.products, {
+  through: orderProduct,
+  foreign_key: "order_id",
+});
+db.products.belongsToMany(db.orders, {
+  through: orderProduct,
   foreign_key: "product_id",
 });
 

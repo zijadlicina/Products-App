@@ -1,0 +1,45 @@
+<div class="table-container">
+  <h1 class="heading">Orders for user:</h1>
+  {{#if user}}
+    <h2>{{user.username}}</h2>
+
+ <br/>
+  <div>
+    <button><a
+        type="button"
+        href="/user/orders/addorder/{{{user.id}}}"
+        style="color: black; "
+      ><b>&nbspADD NEW ORDER +&nbsp</b> </a>
+
+      </button>
+    <br />
+  </div>
+
+<table>
+  <br />
+  <thead>
+    <tr>
+      <th scope="col">Order Name</th>
+      <th scope="col">Order Date</th>
+      <th scope="col">Amount</th>
+      <th scope="col">Operations</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {{#each orders}}
+    <tr>
+      <td data-label="Name">{{this.name}}</td>
+      <td data-label="Due Date">{{this.order_date}}</td>
+      <td data-label="Amount">{{this.price}}</td>
+      <td class="font-weight-bold">
+        <button type="button" class="btn btn-light">Edit</button>
+        <button type="button" class="btn btn-dark">Delete</button>
+    </td>
+    </tr>
+    {{/each}}
+  </tbody>
+{{/if}}
+  
+</table>
+</div>

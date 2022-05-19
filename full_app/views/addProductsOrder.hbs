@@ -1,0 +1,33 @@
+<h1 >Add Products to Order</h1>
+    {{#if branch}}
+    <div>
+        <h2 style="color: blue">Products from: {{branch.name}}</h4 >
+    </div>
+    <div class="wrapper">
+    {{#if alert}}
+    <div>
+        <br>
+        <h4 style="color: green">{{alert}}</h4 >
+    </div>
+    {{/if}}
+       {{#each products}}
+            <form action="/user/orders/addProduct/{{this.orderId}}/{{this.id}}" method="post">
+                <div class="input-box">
+                    <input type="text" placeholder="Name:" required name="name" value="{{this.name}}" required readonly/>
+                </div>
+                <div class="input-box">
+                    <input type="text" placeholder="Quantity:" name="quantity" value="{{this.quantity}}" required/>
+                </div>
+                <div class="input-box">
+                    <input type="text" placeholder="Unit:" name="unit" value="{{this.unit}}"required readonly/>
+                </div>
+                <div class="input-box">
+                    <input type="text" placeholder="Price:" name="price" value="{{this.price}}"required readonly/>
+                </div>
+                <div class="input-box button">
+                    <input type="Submit" value="Add to order">
+                </div>
+            </form> 
+    {{/each}}
+    {{/if}}
+</div>

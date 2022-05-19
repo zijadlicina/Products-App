@@ -12,23 +12,20 @@ module.exports = (sequelize, DataTypes) => {
       },
       name: {
         type: Sequelize.STRING,
-        allowNull: true
-      },
-      productId: {
-        type: Sequelize.INTEGER,
-        allowNull: false
-      },
-      userId: {
-        type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: true,
       },
       order_date: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
       },
       pickup_date: {
         type: Sequelize.DATE,
-        allowNull: true
+        allowNull: true,
+      },
+      price: {
+        type: Sequelize.DOUBLE,
+        allowNull: true,
+        defaultValue: 0
       },
       createdAt: Sequelize.DATE,
       updatedAt: Sequelize.DATE,

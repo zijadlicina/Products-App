@@ -1,0 +1,39 @@
+ <div class="wrapper">
+            <h2>Add new order for user: </h2>
+            {{#if user}}
+            <div>
+                <br>
+                <h4>{{user.username}}</h4 >
+            </div>
+            {{#if alert}}
+            <div>
+                <br>
+                <h4 style="color: green">{{alert}}</h4 >
+            </div>
+            {{/if}}
+            <form action="/user/orders/createOrder/{{user.id}}" method="post">
+                <div class="input-box">
+                    <input type="text" placeholder="Name:" required name="name">
+                </div>
+                <div class="input-box">
+                    <input type="date" placeholder="category:" name="order_date">
+                </div>
+                <div class="input-box">
+                    {{#select branch}}
+                  <select name="branch" class="select" placeholder="Branches:" required>
+                    <option value="poslovnica_a">Poslovnica A</option>
+                    <option value="poslovnica_b">Poslovnica B</option>
+                  </select>  
+                  {{/select}}
+                </div>
+                 <div class="input-box button">
+                    <input type="Submit" value="Add Product to Order">
+                </div>
+            </form> 
+            <div>
+                <button>
+                    <a type="button" href="/user/orders/{{user.id}}" style="color: black; text-decoration: none"><b>&nbsp <- USERS &nbsp</b> </a> <br></button>
+                <br>
+            </div>
+             {{/if}}
+        </div>
