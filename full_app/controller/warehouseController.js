@@ -15,6 +15,7 @@ exports.createProduct = (req, res) => {
     quantity: req.body.quantity,
     unit: req.body.unit,
     warehouse: req.body.warehouse,
+    price: req.body.price,
     city: req.body.city,
   };
 

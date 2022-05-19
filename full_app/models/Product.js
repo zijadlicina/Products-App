@@ -12,31 +12,32 @@ module.exports = (sequelize, DataTypes) => {
       },
       name: {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: true,
       },
       category: {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: true,
       },
       quantity: {
-          type: Sequelize.INTEGER,
-          allowNull: true
+        type: Sequelize.INTEGER,
+        allowNull: true,
       },
       unit: {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: true,
       },
       price: {
         type: Sequelize.DOUBLE,
-        allowNull: true
+        allowNull: true,
+        defaultValue: 0,
       },
       warehouse: {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: true,
       },
       city: {
-          type: Sequelize.STRING,
-          allowNull: true
+        type: Sequelize.STRING,
+        allowNull: true,
       },
       createdAt: Sequelize.DATE,
       updatedAt: Sequelize.DATE,

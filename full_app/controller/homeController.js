@@ -36,7 +36,7 @@ exports.getUserLogin = async (req, res) => {
         res.render("adminWH", { layout: "dashAdminWH", user });
       } else if (user.access === "user") {
         user = user.dataValues;
-        res.render("user", { layout: "dashUser", user });
+        res.redirect(`user/${user.id}`);
       }
       //  return res.redirect("/admin").render("admin", { user });
       //     else return res.redirect('/dashboard').render("dashboard", { user });

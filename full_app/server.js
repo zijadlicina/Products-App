@@ -44,8 +44,6 @@ const sequelize = require("./config/db");
 const { Sequelize } = require("sequelize");
 // for automatic creating tables
 const db = require('./config/db');
-const { user } = require("./config/db");
-db.user = require("./models/User")(sequelize, Sequelize);
 db.sync(() => console.log(`Kreirane tabele i uneseni podaci!`));
 //
 
