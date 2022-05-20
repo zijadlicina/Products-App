@@ -1,0 +1,76 @@
+       <div style="margin-top: 500px">
+           
+        
+       </div>
+        <h2>Product Sales Report</h2>
+    {{#if user}}
+    <table class="table1">
+        <b>Costumer</b>
+        <tr>
+            <td><b>Username </b></td>
+           
+            <td>{{user.username}}</td>
+          </tr>
+          <tr>
+            <td><b>Name </b></td>
+           
+            <td>{{user.name}}</td>
+          </tr>
+          <tr>
+            <td><b>Surname </b></td>
+           
+            <td>{{user.surname}}</td>
+          </tr>
+          <tr>
+            <td><b>Address</b> </td>
+            
+            <td>{{user.address}}</td>
+          </tr>
+          {{#if order}}
+           
+          <tr>
+            <td><b>Order Date</b> </td>
+           
+            <td>{{order.order_date}}</td>
+          </tr>
+          {{/if}}
+        </table>
+    {{/if}}
+
+{{#each products}}
+    <table class="table2"> 
+  <thead>
+    <tr>
+      <th scope="col">Product name</th>
+      <th scope="col">Cost price</th>
+      <th scope="col">Quantity sold</th>
+      <th scope="col">Amount</th>      
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td data-label="Product name">{{this.name}}</td>
+      <td data-label="Cost price">$ {{this.price}}</td>
+      <td data-label="Quantity sold">{{this.quantity}}</td>
+      <td data-label="Amount">$ {{this.amountPriceElem}}</td>
+    
+    </tr>
+   
+  </tbody>
+    {{/each}}
+    {{#if amountPrice}}
+  <tfoot>
+    <tr>
+      <th id="total" colspan="3">Total :</th>
+      <td>${{amountPrice}}</td>
+    </tr>
+   </tfoot>
+</table>
+ {{/if}}
+ {{#if user}}
+        <button>
+            <a type="button" href="/user/orders/{{user.id}}" style="color: black; text-decoration: none"><b>&nbsp <- ORDERS &nbsp</b> </a> <br></button>
+           {{/if}}    
+                <br>
+                <br>
+   </body>
