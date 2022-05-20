@@ -35,6 +35,10 @@ app.use("/user", userRouter);
 const warehouseRouter = require("./api/routes/warehouseRouter");
 app.use("/warehouse", warehouseRouter);
 
+// ruta za pregled svih proizvoda u poslovnici
+const branchProductController = require("./controller/branchProductController");
+app.get("/branch-products", branchProductController.getBranchProducts);
+
 /*
 const productController = require("./controller/productController");
 const orderController = require("./controller/orderController");

@@ -40,13 +40,14 @@ exports.addProduct = (req, res) => {
 };
 
 // GET method for branch products
-/* exports.getBranchProducts = (req, res) => {
-    const branchId = req.body.branchId;
-    BranchProduct.findAll({
-        where: {
-            branchId: branchId
+exports.getBranchProducts = async (req, res) => {
+    const { QueryTypes } = require('sequelize');
+    const result = await sequelize.query(
+        'SELECT products.name, products.category, branch_products.quantity, branch_products.unit FROM branch_products inner join branches on branch_products.branchId = branches.id inner join products on branch_products.productId = products.id',
+        {
+          replacements: { status: 'active' },
+          type: QueryTypes.SELECT
         }
-    }).then(branch => {
-
-    })
-}; */
+      );
+      res.send(result); 
+}; 
