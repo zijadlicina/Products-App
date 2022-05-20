@@ -12,7 +12,9 @@ router.route("/orders/addorder/:id").get(userController.addOrderForm);
 router.route("/orders/createOrder/:id").post(userController.createOrder);
 
 router
-  .route("/orders/addProduct/:orderId/:productId")
+  .route("/orders/:orderId/addProduct/:branchId/:productId")
   .post(userController.addProductsToOrder);
 
+router
+  .route("/orders/:orderId/report").get(userController.reportOrder)
 module.exports = router;
