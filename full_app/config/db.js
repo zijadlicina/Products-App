@@ -21,10 +21,12 @@ const Order = require("../models/Order")(db, Sequelize);
 const Branch = require("../models/Branch")(db, Sequelize);
 const branchProduct = require("../models/BranchProduct")(db, Sequelize);
 const orderProduct = require("../models/OrderProduct")(db, Sequelize);
+const Bill = require("../models/Bill")(db, Sequelize);
 db.users = User;
 db.products = Product;
 db.orders = Order;
 db.branches = Branch;
+db.bill = Bill;
 
 // veze
 db.branchProduct = db.branches.belongsToMany(db.products, {
@@ -45,6 +47,12 @@ db.products.belongsToMany(db.orders, {
   through: orderProduct,
   foreign_key: "product_id",
 });
+
+// veza bill order
+db.orders.hasOne(Bill, {
+  foreignKey: "order_id"
+});
+db.bill.belongsTo(Order);
 
 db.sync(() => console.log(`Kreirane tabele i uneseni podaci!`));
 

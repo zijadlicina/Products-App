@@ -17,13 +17,13 @@ app.use(express.static(path.join(__dirname, "public")));
 // Template Engine
 app.engine("hbs", exphbs.engine({ extname: ".hbs" }));
 app.set("view engine", "hbs");
-// creating one handlebars-helper command for fronted - "select"
-var hbs = exphbs.create({})
-hbs.handlebars.registerHelper("select", function (selected, options) {
-  return options
-    .fn(this)
-    .replace(new RegExp(' value="' + selected + '"'), '$& selected="selected"');
-});
+  // creating one handlebars-helper command for fronted - "select"
+  var hbs = exphbs.create({})
+  hbs.handlebars.registerHelper("select", function (selected, options) {
+    return options
+      .fn(this)
+      .replace(new RegExp(' value="' + selected + '"'), '$& selected="selected"');
+  });
 
 // routes
 const homeRouter = require("./api/routes/homeRouter");
@@ -34,6 +34,7 @@ const userRouter = require("./api/routes/userRouter");
 app.use("/user", userRouter);
 const warehouseRouter = require("./api/routes/warehouseRouter");
 app.use("/warehouse", warehouseRouter);
+
 
 const sequelize = require("./config/db");
 const { Sequelize } = require("sequelize");
@@ -47,6 +48,7 @@ app.post("/login", urlencodedParser, [
   .exists()
   .isLength({ min: 4 })
 ], userController.getUserLogin); // gets user username and password, login
+
 */
 
 const PORT = process.env.PORT || 5000;
