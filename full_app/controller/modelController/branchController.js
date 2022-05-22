@@ -1,6 +1,6 @@
 "use strict";
 
-const Branch = require("../models/Branch")(sequelize, Sequelize);
+const Branch = require("../../models/Branch")(sequelize, Sequelize);
 
 // GET method for allBranches
 exports.getAllBranches = (req, res) => {

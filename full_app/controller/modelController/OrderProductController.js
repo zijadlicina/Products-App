@@ -1,10 +1,10 @@
 "use strict";
 
-const sequelize = require("../config/db");
+const sequelize = require("../../config/db");
 const { Sequelize } = require("sequelize");
-const Product = require("../models/Product");
+const Product = require("../../models/Product");
 
-const OrderProduct = require("../models/OrderProduct")(sequelize, Sequelize);
+const OrderProduct = require("../../models/OrderProduct")(sequelize, Sequelize);
 OrderProduct.sync();
 
 // POST method for adding product to the order
