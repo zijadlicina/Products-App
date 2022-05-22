@@ -35,17 +35,14 @@ app.use("/user", userRouter);
 const warehouseRouter = require("./api/routes/warehouseRouter");
 app.use("/warehouse", warehouseRouter);
 
-// ruta za pregled svih proizvoda u poslovnici
-const branchProductController = require("./controller/branchProductController");
-app.get("/branch-products", branchProductController.getBranchProducts);
 
 const sequelize = require("./config/db");
 const { Sequelize } = require("sequelize");
 // for automatic creating tables
 const db = require('./config/db');
 db.sync(() => console.log(`Kreirane tabele i uneseni podaci!`));
-/*
 
+/*
 app.post("/login", urlencodedParser, [ 
   check('username', 'This username must be 4+ characters long')
   .exists()
@@ -53,8 +50,6 @@ app.post("/login", urlencodedParser, [
 ], userController.getUserLogin); // gets user username and password, login
 
 */
-
-// add initialization of the base
 
 const PORT = process.env.PORT || 5000;
 
