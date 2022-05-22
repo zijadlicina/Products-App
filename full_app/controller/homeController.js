@@ -1,6 +1,7 @@
 const sequelize = require("../config/db");
 const { Sequelize, where, Op } = require("sequelize");
 const { check, validationResult } = require("express-validator");
+const bcrypt = require("bcrypt")
 
 const User = require("../models/User")(sequelize, Sequelize);
 
@@ -15,20 +16,12 @@ exports.getUserLogin = async (req, res) => {
     });
   }
   */
-  let username = req.body.username;
-  let password = req.body.password;
-  User.findOne({
-    where: {
-      username: username,
-      password: password,
-    },
-  })
-    .then((user) => {
-      if (user == null) {
-        const alert = "Invalid Credentionals";
-        return res.render("login", { alert: alert, alertExist: true });
-      }
-      console.log(user.access);
+  try {
+    var user = await User.findOne({where: {username: req.body.username}})
+    if (!user) return res.render("login", {alert: "Invalid Credentionals", alertExist: true})
+
+    const dbPassword = user.password; 
+    bcrypt.compare(req.body.password, dbPassword).then((match) => {
       if (user.access === "admin")
         return res.render("admin", { layout: "dashAdmin" });
       else if (user.access === "admin_warehouse") {
@@ -38,14 +31,15 @@ exports.getUserLogin = async (req, res) => {
         user = user.dataValues;
         res.redirect(`user/${user.id}`);
       }
-      //  return res.redirect("/admin").render("admin", { user });
-      //     else return res.redirect('/dashboard').render("dashboard", { user });
-      // res.redirect(`/dashboard`);
-      //    res.render("admin", { layout: "dashAdmin" });
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Error getting user with username: " + username,
-      });
-    });
+    }).catch((err) => console.error(err))
+
+    
+
+
+  } catch (err) {
+    console.error(err)
+    console.log("Error kod user modela u bazi ")
+  }
+
+
 };

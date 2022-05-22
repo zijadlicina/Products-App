@@ -2,31 +2,39 @@ const sequelize = require("../config/db");
 const { Sequelize, where, Op } = require("sequelize");
 const { check, validationResult } = require("express-validator");
 
+const bcrypt = require("bcrypt")
+
+
 const User = require("../models/User")(sequelize, Sequelize);
 
 //POST method for oneUser
-exports.createUser = (req, res) => {
+exports.createUser = async (req, res) => {
   const { name, surname, username, address, phone, password, email, access} = req.body;
-  const user = {
-    name,
-    surname,
-    username,
-    address,
-    phone,
-    password,
-    email,
-    access,
-  };
-  User.create(user)
-    .then((data) => {
-      const alert = "User successfully added!"
-      res.render("addUser", {layout: "dashAdmin", alert})
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || "Error creating the user.",
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10); 
+    const user = {
+      name: name,
+      surname: surname,
+      username: username,
+      adress: address,
+      phone: phone,
+      password :hashedPassword,
+      email: email,
+      access: access,
+    };
+    User.create(user)
+      .then((data) => {
+        const alert = "User successfully added!"
+        res.render("addUser", {layout: "dashAdmin", alert})
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: err.message || "Error creating the user.",
+        });
       });
-    });
+  } catch (err) {
+
+  }
 };
 
 //GET method for allUsers
@@ -68,7 +76,7 @@ exports.editUser = (req, res) => {
   User.findOne({ where: { id: userId } })
     .then((user) => {
       const data = user.dataValues;
-     // console.log(data);
+     console.log(data);
       res.render("editUser", { layout: "dashAdmin", data });
     })
     .catch((err) => {
@@ -78,20 +86,26 @@ exports.editUser = (req, res) => {
     });
 };
 // POST method for updating user
-exports.updateUser = (req, res) => {
+exports.updateUser = async (req, res) => {
   let userId = req.params.id;
   const object = {...req.body, id: userId}
-  User.update(object, { where: { id: userId } })
-    .then((user) => {
-      const data = object
-      const alert = "User successfully updated!";
-      res.render("editUser", { layout: "dashAdmin", alert, data });
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Error getting user with id: " + id,
+  try {
+    object.password = await bcrypt.hash(object.password, 10); 
+    User.update(object, { where: { id: userId } })
+      .then((user) => {
+        const data = object
+        const alert = "User successfully updated!";
+        res.render("editUser", { layout: "dashAdmin", alert, data });
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: "Error getting user with id: " + id,
+        });
       });
-    });
+
+  } catch (err) {
+    console.error(err)
+  }
 };
 // GET method for rendering "removeUser" page
 exports.removeUser = (req, res) => {
