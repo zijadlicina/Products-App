@@ -254,7 +254,7 @@ exports.addProductToBranch = async (req, res) => {
     if (products) {
       products.forEach((element) => {
         if (element.id == productId) {
-          console.log(element);
+        //  console.log(element);
           db.branches.findOne({ where: { id: branchId } }).then((branch) => {
             branch.addProduct(element, { through: { quantity, unit } });
             res.redirect(`/warehouse/branches/brancheproducts/${branchId}`)

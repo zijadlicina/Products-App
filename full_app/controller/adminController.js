@@ -19,6 +19,7 @@ exports.createUser = (req, res) => {
   };
   User.create(user)
     .then((data) => {
+      // ovo ispod nakon kreiranja ostaje isto
       const alert = "User successfully added!"
       res.render("addUser", {layout: "dashAdmin", alert})
     })

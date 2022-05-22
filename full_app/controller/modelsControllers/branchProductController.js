@@ -1,10 +1,10 @@
 "use strict";
 
-const sequelize = require("../config/db");
+const sequelize = require("../../config/db");
 const { Sequelize } = require("sequelize");
-const Product = require("../models/Product");
+const Product = require("../../models/Product");
 
-const BranchProduct = require("../models/BranchProduct")(sequelize, Sequelize);
+const BranchProduct = require("../../models/BranchProduct")(sequelize, Sequelize);
 BranchProduct.sync();
 
 // POST method for adding product to the branch
