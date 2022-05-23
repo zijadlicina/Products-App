@@ -2,6 +2,7 @@ const sequelize = require("../config/db");
 const { Sequelize, where, Op } = require("sequelize");
 const { check, validationResult } = require("express-validator");
 const db = require("../config/db");
+const bcrypt = require("bcrypt")
 
 const User = require("../models/User")(sequelize, Sequelize);
 
@@ -25,7 +26,8 @@ exports.getUserOrdersView = async (req, res) => {
                 orders.push(element.dataValues)  
             });
             user = user.dataValues
-            res.render("orders", { layout: "dashUser", user, orders });  
+            res.send(orders)
+            //res.render("orders", { layout: "dashUser", user, orders });  
         })
     });
 };
@@ -157,6 +159,74 @@ exports.addProductsToOrder = async (req, res) => {
             })
         })
     })
+};
+
+
+exports.getUserPassword = async (req, res) => {
+
+  const userId = req.params.id;
+
+    db.users.findOne({ where: { id: userId } }).then((user) => {
+
+      let temp = {
+        podaci: {
+          pitanje: user.pitanje,
+          odgovor: user.odgovor,
+        },
+      };
+
+      res.send(temp );
+
+    });
+};
+
+exports.updateUserPitanjeOdgovor = async (req, res) => {
+
+  const userId = req.params.id;
+  const Pit = req.body.pitanje;
+  const Odg = req.body.odgovor;
+
+    db.users.findOne({ where: { id: userId } }).then((user) => {
+
+      user.pitanje=Pit;
+      user.odgovor=Odg
+
+      user.save().then((users) => {
+        res.send({odgovor: "Uspijesno azurirani podaci"})
+      });
+    
+    });
+};
+
+exports.editUserPassword= async (req, res) => {
+
+  const userId = req.params.id;
+  const Odg = req.body.odgovor;
+  const noviPass = req.body.noviPass;
+
+
+    db.users.findOne({ where: { id: userId } }).then((user) => {
+
+      if(user.odgovor==Odg){
+
+        bcrypt.hash(noviPass, 10).then((hashedPassword) => { 
+
+
+        user.password=hashedPassword;
+  
+        user.save().then((users) => {
+          res.send({odgovor: "Uspijesno azurirani podaci"})
+        });
+
+      });
+      }
+      else {
+        res.send({odgovor: "Netacni podaci"})
+      }
+
+      
+    
+    });
 };
 /*
 branch.getProducts().then((products) => {

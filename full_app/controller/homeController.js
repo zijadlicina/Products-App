@@ -22,6 +22,7 @@ exports.getUserLogin = async (req, res) => {
 
     const dbPassword = user.password; 
     bcrypt.compare(req.body.password, dbPassword).then((match) => {
+    if(match){
       if (user.access === "admin")
         return res.render("admin", { layout: "dashAdmin" });
       else if (user.access === "admin_warehouse") {
@@ -31,6 +32,9 @@ exports.getUserLogin = async (req, res) => {
         user = user.dataValues;
         res.redirect(`user/${user.id}`);
       }
+    }
+      else
+      res.render("login", {alert: "Invalid Credentionals", alertExist: true})
     }).catch((err) => console.error(err))
 
     
