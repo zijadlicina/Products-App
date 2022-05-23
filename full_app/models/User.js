@@ -34,6 +34,16 @@ module.exports = (sequelize, DataTypes) => {
         type: Sequelize.STRING,
         allowNull: true,
       },
+      pitanje: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        defaultValue:'-'
+      },
+      odgovor: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        defaultValue:'-'
+      },
       email: {
         type: Sequelize.STRING,
         allowNull: true,

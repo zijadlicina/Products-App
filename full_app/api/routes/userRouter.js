@@ -12,6 +12,11 @@ router.route("/orders/addorder/:id").get(authUser, userController.addOrderForm);
 
 router.route("/orders/createOrder/:id").post(authUser, userController.createOrder);
 
+router.route("/orders/password/:id").get(userController.getUserPassword);
+router.route("/orders/updatePitanjeOdgovor/:id").post(userController.updateUserPitanjeOdgovor);
+router.route("/orders/editPassword/:id").post(userController.editUserPassword);
+
+
 router
   .route("/orders/:orderId/addProduct/:branchId/:productId")
   .post(authUser, userController.addProductsToOrder);
