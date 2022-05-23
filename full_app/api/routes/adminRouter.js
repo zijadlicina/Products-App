@@ -2,32 +2,33 @@ const express = require("express");
 const router = express.Router();
 
 const adminController = require("../../controller/adminController");
+const { authAdmin } = require("../../middlewares/authentification");
 
 // create, update, delete, find
 router
   .route("/")
-  .get((req, res) => res.render("admin", { layout: "dashAdmin" }));
-router.route("/users").get(adminController.getAllUsers);
+  .get(authAdmin, (req, res) => res.render("admin", { layout: "dashAdmin" }));
+router.route("/users").get(authAdmin, adminController.getAllUsers);
 router
   .route("/users/add")
-  .get((req, res) => res.render("addUser", { layout: "dashAdmin" }))
-  .post(adminController.createUser);
+  .get(authAdmin, (req, res) => res.render("addUser", { layout: "dashAdmin" }))
+  .post(authAdmin, adminController.createUser);
 router
   .route("/users/edit/:id")
-  .get(adminController.editUser) // route for opening handlebars file of this route
-  .post(adminController.updateUser);
+  .get(authAdmin, adminController.editUser) // route for opening handlebars file of this route
+  .post(authAdmin, adminController.updateUser);
 router
   .route("/users/remove/:id")
-  .get(adminController.removeUser) // route for opening handlebars file of this route
-  .post(adminController.deleteUser);
-  /*
+  .get(authAdmin, adminController.removeUser) // route for opening handlebars file of this route
+  .post(authAdmin, adminController.deleteUser);
+/*
 router
-  .route("/users/view/:id")
-  .get(adminController.viewUser) // route for opening handlebars file of this route
-  .post(adminController.deleteUser);
-  */
-  
-  /*
+.route("/users/view/:id")
+.get(adminController.viewUser) // route for opening handlebars file of this route
+.post(adminController.deleteUser);
+*/
+
+/*
 app.post("/user", userController.createUser); // creates new user
 app.delete("/", userController.deleteAllUsers); // deletes all users
 app.delete("/user", userController.deleteUser); // deletes user with specified id; id is sent in req body

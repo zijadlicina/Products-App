@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const path = require('path')
 const { check, validationResult } = require("express-validator")
 const exphbs = require("express-handlebars");
+const cookieParser = require("cookie-parser")
 require("dotenv").config();
 const app = express();
 
@@ -10,6 +11,7 @@ const app = express();
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 app.use(urlencodedParser);
 app.use(bodyParser.json());
+app.use(cookieParser())
 
 // Static files
 app.use(express.static(path.join(__dirname, "public")));
@@ -24,6 +26,7 @@ hbs.handlebars.registerHelper("select", function (selected, options) {
     .fn(this)
     .replace(new RegExp(' value="' + selected + '"'), '$& selected="selected"');
 });
+
 
 // routes
 const homeRouter = require("./api/routes/homeRouter");
