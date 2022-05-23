@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 
 // novo ime baze u phpSql
-const db = new Sequelize("products2", "root", "", {
+const db = new Sequelize("nova_baza", "root", "", {
   host: "localhost",
   dialect: "mysql",
   //port: 3306
@@ -37,8 +37,8 @@ db.products.belongsToMany(db.branches, {
   through: branchProduct,
   foreign_key: "product_id",
 });
-User.hasMany(Order) 
-Order.belongsTo(User, { foreign_key: "user_id"});
+User.hasMany(Order)
+Order.belongsTo(User, { foreign_key: "user_id" });
 db.orderproducts = db.orders.belongsToMany(db.products, {
   through: orderProduct,
   foreign_key: "order_id",
