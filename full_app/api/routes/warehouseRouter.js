@@ -2,38 +2,39 @@ const express = require("express");
 const router = express.Router();
 
 const warehouseController = require("../../controller/warehouseController");
+const { authAdminWarehouse } = require("../../middlewares/authentification")
 
 // create, update, delete, find
 router
   .route("/")
   .get((req, res) => res.render("adminWH", { layout: "dashAdminWH" }));
-router.route("/products").get(warehouseController.getAllProducts);
+router.route("/products").get(authAdminWarehouse, warehouseController.getAllProducts);
 router
   .route("/products/add")
-  .get((req, res) => res.render("addProductWH", { layout: "dashAdminWH" }))
-  .post(warehouseController.createProduct);
+  .get(authAdminWarehouse, (req, res) => res.render("addProductWH", { layout: "dashAdminWH" }))
+  .post(authAdminWarehouse, warehouseController.createProduct);
 router
   .route("/products/edit/:id")
-  .get(warehouseController.editProduct) // route for opening handlebars file of this route
-  .post(warehouseController.updateProduct);
+  .get(authAdminWarehouse, warehouseController.editProduct) // route for opening handlebars file of this route
+  .post(authAdminWarehouse, warehouseController.updateProduct);
 router
   .route("/products/remove/:id")
-  .get(warehouseController.removeProduct) // route for opening handlebars file of this route
-  .post(warehouseController.deleteProduct);
+  .get(authAdminWarehouse, warehouseController.removeProduct) // route for opening handlebars file of this route
+  .post(authAdminWarehouse, warehouseController.deleteProduct);
 router
   .route("/products/quantity/:id")
-  .get(warehouseController.editQuantityProduct) // route for opening handlebars file of this route
-  .post(warehouseController.updateQuantityProduct);
-router.route("/branches").get(warehouseController.getAllBranches); // route for opening handlebars file of this route
+  .get(authAdminWarehouse, warehouseController.editQuantityProduct) // route for opening handlebars file of this route
+  .post(authAdminWarehouse, warehouseController.updateQuantityProduct);
+router.route("/branches").get(authAdminWarehouse, warehouseController.getAllBranches); // route for opening handlebars file of this route
 
 router
   .route("/branches/viewproducts/:id")
-  .get(warehouseController.getProductsOfBranchView);
+  .get(authAdminWarehouse, warehouseController.getProductsOfBranchView);
 router
   .route("/branches/brancheproducts/:id")
-  .get(warehouseController.getProductsToAddToBranch) // route for opening handlebars file of this route
+  .get(authAdminWarehouse, warehouseController.getProductsToAddToBranch) // route for opening handlebars file of this route
 router
   .route("/branches/addProduct/:branchId/:id")
-  .post(warehouseController.addProductToBranch);
+  .post(authAdminWarehouse, warehouseController.addProductToBranch);
 
-  module.exports = router;
+module.exports = router;

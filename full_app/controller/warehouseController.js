@@ -254,9 +254,20 @@ exports.addProductToBranch = async (req, res) => {
     if (products) {
       products.forEach((element) => {
         if (element.id == productId) {
+          //console.log(element);
         //  console.log(element);
           db.branches.findOne({ where: { id: branchId } }).then((branch) => {
             branch.addProduct(element, { through: { quantity, unit } });
+            db.products.findByPk(productId). then(product => {
+              oldQuantity = product.quantity;
+              product.update({
+                quantity: oldQuantity - quantity
+              });/* .then(data => {
+                res.send(data);
+              }). catch(err => {
+                  res.status(500).send(err);
+              }); */
+            });
             res.redirect(`/warehouse/branches/brancheproducts/${branchId}`)
           });
         }

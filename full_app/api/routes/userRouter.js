@@ -2,19 +2,27 @@ const express = require("express");
 const router = express.Router();
 
 const userController = require("../../controller/userController");
+const { authUser } = require("../../middlewares/authentification")
 
-router.route("/:id").get(userController.getUserView);
+router.route("/:id").get(authUser, userController.getUserView);
 
-router.route("/orders/:id").get(userController.getUserOrdersView);
+router.route("/orders/:id").get(authUser, userController.getUserOrdersView);
 
-router.route("/orders/addorder/:id").get(userController.addOrderForm);
+router.route("/orders/addorder/:id").get(authUser, userController.addOrderForm);
 
-router.route("/orders/createOrder/:id").post(userController.createOrder);
+router.route("/orders/createOrder/:id").post(authUser, userController.createOrder);
+
+// route za promjenu password
+router.route("/changepassword/:id").get(userController.getNextFormChangePassword);
+router.route("/password/:id").get(userController.getUserPassword);
+router.route("/updateUserPitanjeOdgovor/:id").post(userController.updateUserPitanjeOdgovor);
+router.route("/editPassword/:id").post(userController.editUserPassword);
+
 
 router
   .route("/orders/:orderId/addProduct/:branchId/:productId")
-  .post(userController.addProductsToOrder);
+  .post(authUser, userController.addProductsToOrder);
 
 router
-  .route("/orders/:orderId/report").get(userController.reportOrder)
+  .route("/orders/:orderId/report").get(authUser, userController.reportOrder)
 module.exports = router;
