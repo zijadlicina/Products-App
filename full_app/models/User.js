@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         unique: true,
         require: true,
-        len: [4, 10]
+        len: [4, 10],
       },
       address: {
         type: Sequelize.STRING,
@@ -34,15 +34,25 @@ module.exports = (sequelize, DataTypes) => {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      pitanje: {
+      pitanje_1: {
         type: Sequelize.STRING,
         allowNull: true,
-        defaultValue:'-'
+        defaultValue: "-",
       },
-      odgovor: {
+      odgovor_1: {
         type: Sequelize.STRING,
         allowNull: true,
-        defaultValue:'-'
+        defaultValue: "-",
+      },
+      pitanje_2: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        defaultValue: "-",
+      },
+      odgovor_2: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        defaultValue: "-",
       },
       email: {
         type: Sequelize.STRING,
