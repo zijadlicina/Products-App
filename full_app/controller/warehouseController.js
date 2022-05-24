@@ -255,6 +255,7 @@ exports.addProductToBranch = async (req, res) => {
       products.forEach((element) => {
         if (element.id == productId) {
           //console.log(element);
+        //  console.log(element);
           db.branches.findOne({ where: { id: branchId } }).then((branch) => {
             branch.addProduct(element, { through: { quantity, unit } });
             db.products.findByPk(productId). then(product => {

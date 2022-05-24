@@ -12,9 +12,11 @@ router.route("/orders/addorder/:id").get(authUser, userController.addOrderForm);
 
 router.route("/orders/createOrder/:id").post(authUser, userController.createOrder);
 
-router.route("/orders/password/:id").get(userController.getUserPassword);
-router.route("/orders/updatePitanjeOdgovor/:id").post(userController.updateUserPitanjeOdgovor);
-router.route("/orders/editPassword/:id").post(userController.editUserPassword);
+// route za promjenu password
+router.route("/changepassword/:id").get(userController.getNextFormChangePassword);
+router.route("/password/:id").get(userController.getUserPassword);
+router.route("/updateUserPitanjeOdgovor/:id").post(userController.updateUserPitanjeOdgovor);
+router.route("/editPassword/:id").post(userController.editUserPassword);
 
 
 router

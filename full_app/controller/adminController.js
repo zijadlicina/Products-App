@@ -47,9 +47,31 @@ exports.createUser = async (req, res) => {
             message: err.message || "Error creating the user.",
           });
         });
+<<<<<<< HEAD
+  const user = {
+    name,
+    surname,
+    username,
+    address,
+    phone,
+    password,
+    email,
+    access,
+  };
+  User.create(user)
+    .then((data) => {
+      // ovo ispod nakon kreiranja ostaje isto
+      const alert = "User successfully added!"
+      res.render("addUser", {layout: "dashAdmin", alert})
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Error creating the user.",
+=======
           
 
 
+>>>>>>> a9c8ccdfae8e64ea3df16c737eaef11ad4b034a5
       });
 
    
