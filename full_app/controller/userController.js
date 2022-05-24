@@ -4,6 +4,7 @@ const { check, validationResult } = require("express-validator");
 const db = require("../config/db");
 const bcrypt = require("bcrypt");
 
+const Logging = require("../models/Logging")(sequelize, Sequelize);
 const User = require("../models/User")(sequelize, Sequelize);
 
 exports.getUserView = async (req, res) => {
@@ -214,10 +215,21 @@ exports.updateUserPitanjeOdgovor = async (req, res) => {
     user.odgovor_2 = Odg2;
 
     user.save().then((users) => {
-      user = user.dataValues;
-      let alert =
-        "You have successfully added answers to the security questions!";
-      res.render("userQuestions", { layout: "dashUser", user, alert });
+
+      const logg = {
+        akcija: "ADD",
+        opisAkcije: "User: "+user.username+ " added security questions",
+      };
+  
+      Logging.create(logg)        
+      .then((data) => {
+        user = user.dataValues;
+        let alert =
+          "You have successfully added answers to the security questions!";
+        res.render("userQuestions", { layout: "dashUser", user, alert });
+      });
+
+
     });
   });
 };
@@ -241,9 +253,21 @@ exports.editUserPassword = async (req, res) => {
             user.password = hashedPassword;
 
             user.save().then((users) => {
-              user = user.dataValues;
-              let alert = "You have successfully changed your password!";
-              res.render("changePassword", { layout: "dashUser", user, alert });
+
+              const logg = {
+                akcija: "EDIT",
+                opisAkcije: "User: "+user.username+" changed his password"
+              };
+          
+              Logging.create(logg)        
+              .then((data) => {
+
+                user = user.dataValues;
+                let alert = "You have successfully changed your password!";
+                res.render("changePassword", { layout: "dashUser", user, alert });
+
+              });
+
             });
           });
       } else {

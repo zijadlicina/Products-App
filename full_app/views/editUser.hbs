@@ -30,6 +30,14 @@
       <input type="password" name="password" placeholder="Password" value="{{data.password}}" required/>
     </div>
     <div class="box">
+        {{#select data.branchId}}
+      <select name="branchId">
+        <option value="1" >Poslovnica A</option>
+        <option value="2" >Poslovnica B</option>
+      </select>
+        {{/select}}
+    </div>
+    <div class="box">
         {{#select data.access}}
         <select name="access" id="acces1">
             <option value="user" selected>User</option>

@@ -1,0 +1,23 @@
+<table>
+  <caption>Logging</caption>
+  <thead>
+     
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Action type</th>
+      <th scope="col">Action description</th>
+      <th scope="col">Time</th>
+    </tr>
+  </thead>
+  <tbody> {{#each date}}
+    <tr>
+      <td data-label="ID">{{this.id}}</td>
+      <td data-label="Action type">{{this.akcija}}</td>
+      <td data-label="Action description">{{this.opisAkcije}}</td>
+      <td data-label="Time">{{this.createdAt}}</td>
+    </tr>
+   
+  </tbody>
+  {{/each}}
+  
+</table>

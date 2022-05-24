@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 
 const User = require("../models/User")(sequelize, Sequelize);
+const Logging = require("../models/Logging")(sequelize, Sequelize);
 
 const TOKEN_AGE = 24 * 60 * 60 //one day in seconds
 
@@ -28,20 +29,51 @@ exports.getUserLogin = async (req, res) => {
     bcrypt.compare(req.body.password, dbPassword).then((match) => {
       if (match) {
         if (user.access === "admin") {
-          const token = signToken(user.id, process.env.ADMIN_SECRET);
-          res.cookie("jwt", token, { httpOnly: true, maxAge: TOKEN_AGE * 1000 })
-          return res.render("admin", { layout: "dashAdmin" });
+
+          const logg = {
+            akcija: "LOGIN",
+            opisAkcije: "User: "+req.body.username+" logged in",
+          };
+      
+          Logging.create(logg)        
+          .then((data) => {
+            const token = signToken(user.id, process.env.ADMIN_SECRET);
+            res.cookie("jwt", token, { httpOnly: true, maxAge: TOKEN_AGE * 1000 })
+            return res.render("admin", { layout: "dashAdmin" });
+          });
+
         }
         else if (user.access === "admin_warehouse") {
+
+          const logg = {
+            akcija: "LOGIN",
+            opisAkcije: "User: "+req.body.username+" logged in",
+          };
+      
+          Logging.create(logg)        
+          .then((data) => {
+
           const token = signToken(user.id, process.env.ADMIN_WAREHOUSE_SECRET);
           res.cookie("jwt", token, { httpOnly: true, maxAge: TOKEN_AGE * 1000 })
           user = user.dataValues;
           res.render("adminWH", { layout: "dashAdminWH", user });
+
+        });
         } else if (user.access === "user") {
+
+          const logg = {
+            akcija: "LOGIN",
+            opisAkcije: "User: "+req.body.username+" logged in",
+          };
+      
+          Logging.create(logg)        
+          .then((data) => {
           const token = signToken(user.id, process.env.USER_SECRET);
           res.cookie("jwt", token, { httpOnly: true, maxAge: TOKEN_AGE * 1000 })
           user = user.dataValues;
           res.redirect(`user/${user.id}`);
+          });
+          
         }
       } else {
         return res.render("login", { alert: "Invalid Credentionals", alertExist: true });

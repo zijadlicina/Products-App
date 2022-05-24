@@ -2,36 +2,17 @@ const sequelize = require("../config/db");
 const { Sequelize, where, Op } = require("sequelize");
 const { check, validationResult } = require("express-validator");
 
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
+const Branch = require("../models/Branch")(sequelize, Sequelize);
 
-
+const Logging = require("../models/Logging")(sequelize, Sequelize);
 const User = require("../models/User")(sequelize, Sequelize);
+
+Branch.hasMany(User);
 
 //POST method for oneUser
 exports.createUser = async (req, res) => {
-  const { name, surname, username, address, phone, password, email, access} = req.body;
-  try {
-    const hashedPassword = await bcrypt.hash(password, 10); 
-    const user = {
-      name: name,
-      surname: surname,
-      username: username,
-      adress: address,
-      phone: phone,
-      password :hashedPassword,
-      email: email,
-      access: access,
-    };
-    User.create(user)
-      .then((data) => {
-        const alert = "User successfully added!"
-        res.render("addUser", {layout: "dashAdmin", alert})
-      })
-      .catch((err) => {
-        res.status(500).send({
-          message: err.message || "Error creating the user.",
-        });
-  const user = {
+  const {
     name,
     surname,
     username,
@@ -39,21 +20,58 @@ exports.createUser = async (req, res) => {
     phone,
     password,
     email,
+    Poslovnica,
     access,
-  };
-  User.create(user)
-    .then((data) => {
-      // ovo ispod nakon kreiranja ostaje isto
-      const alert = "User successfully added!"
-      res.render("addUser", {layout: "dashAdmin", alert})
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || "Error creating the user.",
-      });
-  } catch (err) {
+  } = req.body;
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-  }
+    Branch.findOne({
+      where: {
+        name: Poslovnica,
+      },
+    }).then((branch) => {
+      User.findOne({
+        where: {
+          email: email,
+        },
+      }).then((test) => {
+        if (!test) {
+          branch
+            .createUser({
+              name: name,
+              surname: surname,
+              username: username,
+              address: address,
+              phone: phone,
+              password: hashedPassword,
+              branchId: branch.id,
+              email: email,
+              access: access,
+            })
+            .then((data) => {
+              const logg = {
+                akcija: "ADD",
+                opisAkcije: "Admin added new user: " + username,
+              };
+
+              Logging.create(logg).then((data) => {
+                const alert = "User successfully added!";
+                res.render("addUser", { layout: "dashAdmin", alert });
+              });
+            })
+            .catch((err) => {
+              res.status(500).send({
+                message: err.message || "Error creating the user.",
+              });
+            });
+        } else {
+          const alert = "User with given email already exists!";
+          res.render("addUser", { layout: "dashAdmin", alert });
+        }
+      });
+    });
+  } catch (err) {}
 };
 
 //GET method for allUsers
@@ -95,7 +113,7 @@ exports.editUser = (req, res) => {
   User.findOne({ where: { id: userId } })
     .then((user) => {
       const data = user.dataValues;
-     console.log(data);
+      console.log(data);
       res.render("editUser", { layout: "dashAdmin", data });
     })
     .catch((err) => {
@@ -107,23 +125,30 @@ exports.editUser = (req, res) => {
 // POST method for updating user
 exports.updateUser = async (req, res) => {
   let userId = req.params.id;
-  const object = {...req.body, id: userId}
+  const object = { ...req.body, id: userId };
   try {
-    object.password = await bcrypt.hash(object.password, 10); 
+    object.password = await bcrypt.hash(object.password, 10);
     User.update(object, { where: { id: userId } })
       .then((user) => {
-        const data = object
-        const alert = "User successfully updated!";
-        res.render("editUser", { layout: "dashAdmin", alert, data });
+        const data = object;
+
+        const logg = {
+          akcija: "EDIT",
+          opisAkcije: "Admin editer user: " + object.username,
+        };
+
+        Logging.create(logg).then((s) => {
+          const alert = "User successfully updated!";
+          res.render("editUser", { layout: "dashAdmin", alert, data });
+        });
       })
       .catch((err) => {
         res.status(500).send({
           message: "Error getting user with id: " + id,
         });
       });
-
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
 };
 // GET method for rendering "removeUser" page
@@ -132,7 +157,7 @@ exports.removeUser = (req, res) => {
   User.findOne({ where: { id: userId } })
     .then((user) => {
       const data = user.dataValues;
-     // console.log(data);
+      // console.log(data);
       res.render("removeUser", { layout: "dashAdmin", data });
     })
     .catch((err) => {
@@ -144,24 +169,43 @@ exports.removeUser = (req, res) => {
 //DELETE method for oneUser
 exports.deleteUser = (req, res) => {
   const id = req.params.id;
-  User.destroy({
-    where: { id: id },
-  })
-    .then((num) => {
-      if (num == 1) {
-      const alert = `User deleted successfully!`;
-      res.render("removeUser", { layout: "dashAdmin", alert });      
-    } else {
-        res.send({
-          message: "Not posible to delete the user.",
-        });
-      }
+
+  User.findOne({ where: { id: id } }).then((user) => {
+    User.destroy({
+      where: { id: id },
     })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Error deleting the user with id: " + id,
+      .then((num) => {
+        if (num == 1) {
+          const logg = {
+            akcija: "DELETE",
+            opisAkcije: "Admin deleted user: " + user.username,
+          };
+
+          Logging.create(logg).then((data) => {
+            const alert = `User deleted successfully!`;
+            res.render("removeUser", { layout: "dashAdmin", alert });
+          });
+        } else {
+          res.send({
+            message: "Not posible to delete the user.",
+          });
+        }
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: "Error deleting the user with id: " + id,
+        });
       });
+  });
+};
+exports.viewLogging = (req, res) => {
+  Logging.findAll().then((data) => {
+    let date = []
+    data.forEach(element => {
+      date.push(element.dataValues)
     });
+    res.render("logging", { layout: "dashAdmin", date });
+  });
 };
 /*--------------------------------------------------------------------------------------------------------*/
 
