@@ -5,7 +5,7 @@ const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
 const Branch = require("../models/Branch")(sequelize, Sequelize);
 
-
+const Logging = require("../models/Logging")(sequelize, Sequelize);
 const User = require("../models/User")(sequelize, Sequelize);
 
 Branch.hasMany(User)
@@ -22,56 +22,64 @@ exports.createUser = async (req, res) => {
       },
     })
       .then((branch) => {
-        console.log("ssssssssssssssss");
-        console.log(branch.id);
 
-        branch.createUser({
+        User.findOne({
+          where: {
+            email: email,
+          },
+        })   
+        .then((test) => {
+
+            if(!test){
+
+              branch.createUser({
           
-          name: name,
-          surname: surname,
-          username: username,
-          address: address,
-          phone: phone,
-          password :hashedPassword,
-          branchId :branch.id,
-          email: email,
-          access: access,
+                name: name,
+                surname: surname,
+                username: username,
+                address: address,
+                phone: phone,
+                password :hashedPassword,
+                branchId :branch.id,
+                email: email,
+                access: access,
+            
+              })
+              .then((data) => {
       
-        })
-        .then((data) => {
-          const alert = "User successfully added!"
-          res.render("addUser", {layout: "dashAdmin", alert})
-        })
-        .catch((err) => {
-          res.status(500).send({
-            message: err.message || "Error creating the user.",
-          });
-        });
-<<<<<<< HEAD
-  const user = {
-    name,
-    surname,
-    username,
-    address,
-    phone,
-    password,
-    email,
-    access,
-  };
-  User.create(user)
-    .then((data) => {
-      // ovo ispod nakon kreiranja ostaje isto
-      const alert = "User successfully added!"
-      res.render("addUser", {layout: "dashAdmin", alert})
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || "Error creating the user.",
-=======
+              const logg = {
+                akcija: "ADD",
+                opisAkcije: "Admin added new user: "+username,
+              };
           
+              Logging.create(logg)        
+              .then((data) => {
+                const alert = "User successfully added!"
+                res.render("addUser", {layout: "dashAdmin", alert})
+              });
+      
+      
+       
+              })
+              .catch((err) => {
+                res.status(500).send({
+                  message: err.message || "Error creating the user.",
+                });
+              });
+                
 
 
->>>>>>> a9c8ccdfae8e64ea3df16c737eaef11ad4b034a5
+            }
+            else{
+              const alert = "User with given email already exists!"
+              res.render("addUser", {layout: "dashAdmin", alert})
+            }
+
+        });
+
+  
+
+
       });
 
    
@@ -137,8 +145,18 @@ exports.updateUser = async (req, res) => {
     User.update(object, { where: { id: userId } })
       .then((user) => {
         const data = object
-        const alert = "User successfully updated!";
-        res.render("editUser", { layout: "dashAdmin", alert, data });
+        
+        const logg = {
+          akcija: "EDIT",
+          opisAkcije: "Admin editer user: "+object.username,
+        };
+    
+        Logging.create(logg)        
+        .then((s) => {
+          const alert = "User successfully updated!";
+          res.render("editUser", { layout: "dashAdmin", alert, data });
+        });
+
       })
       .catch((err) => {
         res.status(500).send({
@@ -168,13 +186,26 @@ exports.removeUser = (req, res) => {
 //DELETE method for oneUser
 exports.deleteUser = (req, res) => {
   const id = req.params.id;
+
+  User.findOne({ where: { id: id } })
+  .then((user) => {
+
   User.destroy({
     where: { id: id },
   })
     .then((num) => {
       if (num == 1) {
-      const alert = `User deleted successfully!`;
-      res.render("removeUser", { layout: "dashAdmin", alert });      
+        const logg = {
+          akcija: "DELETE",
+          opisAkcije: "Admin deleted user: "+user.username,
+        };
+    
+        Logging.create(logg)        
+        .then((data) => {
+          const alert = `User deleted successfully!`;
+          res.render("removeUser", { layout: "dashAdmin", alert });  
+        });
+    
     } else {
         res.send({
           message: "Not posible to delete the user.",
@@ -186,6 +217,7 @@ exports.deleteUser = (req, res) => {
         message: "Error deleting the user with id: " + id,
       });
     });
+  });
 };
 /*--------------------------------------------------------------------------------------------------------*/
 
