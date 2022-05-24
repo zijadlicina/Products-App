@@ -1,9 +1,9 @@
 "use strict";
 
-const sequelize = require("../config/db");
+const sequelize = require("../../config/db");
 const { Sequelize } = require("sequelize");
 
-const Product = require("../models/Product")(sequelize, Sequelize);
+const Product = require("../../models/Product")(sequelize, Sequelize);
 Product.sync();
 
 // GET method for oneProduct

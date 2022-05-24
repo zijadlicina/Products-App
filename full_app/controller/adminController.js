@@ -31,6 +31,25 @@ exports.createUser = async (req, res) => {
         res.status(500).send({
           message: err.message || "Error creating the user.",
         });
+  const user = {
+    name,
+    surname,
+    username,
+    address,
+    phone,
+    password,
+    email,
+    access,
+  };
+  User.create(user)
+    .then((data) => {
+      // ovo ispod nakon kreiranja ostaje isto
+      const alert = "User successfully added!"
+      res.render("addUser", {layout: "dashAdmin", alert})
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Error creating the user.",
       });
   } catch (err) {
 
