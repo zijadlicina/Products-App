@@ -21,6 +21,7 @@ router
   .route("/users/remove/:id")
   .get(authAdmin, adminController.removeUser) // route for opening handlebars file of this route
   .post(authAdmin, adminController.deleteUser);
+router.route("/logging").get(authAdmin, adminController.viewLogging); // route for opening handlebars file of this route
 /*
 router
 .route("/users/view/:id")
