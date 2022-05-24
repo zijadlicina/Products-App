@@ -1,5 +1,11 @@
 const Sequelize = require("sequelize");
 const bcrypt = require("bcrypt");
+const db = new Sequelize("nova_baza", "root", "", {
+  host: "localhost",
+  dialect: "mysql",
+  //port: 3306
+});
+const Branch = require("../models/Branch")(db, Sequelize);
 
 module.exports = (sequelize, DataTypes) => {
   const Users = sequelize.define(
@@ -72,6 +78,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     { freezeTableName: true }
   );
+
+  Branch.hasMany(Users) 
+
+
 /*
   // password encryption
   Users.beforeCreate((user, options) => {

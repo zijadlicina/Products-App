@@ -2,35 +2,52 @@ const sequelize = require("../config/db");
 const { Sequelize, where, Op } = require("sequelize");
 const { check, validationResult } = require("express-validator");
 
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
+const Branch = require("../models/Branch")(sequelize, Sequelize);
 
 
 const User = require("../models/User")(sequelize, Sequelize);
 
+Branch.hasMany(User)
+
 //POST method for oneUser
 exports.createUser = async (req, res) => {
-  const { name, surname, username, address, phone, password, email, access} = req.body;
+  const { name, surname, username, address, phone, password, email, Poslovnica, access} = req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10); 
-    const user = {
-      name: name,
-      surname: surname,
-      username: username,
-      adress: address,
-      phone: phone,
-      password :hashedPassword,
-      email: email,
-      access: access,
-    };
-    User.create(user)
-      .then((data) => {
-        const alert = "User successfully added!"
-        res.render("addUser", {layout: "dashAdmin", alert})
-      })
-      .catch((err) => {
-        res.status(500).send({
-          message: err.message || "Error creating the user.",
+
+    Branch.findOne({
+      where: {
+        name: Poslovnica,
+      },
+    })
+      .then((branch) => {
+        console.log("ssssssssssssssss");
+        console.log(branch.id);
+
+        branch.createUser({
+          
+          name: name,
+          surname: surname,
+          username: username,
+          address: address,
+          phone: phone,
+          password :hashedPassword,
+          branchId :branch.id,
+          email: email,
+          access: access,
+      
+        })
+        .then((data) => {
+          const alert = "User successfully added!"
+          res.render("addUser", {layout: "dashAdmin", alert})
+        })
+        .catch((err) => {
+          res.status(500).send({
+            message: err.message || "Error creating the user.",
+          });
         });
+<<<<<<< HEAD
   const user = {
     name,
     surname,
@@ -50,7 +67,14 @@ exports.createUser = async (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message: err.message || "Error creating the user.",
+=======
+          
+
+
+>>>>>>> a9c8ccdfae8e64ea3df16c737eaef11ad4b034a5
       });
+
+   
   } catch (err) {
 
   }
