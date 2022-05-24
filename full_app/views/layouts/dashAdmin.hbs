@@ -1,40 +1,40 @@
 <html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Admin Site</title>
+      <link type="text/css" rel="stylesheet" href="/css/user2.css" />
+    <link type="text/css" rel="stylesheet" href="/css/style.css" />
+    <link type="text/css" rel="stylesheet" href="/css/tabela.css" />
+    <link type="text/css" rel="stylesheet" href="/css/adminWH.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://kit.fontawesome.com/0dc5ee9f31.js"
+      crossorigin="anonymous"
+    ></script>
 
-<head>
-  <meta charset="utf-8" />
-  <title>Admin Site</title>
-  <link type="text/css" rel="stylesheet" href="/css/user2.css" />
-  <link type="text/css" rel="stylesheet" href="/css/style.css" />
-  <link type="text/css" rel="stylesheet" href="/css/tabela.css" />
-  <link type="text/css" rel="stylesheet" href="/css/adminWH.css" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="https://kit.fontawesome.com/0dc5ee9f31.js" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <nav>
+      <input type="checkbox" id="check" />
+      <label for="check">
+        <i class="fas fa-bars" id="btn"></i>
+        <i class="fas fa-times" id="cancel"></i>
+      </label>
+      <!--  <img src="/images/logo3.png" /> !-->
+      <ul>
+        <li><a href="/login">Log out</a></li>
+        <li><a href="/admin/users">Users</a></li>
+        <li><a href="/admin/logging">Logging</a></li>
 
-</head>
+      </ul>
+    </nav>
+    <section class="home" id="home">
 
-<body>
-  <nav>
-    <input type="checkbox" id="check" />
-    <label for="check">
-      <i class="fas fa-bars" id="btn"></i>
-      <i class="fas fa-times" id="cancel"></i>
-    </label>
-    <!--  <img src="/images/logo3.png" /> !-->
-    <ul>
-      <li><a href="/logout">Log out</a></li>
-      <li><a href="/admin/users">Users</a></li>
-      <li><a href="/admin/logging">Logging</a></li>
+      <div class="content">
+        {{{body}}}
+      </div>
 
-    </ul>
-  </nav>
-  <section class="home" id="home">
+    </section>
 
-    <div class="content">
-      {{{body}}}
-    </div>
-
-  </section>
-
-</body>
-
+  </body>
 </html>

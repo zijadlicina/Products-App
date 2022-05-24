@@ -9,9 +9,4 @@ router
   .get((req, res) => res.render("login"))
   .post(homeController.getUserLogin);
 
-router.route("/logout").get((req, res) => {
-  res.cookie("jwt", "");
-  res.redirect("/login");
-})
-
 module.exports = router;
