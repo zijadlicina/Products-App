@@ -6,6 +6,7 @@ const Product = require("../models/Product")(sequelize, Sequelize);
 const Branch = require("../models/Branch")(sequelize, Sequelize);
 
 const db = require("../config/db");
+const BranchProduct = require("../models/BranchProduct")(sequelize, Sequelize);
 
 // POST methods for oneProduct
 exports.createProduct = (req, res) => {
@@ -247,10 +248,46 @@ exports.getProductsToAddToBranch = (req, res) => {
 
 // GET method for allBranches
 exports.addProductToBranch = async (req, res) => {
+  console.log("addProductToBranch");
   const { quantity, unit } = req.body;
   let productId = req.params.id;
   let branchId = req.params.branchId;
-  db.products.findAll().then((products) => {
+  BranchProduct.count({
+    where: {
+      productId: productId
+    }
+  }).then(count => {
+    console.log(count);
+    if(count==0){
+      const product = {
+        branchId: branchId,
+        productId: productId,
+        quantity: quantity,
+        unit: unit
+      };
+      BranchProduct.create(product);
+    }else{
+      BranchProduct.findOne({
+        where: {
+          productId: productId
+        }
+      }).then(product => {
+        BranchProduct.update({
+          quantity: product.quantity + quantity
+        });
+      }).catch(err => {
+        res.status(500).send(err);
+      })
+    }
+    db.products.findByPk(productId). then(product => {
+      oldQuantity = product.quantity;
+      product.update({
+        quantity: oldQuantity - quantity
+      });
+    });
+    res.redirect(`/warehouse/branches/brancheproducts/${branchId}`)
+  });
+  /* db.products.findAll().then((products) => {
     if (products) {
       products.forEach((element) => {
         if (element.id == productId) {
@@ -266,14 +303,14 @@ exports.addProductToBranch = async (req, res) => {
                 res.send(data);
               }). catch(err => {
                   res.status(500).send(err);
-              }); */
+              }); 
             });
             res.redirect(`/warehouse/branches/brancheproducts/${branchId}`)
           });
         }
       });
     }
-  });
+  }); */
 };
 
 /*Branch.findOne({ where: { id: branchId } }).then((branch) => {
