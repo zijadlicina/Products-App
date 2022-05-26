@@ -1,5 +1,4 @@
 @import url('https://googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
-
 *{
     margin:0;
     padding: 0;
@@ -13,6 +12,7 @@ body{
     justify-content: center;
     background: #808080;
 }
+
 .wrapper{
     position: relative;
     max-width: 430px;
@@ -28,7 +28,6 @@ body{
     font-weight: 600;
     color: #333;
 }
-
 .wrapper h2::before{
     content: '';
     position: absolute;
@@ -110,6 +109,4 @@ form .text h3 a:hover{
     box-shadow: 0 5px 10px rgba(0,0,0,0.2);
     border-radius: 6px;
     text-align: center;
-
-
 }
