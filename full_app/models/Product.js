@@ -1,5 +1,12 @@
 const Sequelize = require("sequelize");
 
+const db = new Sequelize("nova_baza", "root", "", {
+  host: "localhost",
+  dialect: "mysql",
+  //port: 3306
+});
+const Category = require("../models/Category")(db, Sequelize);
+
 module.exports = (sequelize, DataTypes) => {
   const Products = sequelize.define(
     "products",
@@ -14,10 +21,7 @@ module.exports = (sequelize, DataTypes) => {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      category: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
+    
       quantity: {
         type: Sequelize.INTEGER,
         allowNull: true,
@@ -44,5 +48,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     { freezeTableName: true }
   );
+
+  Category.hasMany(Products) 
+
   return Products;
 };

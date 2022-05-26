@@ -9,9 +9,13 @@ router
   .route("/")
   .get((req, res) => res.render("adminWH", { layout: "dashAdminWH" }));
 router.route("/products").get(authAdminWarehouse, warehouseController.getAllProducts);
+
+
+router.route("/category/add").post(warehouseController.createCategory);
+
 router
   .route("/products/add")
-  .get(authAdminWarehouse, (req, res) => res.render("addProductWH", { layout: "dashAdminWH" }))
+  .get(authAdminWarehouse, warehouseController.getAllCategorys) // route for opening handlebars file of this route
   .post(authAdminWarehouse, warehouseController.createProduct);
 router
   .route("/products/edit/:id")
