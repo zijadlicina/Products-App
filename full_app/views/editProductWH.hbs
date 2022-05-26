@@ -12,15 +12,7 @@
                     <input type="text" placeholder="Name:" required name="name" value="{{data.name}}" required/>
                 </div>
                 <div class="input-box">
-                    {{#select data.category}}
-                  <select name="categoryId" class="select" placeholder="Categorys:" required>
-                      
-                    {{#each data.categorys}}
-                    <option value="{{this.id}}" value="{{this.name}}">{{this.name}}</option>
-                    {{/each}}
-
-                  </select> 
-                  {{/select}} 
+                    <input type="text" placeholder="category:" name="category" value="{{data.category}}"/>
                 </div>
                 <div class="input-box">
                     <input type="text" placeholder="Quantity:" name="quantity" value="{{data.quantity}}" required/>
@@ -39,12 +31,11 @@
                 <div class="input-box">
                     <input type="text" placeholder="City:" name="city" value="{{data.city}}">
                 </div>
-                 {{/if}}
                 <div class="input-box button">
                     <input type="Submit" value="Edit">
                 </div>
             </form> 
-           
+            {{/if}}
              <div>
                 <button>
                     <a type="button" href="/warehouse/products" style="color: black; text-decoration: none"><b>&nbsp <- PRODUCTS &nbsp</b> </a> <br></button>
