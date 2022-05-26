@@ -22,11 +22,15 @@ const Branch = require("../models/Branch")(db, Sequelize);
 const branchProduct = require("../models/BranchProduct")(db, Sequelize);
 const orderProduct = require("../models/OrderProduct")(db, Sequelize);
 const Bill = require("../models/Bill")(db, Sequelize);
+const Categorys = require("../models/Category")(db, Sequelize);
+
 db.users = User;
 db.products = Product;
 db.orders = Order;
 db.branches = Branch;
 db.bill = Bill;
+db.categorys = Categorys;
+
 
 // veze
 db.branchProduct = db.branches.belongsToMany(db.products, {
