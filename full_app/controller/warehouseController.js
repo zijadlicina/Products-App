@@ -5,6 +5,7 @@ const { check, validationResult } = require("express-validator");
 const Product = require("../models/Product")(sequelize, Sequelize);
 const Branch = require("../models/Branch")(sequelize, Sequelize);
 const Category = require("../models/Category")(sequelize, Sequelize);
+const Delivery = require("../models/Delivery")(sequelize, Sequelize);
 
 const db = require("../config/db");
 const BranchProduct = require("../models/BranchProduct")(sequelize, Sequelize);
@@ -328,7 +329,17 @@ exports.addProductToBranch = async (req, res) => {
         quantity: quantity,
         unit: unit
       };
-      BranchProduct.create(product);
+      BranchProduct.create(product).
+        then(bp => {
+          // provjeriti da li kreira delivery za dobar branchProduct
+          const delivery = {
+            branchProductId: bp.id,
+            quantity: quantity,
+            unit: unit,
+            status: 'sent'
+          }
+          Delivery.create(delivery);
+        });
     }else{
       BranchProduct.findOne({
         where: {
@@ -338,9 +349,17 @@ exports.addProductToBranch = async (req, res) => {
         BranchProduct.update({
           quantity: product.quantity + quantity
         });
+        // provjeriti da li kreira delivery za dobar branchProduct
+        const delivery = {
+          branchProductId: product.id,
+          quantity: quantity,
+          unit: unit,
+          status: 'sent'
+        }
+        Delivery.create(delivery);
       }).catch(err => {
         res.status(500).send(err);
-      })
+      });
     }
     db.products.findByPk(productId). then(product => {
       oldQuantity = product.quantity;
