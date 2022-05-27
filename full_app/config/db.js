@@ -33,7 +33,7 @@ db.branches = Branch;
 db.bill = Bill;
 db.delivery = Delivery;
 db.categorys = Categorys;
-
+db.sync()
 // veze
 db.branchProduct = db.branches.belongsToMany(db.products, {
   through: branchProduct,
@@ -61,11 +61,11 @@ db.orders.hasOne(Bill, {
 db.bill.belongsTo(Order);
 
 // veza delivery branchproduct
-Delivery.hasMany(BranchProduct, {
+db.delivery.hasMany(branchProduct, {
   foreignKey: "branchProductId",
   sourceKey: "id"
 });
-BranchProduct.belongsTo(Delivery, {
+branchProduct.belongsTo(Delivery, {
   foreignKey: "branchProductId",
   sourceKey: "id"
 });
