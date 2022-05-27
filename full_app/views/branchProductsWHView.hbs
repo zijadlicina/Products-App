@@ -1,7 +1,7 @@
     <h1 >Products of Branch</h1>
-    {{#if branch}}
+    {{#if branchId}}
     <div>
-        <h2 style="color: blue">{{branch.name}}</h4 >
+        <h2 style="color: blue">{{branchId}}</h4 >
     </div>
     <div class="wrapper">
     {{#if alert}}
@@ -26,8 +26,10 @@
                 </div>
                 !-->
             </form> 
+            
     {{/each}}
      {{/if}}
+        
     <!--
         <div id="table" >
              <hr>
@@ -90,7 +92,8 @@
                   style="color: black; text-decoration: none"><b> <-BRANCH </b></a></button>
              </div>
          </div>
-     </div>
+     </div> </div>
+
  <!--
  </div>
  !-->

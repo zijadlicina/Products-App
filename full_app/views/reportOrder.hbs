@@ -44,8 +44,7 @@
       <th scope="col">Product name</th>
       <th scope="col">Cost price</th>
       <th scope="col">Quantity sold</th>
-      <th scope="col">Amount</th>   
-      <th scope="col">Amount with PDV:</th>         
+      <th scope="col">Amount</th>      
     </tr>
   </thead>
   <tbody>
@@ -54,7 +53,7 @@
       <td data-label="Cost price">$ {{this.price}}</td>
       <td data-label="Quantity sold">{{this.quantity}}</td>
       <td data-label="Amount">$ {{this.amountPriceElem}}</td>
-      <td data-label="Amount with PDV:">$ {{this.amountPriceElemPDV}}</td>
+    
     </tr>
    
   </tbody>
@@ -64,10 +63,6 @@
     <tr>
       <th id="total" colspan="3">Total :</th>
       <td>${{amountPrice}}</td>
-    </tr>
-    <tr>
-      <th id="total" colspan="3">Total with PDV:</th>
-      <td>${{amountPricePDV}}</td>
     </tr>
    </tfoot>
 </table>

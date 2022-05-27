@@ -1,69 +1,64 @@
-    <h1 >Products Cart</h1>
-    <div class="wrapper">
+    <div class="table-container">
+    <h1 class="hProd" >Products Cart</h1>
+  
     {{#if alert}}
     <div>
         <br>
         <h4 style="color: green">{{alert}}</h4 >
     </div>
     {{/if}}
-        <div id="table" >
-             <hr>
-             <div class="table-responsive">
-                 <table class="table activitites">
-                     <thead>
-                         <tr>
-                             <th scope="col" class="text-uppercase header">ID</th>
-                             <th scope="col" class="text-uppercase header">Name</th>
-                             <th scope="col" class="text-uppercase">Quantity</th>
-                             <th scope="col" class="text-uppercase">Operations</th>
-                             
-                         </tr>
+        <table class="table">
+             <thead>
+             
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Operations</th>            
+                </tr>
                      </thead>
                      <tbody>
                         {{#each products}}
                          <tr>
-                             <td >{{this.id}}</td> 
-                             <td class="item" >
-                                 <div class="d-flex">
-                                     <div class="pl-2">
-                                         {{this.name}}
-                                         <div class="d-flex flex-column justify-content-center">
-                                         </div>
-                                     </div>
-                             </td>
-                             <td class="d-flex flex-column"><span class="red">{{this.quantity}} </span>
-                             </td>
-                             <td class="font-weight-bold">
-                                 <button type="button" class="btn btn-light">
-                                    <a href="/warehouse/products/quantity/{{this.id}}">Quantity</a></button>
-                                 <button type="button" class="btn btn-light">
-                                    <a href="/warehouse/products/edit/{{this.id}}">Edit</a></button>
-                                 <button type="button" class="btn btn-dark">
-                                    <a href="/warehouse/products/remove/{{this.id}}">Delete</a></button>
-                             </td>
-                         </tr>
-                         <tr colspan="3">
-                            <td class="item">  </td>                                                   
-                            <td class="d-flex flex-column"> </td>
-                            <td class="font-weight-bold">                                                              
-                             </td>
-                         </tr>
+                            <td data-label="ID">{{this.id}}</td>
+                            <td data-label="name">{{this.name}}</td>
+                             <td data-label="quantity">{{this.quantity}}</td>
+                             <td data-label="Operations">
+                                 <a
+              href="/warehouse/products/quantity/{{this.id}}"
+              type="button"
+              style="color: black"
+            >Quantity</a>
+            <a
+              href="/warehouse/products/edit/{{this.id}}"
+              type="button"
+              style="color: black"
+            >Edit</a>
+
+            <a
+              href="/warehouse/products/remove/{{this.id}}"
+              type="button"
+              style="color: black"
+            >Remove</a>
+         </td>
+                     </tr>
+                        
                         {{/each}}
                      </tbody>
                  </table>
              </div>
      </div> 
- 
+
      <div class="d-flex justify-content-between">
          <div class="text-muted">
             
          </div>
-         <div class="d-flex flex-column justify-content-end align-items-end">
-             <div class="d-flex px-3 pr-md-5 py-1 subtotal">
-                 <button class="btn" class="px-4"><a href="/warehouse/products/add"
-                  style="color: black; text-decoration: none"><b>ADD NEW PRODUCT+</b></a></button>
+        
+             <div >
+                 <button class="btnAdd" ><a href="/warehouse/products/add">
+                 <b class="addB">ADD NEW PRODUCT+</b></a></button>
              </div>
-         </div>
+         
      </div>
  
  </div>
