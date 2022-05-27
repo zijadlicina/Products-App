@@ -6,19 +6,12 @@
                 <h4 style="color: green">{{alert}}</h4 >
             </div>
             {{/if}}
-            {{#if data}}
             <form action="/warehouse/products/add" method="post">
                 <div class="input-box">
                     <input type="text" placeholder="Name:" required name="name">
                 </div>
-                  <div class="input-box">
-                  <select name="category" class="select" placeholder="Categorys:" required>
-                      
-                    {{#each data}}
-                    <option value="{{this.name}}" value="{{this.name}}">{{this.name}}</option>
-                    {{/each}}
-
-                  </select>  
+                <div class="input-box">
+                    <input type="text" placeholder="category:" name="category">
                 </div>
                 <div class="input-box">
                     <input type="text" placeholder="Quantity:" name="quantity" required>
@@ -38,7 +31,6 @@
                 <div class="input-box">
                     <input type="text" placeholder="City:" name="city">
                 </div>
-                 {{/if}}
                 <div class="input-box button">
                     <input type="Submit" value="Add">
                 </div>
