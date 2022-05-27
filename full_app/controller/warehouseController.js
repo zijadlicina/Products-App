@@ -156,10 +156,8 @@ exports.editProduct = (req, res) => {
 };
 // PUT method for updating product
 exports.updateProduct = (req, res) => {
-  console.log("11111111111111111111111111111111111111111111")
   let productId = req.params.id;
   const object = { ...req.body, id: productId };
-  console.log("sdasdasdsadasdasasasd "+object)
   Product.update(object, { where: { id: productId } })
     .then((num) => {
       const data = object;
@@ -236,13 +234,19 @@ exports.getProductsOfBranchView = (req, res) => {
       let productsO = [];
       products.forEach((element) => {
         // let product = { ...element, quantity:  };
+        let quo = element.branch_products.quantity
         let product = { ...element.dataValues, branchId };
+        product.quantity = quo
         productsO.push(product);
       });
+      let alert;
+      if (productsO.length === 0) alert = "No products in stock";
+      branch = branch.dataValues
       res.render("branchProductsWHView", {
         layout: "dashAdminWH",
-        branchId,
+        branch,
         productsO,
+        alert
       });
     });
   });
@@ -311,13 +315,15 @@ exports.getProductsToAddToBranch = (req, res) => {
 
 // GET method for allBranches
 exports.addProductToBranch = async (req, res) => {
-  console.log("addProductToBranch");
+ // console.log("addProductToBranch");
   const { quantity, unit } = req.body;
   let productId = req.params.id;
   let branchId = req.params.branchId;
+  
   BranchProduct.count({
     where: {
-      productId: productId
+      productId: productId,
+      branchId: branchId
     }
   }).then(count => {
     console.log(count);
@@ -330,25 +336,29 @@ exports.addProductToBranch = async (req, res) => {
       };
       BranchProduct.create(product);
     }else{
-      BranchProduct.findOne({
+     BranchProduct.findOne({
         where: {
           productId: productId
         }
-      }).then(product => {
-        BranchProduct.update({
-          quantity: product.quantity + quantity
-        });
+      }) .then(product => {
+        console.log("daa " + product)
+        product.update({
+          quantity: product.quantity + quantity,
+        });/* 
       }).catch(err => {
         res.status(500).send(err);
-      })
-    }
+     */ })
+      
+     }
     db.products.findByPk(productId). then(product => {
       oldQuantity = product.quantity;
       product.update({
         quantity: oldQuantity - quantity
       });
     });
+   
     res.redirect(`/warehouse/branches/brancheproducts/${branchId}`)
+    
   });
   /* db.products.findAll().then((products) => {
     if (products) {
