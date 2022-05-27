@@ -6,8 +6,6 @@ const bcrypt = require("bcrypt");
 
 const Logging = require("../models/Logging")(sequelize, Sequelize);
 const User = require("../models/User")(sequelize, Sequelize);
-const BranchProduct = require("../models/BranchProduct")(sequelize, Sequelize);
-const Category = require("../models/Category")(sequelize, Sequelize);
 
 exports.getUserView = async (req, res) => {
   const userId = req.params.id;
@@ -29,8 +27,8 @@ exports.getUserOrdersView = async (req, res) => {
         orders.push(element.dataValues);
       });
       user = user.dataValues;
-    //  res.send(orders);
-      res.render("orders", { layout: "dashUser", user, orders });
+      res.send(orders);
+      //res.render("orders", { layout: "dashUser", user, orders });
     });
   });
 };
@@ -42,28 +40,12 @@ exports.reportOrder = async (req, res) => {
     order.getProducts().then((data) => {
       const products = [];
       let amountPrice = 0;
-      let amountPricePDV = amountPrice;
       data.forEach((element) => {
-        let op = element.dataValues.order_products.dataValues;
-        let amountPriceElem = op.quantity * op.price;
-        element.dataValues.quantity = op.quantity
-        let amountPriceElemPDV = 0;
-        Category.findOne({ where: { id: element.dataValues.categoryId } }).then(
-          (cat) => {
-            let category = cat.dataValues;
-            console.log(category.PDV);
-            amountPriceElemPDV =
-              amountPriceElem + (category.PDV / 100) * amountPriceElem;
-            let elem = {
-              ...element.dataValues,
-              amountPriceElem,
-              amountPriceElemPDV,
-            };
-            amountPrice += amountPriceElem;
-            amountPricePDV += amountPriceElemPDV;
-            products.push(elem);
-          }
-        );
+        let amountPriceElem =
+          element.dataValues.quantity * element.dataValues.price;
+        amountPrice += amountPriceElem;
+        let elem = { ...element.dataValues, amountPriceElem };
+        products.push(elem);
       });
       order = order.dataValues;
       db.users.findOne({ where: { id: order.userId } }).then((user) => {
@@ -74,7 +56,6 @@ exports.reportOrder = async (req, res) => {
           products,
           user,
           amountPrice,
-          amountPricePDV,
         });
       });
     });
@@ -92,34 +73,30 @@ exports.addOrderForm = async (req, res) => {
 exports.createOrder = async (req, res) => {
   const userId = req.params.id;
   db.users.findOne({ where: { id: userId } }).then((user) => {
-    let newOrder = {
+    let order1 = {
       name: req.body.name,
+      userId: userId,
       order_date: req.body.order_date,
-    }
-    db.orders.create(newOrder).then((order) => {
-      order.setUser(user)
-      let branchId = user.dataValues.branchId
-      db.branches.findOne({ where: { id: branchId } }).then((branch) => {
+    };
+    const branchName = req.body.branch;
+    console.log(branchName);
+    // pronaci rbanch
+    db.branches.findOne({ where: { name: branchName } }).then((branch) => {
+      db.orders.create(order1).then((data1) => {
         branch.getProducts().then((data) => {
-            const products = [];
-            let orderId = order.dataValues.id;
-              data.forEach((element) => {
-                  //console.log(element.dataValues.branch_products.dataValues);
-                  let {name, price, unit} = element.dataValues
-                  const elem = {
-                    name, price, unit,  
-                    ...element.dataValues.branch_products.dataValues,
-                    orderId,
-                    branchId,
-                  };
-                products.push(elem);
-              });
-              branch = branch.dataValues;
-              res.render("addProductsOrder", {
-                layout: "dashUser",
-                branch,
-                products,
-              });
+          const branchId = branch.dataValues.id;
+          const products = [];
+          let orderId = data1.dataValues.id;
+          data.forEach((element) => {
+            const elem = { ...element.dataValues, orderId, branchId };
+            products.push(elem);
+          });
+          branch = branch.dataValues;
+          res.render("addProductsOrder", {
+            layout: "dashUser",
+            branch,
+            products,
+          });
         });
       });
     });
@@ -131,25 +108,16 @@ exports.addProductsToOrder = async (req, res) => {
   const branchId = req.params.branchId;
   const productId = req.params.productId;
   const quantity = req.body.quantity;
-  const unit = req.body.unit;
+  const unit = req.body.quantity;
   const price = req.body.price;
   //
-//  console.log("daaa " + productId)
   db.orders.findOne({ where: { id: orderId } }).then((order) => {
-    BranchProduct.findOne({ where: { id: productId } }).then((brancheproduct) => {
-     // console.log(brancheproduct);
-      let branch_products = brancheproduct.dataValues
-      db.products.findOne({where: {id: branch_products.productId}}).then((product) => {
-        order
+    db.products.findOne({ where: { id: productId } }).then((product) => {
+      order
         .addProduct(product, { through: { quantity, price, unit } })
         .then((data) => {
-          let oldQuantity = brancheproduct.dataValues.quantity
-          console.log(oldQuantity)
-           brancheproduct.update({
-             quantity:  oldQuantity - quantity
-           })
-           //------------------------------
-           db.branches.findOne({ where: { id: branchId } }).then((branch) => {
+          //
+          db.branches.findOne({ where: { id: branchId } }).then((branch) => {
             branch.getProducts().then((products1) => {
               order.getProducts().then((productsOrder) => {
                 let array1 = [];
@@ -174,42 +142,14 @@ exports.addProductsToOrder = async (req, res) => {
                 });
                 //    console.log(array3)
                 //     console.log(products)
-                for (let j = 0; j < array1.length; j++){
-                  if (productId === array1[j].id){
-                    let elem = array1[j]
-                    elem.quantity = elem.quantity - quantity
-                    array1[j] = elem
-                  }
-                }
-                //-------
-                // updatePrice of order
-                
-                order.getProducts().then((data) => {
-                    let amount = 0
-                  data.forEach((elem) => {
-                    let op = elem.dataValues.order_products.dataValues;
-                    amount += op.price * op.quantity
-                  })
-                  console.log(order)
-                    db.orders.findOne({ where: { id: orderId } }).then((order) => {
-                      order.update({price: amount})
-                    })
-                })
-                
-                //----------
                 order = order.dataValues;
                 branch = branch.dataValues;
                 const products = [];
                 let orderId = order.id;
                 let branchId = branch.id;
-                //console.log(array3)
                 array3.forEach((element) => {
-                  let { name, price, unit } = element;
                   const elem = {
-                    name,
-                    price,
-                    unit,
-                    ...element.branch_products.dataValues,
+                    ...element,
                     orderId,
                     branchId,
                   };
@@ -221,23 +161,12 @@ exports.addProductsToOrder = async (req, res) => {
                   products,
                   order,
                 });
-              })
-            })
-          })
-        })
-      })
-      /*
-          
-                branch.setProducts(products1).then(() => {
-                
-                });
               });
             });
           });
-        });*/
+        });
     });
   });
-  
 };
 
 
