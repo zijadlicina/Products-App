@@ -4,6 +4,9 @@ const { check, validationResult } = require("express-validator");
 
 const Product = require("../models/Product")(sequelize, Sequelize);
 const Branch = require("../models/Branch")(sequelize, Sequelize);
+const Category = require("../models/Category")(sequelize, Sequelize);
+const Delivery = require("../models/Delivery")(sequelize, Sequelize);
+=======
 
 const db = require("../config/db");
 
@@ -250,6 +253,60 @@ exports.addProductToBranch = async (req, res) => {
   const { quantity, unit } = req.body;
   let productId = req.params.id;
   let branchId = req.params.branchId;
+  BranchProduct.count({
+    where: {
+      productId: productId
+    }
+  }).then(count => {
+    console.log(count);
+    if(count==0){
+      const product = {
+        branchId: branchId,
+        productId: productId,
+        quantity: quantity,
+        unit: unit
+      };
+      BranchProduct.create(product).
+        then(bp => {
+          // provjeriti da li kreira delivery za dobar branchProduct
+          const delivery = {
+            branchProductId: bp.id,
+            quantity: quantity,
+            unit: unit,
+            status: 'sent'
+          }
+          Delivery.create(delivery);
+        });
+    }else{
+      BranchProduct.findOne({
+        where: {
+          productId: productId
+        }
+      }).then(product => {
+        BranchProduct.update({
+          quantity: product.quantity + quantity
+        });
+        // provjeriti da li kreira delivery za dobar branchProduct
+        const delivery = {
+          branchProductId: product.id,
+          quantity: quantity,
+          unit: unit,
+          status: 'sent'
+        }
+        Delivery.create(delivery);
+      }).catch(err => {
+        res.status(500).send(err);
+      });
+    }
+    db.products.findByPk(productId). then(product => {
+      oldQuantity = product.quantity;
+      product.update({
+        quantity: oldQuantity - quantity
+      });
+    });
+    res.redirect(`/warehouse/branches/brancheproducts/${branchId}`)
+  });
+  /* db.products.findAll().then((products) => {
   db.products.findAll().then((products) => {
     if (products) {
       products.forEach((element) => {
