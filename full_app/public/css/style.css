@@ -11,16 +11,14 @@ body{
     text-decoration: none;
 }
 
+
 nav{
     height: 80px;
     background: #808080;
 }
-nav img{
-    width: 150px;
-    position: absolute;
-    top: 2px;
-    left: 1%;
-}
+
+
+
 nav ul{
     float: right;
     margin-right:25px ;
@@ -48,6 +46,7 @@ nav ul li a:before{
     background:white;
     transform: scaleX(0);
   }
+  
 
   label #btn, 
   label #cancel{
@@ -117,14 +116,25 @@ nav ul li a {
 }
 
 
+.contentadmin{
+    top: 50%;
+    left: 50%;
+  text-align: center;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  }
 
+.home .contentadmin p{
+    font-size: 30px;
+    font-weight: 600;
+    color: rgb(74, 24, 24);
+}
 
-.home .content p{
-    font-size: 5rem;
-    font-weight: lighter;
-    line-height: 1.8;
-    padding:1rem 0;
+.home .contentadmin h4{
+   font-size: 45px;
+  font-weight: 700;
     color: black;
+    
 }
 
 
