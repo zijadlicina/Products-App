@@ -60,6 +60,8 @@ db.bill.belongsTo(Order);
 db.sync(() => console.log(`Kreirane tabele i uneseni podaci!`));
 
 module.exports = db;
+/* POtrebno zakomentarisati zasada */
+
 /*
 // veza delivery branchproduct
 Delivery.hasMany(branchProduct, {
