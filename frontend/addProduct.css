@@ -15,6 +15,8 @@ body{
 }
 */
 .wrapper{
+    margin: auto;
+    margin-top: 10%;
     position: relative;
     max-width: 430px;
     width: 100%;
@@ -23,17 +25,12 @@ body{
     box-shadow: 0 5px 10px rgba(0,0,0,0.2);
     border-radius: 6px;
 }
-
-.wrapper form{
-    margin-top: -5px;
-}
 .wrapper h2{
     position: relative;
     font-size: 22px;
     font-weight: 600;
     color: #333;
 }
-
 
 .wrapper h2::before{
     content: '';
@@ -46,6 +43,9 @@ body{
     border-radius: 12px;
 }
 
+.wrapper form{
+    margin-top: 30px;
+}
 
 .wrapper form .input-box{
     height: 32px;
@@ -54,7 +54,7 @@ body{
 
 form .input-box input{
     height: 100%;
-    width: 100%;
+    width: 92%;
     outline: none;
     padding: 0 15px;
     font-size: 17px;
@@ -64,7 +64,9 @@ form .input-box input{
     border-bottom-width:2.5px ;
     border-radius: 6px;
     transition: all 0.3s ease;
+    
 }
+
 
 .input-box input:focus,
 .input-box input:valid{
@@ -88,6 +90,7 @@ form h3{
     letter-spacing: 1px;
     border: none;
     cursor: pointer;
+    width: 100%;
 
 }
 .input-box.button input:hover{
@@ -108,7 +111,7 @@ form .text h3 a:hover{
     text-decoration: underline ;
 }
 .select{
-    width:360px;
+    width:100%;
     height: 35px;
     box-shadow: 0 5px 10px rgba(0,0,0,0.2);
     border-radius: 6px;
