@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
         type: Sequelize.STRING,
         allowNull: true,
       },
+      table: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       order_date: {
         type: Sequelize.DATE,
         allowNull: false,
