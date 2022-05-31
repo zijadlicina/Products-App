@@ -92,9 +92,11 @@ exports.addOrderForm = async (req, res) => {
 exports.createOrder = async (req, res) => {
   const userId = req.params.id;
   db.users.findOne({ where: { id: userId } }).then((user) => {
+    console.log("TAAAABBBBLEEEEE : "+ req.body.table)
     let newOrder = {
       name: req.body.name,
       order_date: req.body.order_date,
+      table: req.body.table
     }
     db.orders.create(newOrder).then((order) => {
       order.setUser(user)
