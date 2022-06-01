@@ -3,31 +3,24 @@
         
        </div>
         <h2>Product Sales Report</h2>
-    {{#if user}}
+    {{#if bill}}
     <table class="table1">
         <b>Costumer</b>
         <tr>
-            <td><b>Username </b></td>
+            <td><b>FiscalNumber</b></td>
            
-            <td>{{user.username}}</td>
+            <td>{{bill.FiscalNumber}}</td>
           </tr>
-          {{#if order}}
-          <tr>
-            <td><b>Order name</b> </td>
-            
-            <td>{{order.name}}</td>
-          </tr>
-          <tr>
-            <td><b>Table</b> </td>
-            
-            <td>{{order.table}}</td>
-          </tr>
-          <tr>
-            <td><b>Order Date</b> </td>
+            <tr>
+            <td><b>FiscalDate</b></td>
            
-            <td>{{order.order_date}}</td>
+            <td>{{bill.FiscalDate}}</td>
           </tr>
-          {{/if}}
+            <tr>
+            <td><b>FiscalTime</b></td>
+           
+            <td>{{bill.FiscalTime}}</td>
+          </tr>
         </table>
     {{/if}}
 
@@ -68,12 +61,8 @@
  {{/if}}
  {{#if user}}
         <button>
-            <a type="button" href="/user/orders/{{user.id}}" style="color: black; text-decoration: none"><b>&nbsp <- ORDERS &nbsp</b> </a> <br></button>
-           {{/if}}  
-            {{#if order}}  
-            <button>
-            <a type="button" href="/user/orders/{{order.id}}/finish" style="color: black; text-decoration: none"><b>&nbsp FINISH &nbsp</b> </a> <br></button>
-            {{/if}}  
+            <a type="button" href="/user/orders/{{user.id}}" style="color: black; text-decoration: none"><b>&nbsp ORDERS &nbsp</b> </a> <br></button>
+           {{/if}}    
                 <br>
                 <br>
    </body>

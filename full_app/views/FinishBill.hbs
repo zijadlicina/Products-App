@@ -1,0 +1,13 @@
+ <div class="wrapper">
+
+<h2>Are you sure that you want to finish </h2>
+   <div>
+    {{#if order}} 
+    <button><a type="button" href="/user/orders/{{order.id}}/writeBill" style="color: black; "><b>&nbsp FINISH &nbsp</b> </a> <br></button>
+    {{/if}} 
+    {{#if user}} 
+    <button><a type="button" href="/user/orders/{{user.id}}" style="color: black; "><b>&nbsp <- ORDERS &nbsp</b> </a> <br></button>
+    {{/if}} 
+    <br>
+  </div>
+</div>

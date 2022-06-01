@@ -25,4 +25,15 @@ router
 
 router
   .route("/orders/:orderId/report").get(authUser, userController.reportOrder)
+
+  
+router
+.route("/orders/:orderId/finish").get(authUser, userController.sendBill)
+
+
+
+router
+  .route("/orders/:orderId/writeBill")
+  .get(authUser,userController.takeBill)
+
 module.exports = router;

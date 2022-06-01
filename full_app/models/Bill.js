@@ -20,6 +20,18 @@ module.exports = (sequelize, DataTypes) => {
         type: Sequelize.DOUBLE,
         allowNull: true
       },
+      FiscalNumber: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      FiscalDate: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      FiscalTime: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
       createdAt: Sequelize.DATE,
       updatedAt: Sequelize.DATE,
     },
