@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Product to Branch</title>
+        <link rel="stylesheet" href="addProduct2.css">
+
+
+    </head>
+    <body>
+        <div class="wrapper">
+            <h2>Product to Branch</h2>
+            <form action="#">
+                <div class="input-box">
+                    <input type="text" placeholder="Products:" required>
+                </div>
+                           
+                <div class="container">
+                    <span class="minus">-</span>
+                    <span class="num">01</span>
+                    <span class="plus">+</span>
+                  </div>       
+        
+        
+                
+                <div class="input-box">
+                    <input type="text" placeholder="Unit:" required>
+                </div>
+
+                <div class="input-box button">
+                    <input type="Submit" value="Add to branch">
+                </div>
+
+               
+               
+            </form>
+        </div>
+
+        <script>
+            const plus = document.querySelector(".plus"),
+             minus = document.querySelector(".minus"),
+             num = document.querySelector(".num");
+             let a = 1;
+             plus.addEventListener("click", ()=>{
+               a++;
+               a = (a < 10) ? "0" + a : a;
+               num.innerText = a;
+             });
+         
+             minus.addEventListener("click", ()=>{
+               if(a > 1){
+                 a--;
+                 a = (a < 10) ? "0" + a : a;
+                 num.innerText = a;
+               }
+             });
+
+             
+         
+           </script>
+    </body>
+</html>
