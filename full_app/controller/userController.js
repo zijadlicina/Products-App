@@ -3,11 +3,13 @@ const { Sequelize, where, Op } = require("sequelize");
 const { check, validationResult } = require("express-validator");
 const db = require("../config/db");
 const bcrypt = require("bcrypt");
+var fs = require('fs');
 
 const Logging = require("../models/Logging")(sequelize, Sequelize);
 const User = require("../models/User")(sequelize, Sequelize);
 const BranchProduct = require("../models/BranchProduct")(sequelize, Sequelize);
 const Category = require("../models/Category")(sequelize, Sequelize);
+const Bill = require("../models/Bill")(sequelize, Sequelize);
 
 exports.getUserView = async (req, res) => {
   const userId = req.params.id;
@@ -358,3 +360,236 @@ exports.editUserPassword = async (req, res) => {
 /*
 branch.getProducts().then((products) => {
 */
+
+exports.sendBill = async (req, res) => {
+
+  const orderId = req.params.orderId;
+  db.orders.findOne({ where: { id: orderId } }).then((order) => {
+    //console.log(order);
+    order.getProducts().then((data) => {
+      const products = [];
+      let amountPrice = 0;
+      let amountPricePDV = amountPrice;
+      data.forEach((element) => {
+        let op = element.dataValues.order_products.dataValues;
+        let amountPriceElem = op.quantity * op.price;
+        element.dataValues.quantity = op.quantity
+        let amountPriceElemPDV = 0;
+        Category.findOne({ where: { id: element.dataValues.categoryId } }).then(
+          (cat) => {
+            let category = cat.dataValues;
+            //console.log(category.PDV);
+            amountPriceElemPDV =
+              amountPriceElem + (category.PDV / 100) * amountPriceElem;
+            let elem = {
+              ...element.dataValues,
+              amountPriceElem,
+              amountPriceElemPDV,
+            };
+            amountPrice += amountPriceElem;
+            amountPricePDV += amountPriceElemPDV;
+            products.push(elem);
+          }
+        );
+      });
+      order = order.dataValues;
+      db.users.findOne({ where: { id: order.userId } }).then((user) => {
+        user = user.dataValues;
+        var rezz =[]
+
+        let body = '';
+        let dir = './../../PPP';
+        req.on('data', function(data) {
+          body += data;
+        });
+        if (!fs.existsSync(dir)) {
+          fs.mkdirSync(dir);
+        }
+        req.on('end', function() {
+          fs.writeFile(dir + '/sfr.xml', body, function(err) {
+            if (err) {
+              return console.log(err);
+            }
+    
+            var novaLinija = `<?xml version="1.0" encoding="utf-8"?>
+            <RacunZahtjev xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+              <VrstaZahtjeva>0</VrstaZahtjeva>
+              <NoviObjekat>  
+                <StavkeRacuna> ` 
+                products.forEach((element) =>{ 
+
+                var art=
+                  `<RacunStavka>
+                    <artikal>`
+
+                    art+="<Sifra>"+element.id+"</Sifra>"
+                    art+="<Naziv>"+element.name+"</Naziv>"
+                    art+=`<JM>ko</JM>`
+                    art+="<Cijena>"+element.price+"</Cijena>"
+                    art+=`<Stopa>E</Stopa>`
+                    art+=`<Grupa>0</Grupa>`
+                    art+=`<PLU>0</PLU>`
+                    art+=`</artikal>`
+                    art+="<Kolicina>"+element.quantity+"</Kolicina>"
+                    art+=`<Rabat>0</Rabat>`
+                    art+=`</RacunStavka>`
+                    novaLinija +=art
+                    //console.log("art: "+art)
+              })
+              novaLinija += `</StavkeRacuna>
+                <VrstePlacanja>
+              <VrstaPlacanja>
+                    <Oznaka>Gotovina</Oznaka>`
+                novaLinija +="<Iznos>50</Iznos>"
+                novaLinija += `</VrstaPlacanja>
+                </VrstePlacanja>
+              </NoviObjekat>
+            </RacunZahtjev>`
+         
+             fs.appendFile(dir + '/sfr.xml', novaLinija, function (err) {
+         
+             if (err) throw err;
+             const alert = `Product deleted succesfully!`;
+             res.render("FinishBill", {
+              layout: "dashUser",
+              user, order
+            });
+
+            });
+          });
+        });
+      });
+    });
+  });
+};
+
+exports.takeBill = async (req, res) => {
+  const orderId = req.params.orderId;
+  db.orders.findOne({ where: { id: orderId } }).then((order) => {
+    //console.log(order);
+    order.getProducts().then((data) => {
+      const products = [];
+      let amountPrice = 0;
+      let amountPricePDV = amountPrice;
+      data.forEach((element) => {
+        let op = element.dataValues.order_products.dataValues;
+        let amountPriceElem = op.quantity * op.price;
+        element.dataValues.quantity = op.quantity
+        let amountPriceElemPDV = 0;
+        Category.findOne({ where: { id: element.dataValues.categoryId } }).then(
+          (cat) => {
+            let category = cat.dataValues;
+            //console.log(category.PDV);
+            amountPriceElemPDV =
+              amountPriceElem + (category.PDV / 100) * amountPriceElem;
+            let elem = {
+              ...element.dataValues,
+              amountPriceElem,
+              amountPriceElemPDV,
+            };
+            amountPrice += amountPriceElem;
+            amountPricePDV += amountPriceElemPDV;
+            products.push(elem);
+          }
+        );
+      });
+      order = order.dataValues;
+
+      db.users.findOne({ where: { id: order.userId } }).then((user) => {
+        user = user.dataValues;
+        var rezz =[]
+        rezz.push("order",order)
+        rezz.push("products",products)
+        rezz.push("user",user)
+        rezz.push("amountPrice",amountPrice)
+        rezz.push("amountPricePDV",amountPricePDV)
+        let dir2 = './../../SSS';
+
+        fs.readFile(dir2 + '/sfr.xml', "utf8", (err, data) => {
+                    
+          var BrojFiskalnogRacuna="";
+          var DatumFiskalnogRacuna="";
+          var VrijemeFiskalnogRacuna="";
+
+          const niz = data.split("");
+          var i=0; var br=0;
+          for(i=0; i<niz.length; i++){
+            if(niz[i]=='>'){
+              br++;
+            }
+            if(br==7){
+              BrojFiskalnogRacuna+=niz[i];
+            }
+            if(br==7 && niz[i]=='<'){
+              break
+            }
+          }
+          br=0;
+          for(i=0; i<niz.length; i++){
+            if(niz[i]=='>'){
+              br++;
+            }
+            if(br==13){
+              DatumFiskalnogRacuna+=niz[i];
+            }
+            if(br==13 && niz[i]=='<'){
+              break
+            }
+          }
+          br=0;
+          for(i=0; i<niz.length; i++){
+            if(niz[i]=='>'){
+              br++;
+            }
+            if(br==19){
+              VrijemeFiskalnogRacuna+=niz[i];
+            }
+            if(br==19 && niz[i]=='<'){
+              break
+            }
+          }
+
+          BrojFiskalnogRacuna=BrojFiskalnogRacuna.replace('<', '');
+          BrojFiskalnogRacuna=BrojFiskalnogRacuna.replace('>', '');
+
+          DatumFiskalnogRacuna=DatumFiskalnogRacuna.replace('<', '');
+          DatumFiskalnogRacuna=DatumFiskalnogRacuna.replace('>', '');
+
+          VrijemeFiskalnogRacuna=VrijemeFiskalnogRacuna.replace('<', '');
+          VrijemeFiskalnogRacuna=VrijemeFiskalnogRacuna.replace('>', '');
+
+
+        db.orders.findOne({ where: { id: orderId } }).then((order) => {
+
+          order.active = "false";
+      
+          order.save().then((users) => {
+
+            const bill = {
+              order_id: orderId,
+              amount: amountPricePDV,
+              FiscalNumber: BrojFiskalnogRacuna,
+              FiscalDate: DatumFiskalnogRacuna,
+              FiscalTime: VrijemeFiskalnogRacuna,
+            };
+
+            Bill.create(bill).then((racun)=>{
+              //rezz.push(bill)
+              res.render("BillFinish", {
+                layout: "dashUser",
+                order,
+                products,
+                user,
+                amountPrice,
+                amountPricePDV,
+                bill
+              });
+            })
+         
+        });
+        });
+      })    
+      });
+    });
+  });
+};
