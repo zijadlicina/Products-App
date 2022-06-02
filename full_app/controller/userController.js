@@ -561,7 +561,7 @@ exports.takeBill = async (req, res) => {
 
         db.orders.findOne({ where: { id: orderId } }).then((order) => {
 
-          order.active = "false";
+          order.active = false;
       
           order.save().then((users) => {
 
@@ -590,6 +590,59 @@ exports.takeBill = async (req, res) => {
         });
       })    
       });
+    });
+  });
+};
+
+exports.writeBill = async (req, res) => {
+
+  const orderId = req.params.orderId;
+  db.orders.findOne({ where: { id: orderId } }).then((order) => {
+    //console.log(order);
+    order.getProducts().then((data) => {
+      const products = [];
+      let amountPrice = 0;
+      let amountPricePDV = amountPrice;
+      data.forEach((element) => {
+        let op = element.dataValues.order_products.dataValues;
+        let amountPriceElem = op.quantity * op.price;
+        element.dataValues.quantity = op.quantity
+        let amountPriceElemPDV = 0;
+        Category.findOne({ where: { id: element.dataValues.categoryId } }).then(
+          (cat) => {
+            let category = cat.dataValues;
+            //console.log(category.PDV);
+            amountPriceElemPDV =
+              amountPriceElem + (category.PDV / 100) * amountPriceElem;
+            let elem = {
+              ...element.dataValues,
+              amountPriceElem,
+              amountPriceElemPDV,
+            };
+            amountPrice += amountPriceElem;
+            amountPricePDV += amountPriceElemPDV;
+            products.push(elem);
+          }
+        );
+      });
+      order = order.dataValues;
+      db.users.findOne({ where: { id: order.userId } }).then((user) => {
+        user = user.dataValues;
+
+        Bill.findOne({ where: { order_id: orderId } }).then((bill) => {
+          bill = bill.dataValues;
+        res.render("BillFinish", {
+          layout: "dashUser",
+          order,
+          products,
+          user,
+          amountPrice,
+          amountPricePDV,
+          bill
+        });
+
+      });
+    });
     });
   });
 };

@@ -36,4 +36,8 @@ router
   .route("/orders/:orderId/writeBill")
   .get(authUser,userController.takeBill)
 
+  router
+  .route("/orders/:orderId/writeBill2")
+  .get(authUser,userController.writeBill)
+
 module.exports = router;
