@@ -371,50 +371,52 @@ exports.addProductToBranch = async (req, res) => {
       };
       BranchProduct.create(product);
     } else {
-      BranchProduct.findOne({
-        where: {
-          productId: productId,
-        },
-      }).then((product) => {
-        console.log("daa " + product);
-        product.update({
-          quantity: product.quantity + quantity,
-        }); /* 
-      }).catch(err => {
-        res.status(500).send(err);
-     */
-      BranchProduct.create(product).
-        then(bp => {
+        BranchProduct.findOne({
+          where: {
+            productId: productId,
+          },
+        }).then((product) => {
+          console.log("daa " + product);
+          product.update({
+            quantity: product.quantity + quantity,
+          }); /* 
+        }).catch(err => {
+          res.status(500).send(err);
+      */
+        BranchProduct.create(product).
+          then(bp => {
+            // provjeriti da li kreira delivery za dobar branchProduct
+            const delivery = {
+              branchProductId: bp.id,
+              quantity: quantity,
+              unit: unit,
+              status: 'sent'
+            }
+            Delivery.create(delivery);
+          });
+    //}else{
+        BranchProduct.findOne({
+          where: {
+            productId: productId
+          }
+        }).then(product => {
+          BranchProduct.update({
+            quantity: product.quantity + quantity
+          });
           // provjeriti da li kreira delivery za dobar branchProduct
           const delivery = {
-            branchProductId: bp.id,
+            branchProductId: product.id,
             quantity: quantity,
             unit: unit,
             status: 'sent'
-          }
+          };
           Delivery.create(delivery);
+        }).catch(err => {
+          res.status(500).send(err);
         });
-    }else{
-      BranchProduct.findOne({
-        where: {
-          productId: productId
-        }
-      }).then(product => {
-        BranchProduct.update({
-          quantity: product.quantity + quantity
-        });
-        // provjeriti da li kreira delivery za dobar branchProduct
-        const delivery = {
-          branchProductId: product.id,
-          quantity: quantity,
-          unit: unit,
-          status: 'sent'
-        }
-        Delivery.create(delivery);
-      }).catch(err => {
-        res.status(500).send(err);
-      });
-    }
+      
+    });
+  }
     db.products.findByPk(productId).then((product) => {
       oldQuantity = product.quantity;
       product.update({
