@@ -1,12 +1,13 @@
 const Sequelize = require("sequelize");
-
+/*
 // novo ime baze u phpSql
 const db = new Sequelize("nova_baza33", "root", "", {
   host: "localhost",
   dialect: "mysql",
   //port: 3306
 });
-
+*/
+const db = new Sequelize("mysql://ba2af6d58cd91f:2f8e92d4@eu-cdbr-west-02.cleardb.net/heroku_b531cbef40ee4c5?reconnect=true");
 db.authenticate()
   .then(() => {
     console.log("Connection has been established successfully.");
