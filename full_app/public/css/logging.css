@@ -1,99 +1,83 @@
-table {
-    border: 1px solid #ccc;
-    border-collapse: collapse;
-    margin: 0;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 0;
-    width: 70%;
-    table-layout: fixed;
+.logging{
+  width: auto;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px;
+  max-height: 500px;
+}
+.logging thead{
+  background-color: #778899;
+  margin-bottom: 100px;
+  
+}
+
+.logging thead tr th{
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.35px;
+  color: #FFFFFF;
+  opacity: 1;
+  padding: 12px;
+  vertical-align: top;
+  border: 1px solid #dee2e686;
+  
+  
+}
+.logging tbody tr td{
+  font-size: 14px;
+  letter-spacing: 0.35px;
+  font-weight: normal;
+  color: #f1f1f1;
+  background-color: #3c3f44;
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #e0e6de85;
+}
+
+.logging tbody tr td .btn {
+  width: 130px;
+  text-decoration: none;
+  line-height: 35px;
+  display: inline-block;
+  background-color: #2F4F4F	;
+  font-weight: medium;
+  color: #FFFFFF;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+  border: 1px solid transparent;
+  font-size: 14px;
+  opacity: 1;
+}
+
+@media (max-width:768px) {
+
+  .logging thead {
+    display: none;
+
   }
-  
-  table caption {
-    font-size: 1.5em;
-    margin: .5em 0 .75em;
+  .logging, .logging tbody, .logging tr, .logging td {
+    display: block;
+    width: 90%;
+
+
   }
-  
-  table tr {
-    background-color: #f8f8f8;
-    border: 1px solid #ddd;
-    padding: .35em;
+  .logging tr {
+    margin-bottom: 15px;
   }
-  
-  table th,
-  table td {
-    padding: .625em;
-    text-align: center;
+  .logging tbody tr td{
+    text-align: right;
+    padding-left: 50%;
+    position: relative;
   }
-  
-  table th {
-    font-size: .85em;
-    letter-spacing: .1em;
-    text-transform: uppercase;
+  .logging td:before{
+    content: attr(data-label);
+    position: absolute;
+    left: 0%;
+    width: 50%;
+    padding-left:15px;
+    font-weight: 700;
+    font-size: 14px;
+    text-align: left;
   }
-  
-  @media screen and (max-width: 600px) {
-    table {
-      border: 0;
-    }
-  
-    table caption {
-      font-size: 1.3em;
-    }
-    
-    table thead {
-      border: none;
-      clip: rect(0 0 0 0);
-      height: 1px;
-      margin: -1px;
-      overflow: hidden;
-      padding: 0;
-      position: absolute;
-      width: 1px;
-    }
-    
-    table tr {
-      border-bottom: 3px solid #ddd;
-      display: block;
-      margin-bottom: .625em;
-    }
-    
-    table td {
-      border-bottom: 1px solid #ddd;
-      display: block;
-      font-size: .8em;
-      text-align: right;
-    }
-    
-    table td::before {
-      /*
-      * aria-label has no advantage, it won't be read inside a table
-      content: attr(aria-label);
-      */
-      content: attr(data-label);
-      float: left;
-      font-weight: bold;
-      text-transform: uppercase;
-    }
-    
-    table td:last-child {
-      border-bottom: 0;
-    }
-  }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  /* general styling */
-  body {
-    font-family: "Open Sans", sans-serif;
-    line-height: 1.25;
-  }
+}

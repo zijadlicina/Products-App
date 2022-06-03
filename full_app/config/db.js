@@ -1,8 +1,7 @@
 const Sequelize = require("sequelize");
-const BranchProduct = require("../models/BranchProduct");
 
 // novo ime baze u phpSql
-const db = new Sequelize("nova_baza", "root", "", {
+const db = new Sequelize("nova_baza4", "root", "", {
   host: "localhost",
   dialect: "mysql",
   //port: 3306
@@ -23,27 +22,27 @@ const Branch = require("../models/Branch")(db, Sequelize);
 const branchProduct = require("../models/BranchProduct")(db, Sequelize);
 const orderProduct = require("../models/OrderProduct")(db, Sequelize);
 const Bill = require("../models/Bill")(db, Sequelize);
-const Delivery = require("../models/Delivery")(db, Sequelize);
 const Categorys = require("../models/Category")(db, Sequelize);
+const Delivery = require("../models/Delivery")(db, Sequelize);
 
 db.users = User;
 db.products = Product;
 db.orders = Order;
 db.branches = Branch;
 db.bill = Bill;
-db.delivery = Delivery;
 db.categorys = Categorys;
+db.delivery = Delivery;
 
 // veze
 db.branchProduct = db.branches.belongsToMany(db.products, {
   through: branchProduct,
-  foreign_key: "branch_id",
+  foreign_key: "branchId",
 });
 db.products.belongsToMany(db.branches, {
   through: branchProduct,
-  foreign_key: "product_id",
+  foreign_key: "productId",
 });
-User.hasMany(Order)
+User.hasMany(Order);
 Order.belongsTo(User, { foreign_key: "user_id" });
 db.orderproducts = db.orders.belongsToMany(db.products, {
   through: orderProduct,
@@ -53,24 +52,21 @@ db.products.belongsToMany(db.orders, {
   through: orderProduct,
   foreign_key: "product_id",
 });
-
 // veza bill order
 db.orders.hasOne(Bill, {
-  foreignKey: "order_id"
+  foreignKey: "order_id",
 });
 db.bill.belongsTo(Order);
 
 // veza delivery branchproduct
-Delivery.hasMany(BranchProduct, {
-  foreignKey: "branchProductId",
-  sourceKey: "id"
+/* Delivery.hasMany(branchProduct);
+branchProduct.belongsTo(Delivery, {
+  foreignKey: "branchProductId"
 });
-BranchProduct.belongsTo(Delivery, {
-  foreignKey: "branchProductId",
-  sourceKey: "id"
-});
-
-
+*/
 db.sync(() => console.log(`Kreirane tabele i uneseni podaci!`));
 
 module.exports = db;
+
+
+

@@ -1,0 +1,33 @@
+<div class="wrapper">
+  <h2>Add new category</h2>
+  <form action="/warehouse/category/create" method="post">
+    <div class="input-box">
+      <input type="text" name="name" placeholder="Category name:" required />
+    </div>
+    <div class="input-box">
+      <input
+        type="text"
+        placeholder="Tax name:"
+        required
+        readonly
+        value="PDV"
+      />
+    </div>
+    <div class="input-box">
+      <select name="PDV" class="select" placeholder="Tax %:" required>
+        <option value="Category" disabled selected value>Tax</option>
+        <option value="17">0.17</option>
+        <option value="5">0.05</option>
+        <option value="20">0.2</option>
+        <option value="0">0</option>
+      </select>
+    </div>
+    <div class="input-box button">
+      <input type="Submit" value="Add" />
+    </div>
+  </form>
+    <div>
+    <button><a type="button" href="/warehouse/category" style="color: black; "><b>&nbsp <- CATEGORIES &nbsp</b> </a> <br></button>
+    <br>
+  </div>
+</div>

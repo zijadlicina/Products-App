@@ -1,9 +1,8 @@
- <div style="margin-top: 350px"></div>
-    {{#if branch}}
-    <h1 >Add Products to Order</h1>
-    <div>
+ <!--  <div style="margin-top: 650px"></div>!-->
+    <h1 >Edit Products of Order</h1>
+   <!-- <div>
         <h2 style="color: blue">Products from: {{branch.name}}</h4 >
-    </div>
+    </div> !-->
     <div class="wrapper">
     {{#if alert}}
     <div>
@@ -11,9 +10,8 @@
         <h4 style="color: green">{{alert}}</h4 >
     </div>
     {{/if}}
-    
        {{#each products}}
-            <form action="/user/orders/{{this.orderId}}/addProduct/{{this.branchId}}/{{this.id}}" method="post">
+            <form action="/user/orders/{{this.orderId}}/editProduct/{{this.branchProductId}}/{{this.orderProductId}}/{{this.userId}}" method="post">
                 <div class="input-box">
                     <input type="text" placeholder="Name:" required name="name" value="{{this.name}}" required readonly/>
                 </div>
@@ -27,11 +25,11 @@
                     <input type="text" placeholder="Price:" name="price" value="{{this.price}}"required readonly/>
                 </div>
                 <div class="input-box button">
-                    <input type="Submit" value="Add to order">
+                    <input type="Submit" value="Edit">
                 </div>
             </form> 
     {{/each}}
-    {{/if}}
+    
 </div>
 {{#if order}}
         <button>
