@@ -16,17 +16,13 @@ body{
 */
 .wrapper{
     position: relative;
-    max-width: 430px;
-    width: 100%;
+    width: 80%;
     background: #fff;
     padding: 34px;
     box-shadow: 0 5px 10px rgba(0,0,0,0.2);
     border-radius: 6px;
 }
 
-.wrapper form{
-    margin-top: -5px;
-}
 .wrapper h2{
     position: relative;
     font-size: 22px;
@@ -108,7 +104,7 @@ form .text h3 a:hover{
     text-decoration: underline ;
 }
 .select{
-    width:360px;
+    width:70%;
     height: 35px;
     box-shadow: 0 5px 10px rgba(0,0,0,0.2);
     border-radius: 6px;

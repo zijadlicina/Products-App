@@ -2,13 +2,13 @@
   {{#if alert}}
   <div>
     <br>
-    <h4 style="color: green">{{alert}}</h4 >
+    <h2 style="color: green">{{alert}}</h2 >
     <br>
   </div>
   {{/if}}
 {{#if data}}
 <h5>Are you sure that you want to remove user: </h5>
-<h4 style="color: red;">{{data.username}}</h4>
+<h2 style="color: red;">{{data.username}}</h2>
 <form action="/admin/users/remove/{{data.id}}" method="post">
     <div class="input-box button">
       <input type="submit" value="Delete User" />

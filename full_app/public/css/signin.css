@@ -3,10 +3,10 @@
   border-radius: 10px 10px 10px 10px;
   background: rgb(240, 237, 237);
   padding: 40px;
-  width: 50%;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
-
+margin-top: 100px;
   -webkit-box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
   box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
   text-align: center;
@@ -21,7 +21,7 @@
   margin-right: auto;
   
   padding: 20px;
-  flex-direction: column;
+
 }
 
 input[type="button"],
@@ -104,7 +104,7 @@ input[type="submit"]{
   display: inline-block;
   font-size: 13px;
   margin: 10px;
-  width: 65%;
+  width: 60%;
   border: 2px solid #f6f6f6;
 
   -webkit-border-radius: 5px 5px 5px 5px;
