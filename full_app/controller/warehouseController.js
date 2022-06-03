@@ -258,12 +258,21 @@ exports.updateQuantityProduct = (req, res) => {
         if (num) {
           const data = num.dataValues;
           //  console.log(data);
-          const alert = "Product quantity changed!";
-          res.render("productQuantityWH", {
-            layout: "dashAdminWH",
-            alert,
-            data,
+          const logg = {
+            akcija: "EDIT",
+            opisAkcije: "Admin Warehouse udited quantity of product: "+data.name,
+          };
+      
+          Logging.create(logg)        
+          .then((dataaaa) => {
+            const alert = "Product quantity changed!";
+            res.render("productQuantityWH", {
+              layout: "dashAdminWH",
+              alert,
+              data,
+            });
           });
+
         } else {
           let object = { status: "Can't update quantity of the product!" };
           res.send(object);
