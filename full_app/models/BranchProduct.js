@@ -12,12 +12,22 @@ module.exports = (sequelize, DataTypes) => {
           primaryKey: true,
         },
         branchId: {
-            type: Sequelize.INTEGER,
-            allowNull: false
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'branches',
+            key: 'id',
+            as: 'branchId'
+          }
         },
         productId: {
             type: Sequelize.INTEGER,
-            allowNull: false
+            allowNull: false,
+            references: {
+              model: 'products',
+              key: 'id',
+              as: 'productId'
+            }
         },
         quantity: {
             type: Sequelize.INTEGER,
