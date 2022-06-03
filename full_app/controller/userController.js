@@ -4,6 +4,9 @@ const { check, validationResult } = require("express-validator");
 const db = require("../config/db");
 const bcrypt = require("bcrypt");
 var fs = require("fs");
+const Branch = require("../models/Branch");
+const Order = require("../models/Order");
+const OrderProduct = require("../models/OrderProduct")(sequelize, Sequelize);
 
 const Logging = require("../models/Logging")(sequelize, Sequelize);
 const User = require("../models/User")(sequelize, Sequelize);
@@ -134,32 +137,85 @@ exports.createOrder = async (req, res) => {
 
 exports.editOrderView = async (req, res) => {
   const orderId = req.params.orderId;
+  const userId = req.params.userId;
+  console.log(userId)
+  let user = await User.findOne({where: {id: userId}})
+  let branchId = user.dataValues.branchId;
+ // console.log(branchId)
   db.orders.findOne({ where: { id: orderId } }).then((order) => {
     order.getProducts().then((productsOrder) => {
       let products = [];
    //   console.log(productsOrder);
-      productsOrder.forEach((element) => {
-        let { name, price, unit } = element.dataValues;
-        const elem = {
-          name,
-          price,
-          unit,
-          ...element.dataValues.order_products.dataValues,
-        };
-        products.push(elem);
-      });
-      res.render("editProductsOrder", {
-        layout: "dashUser",
-        //      branch,
-        products,
-        //    order,
-      });
+          productsOrder.forEach(async (element) => {
+            let { id, name, price, unit } = element.dataValues;
+            console.log(id);
+            let brancheproduct = await BranchProduct.findOne({
+              where: { productId: id, branchId: branchId },
+            });
+      //      console.log(brancheproduct);
+            let branch_products = brancheproduct.dataValues;
+            // console.log(branch_products);
+            let branchProductId = branch_products.id;
+            OrderProduct.findOne({ where: { orderId: id } }).then(
+              (orderProduct) => {
+                let orderProducts = orderProduct.dataValues;
+                //console.log(orderProduct);
+                let orderProductId = orderProducts.id;
+                let userId = order.userId
+                const elem = {
+                  name,
+                  price,
+                  unit,
+                  branchProductId,
+                  orderProductId,
+                  userId,
+                  ...element.dataValues.order_products.dataValues,
+                };
+                products.push(elem);
+              }
+            );
+            order = order.dataValues;
+            res.render("editProductsOrder", {
+              layout: "dashUser",
+              //      branch,
+              products,
+              order,
+            });
+          });
     });
   });
 };
 
 exports.editOrder = async (req, res) => {
-  console.log("daa");
+  let branchProductId = req.params.branchProductId
+  let orderProductId = req.params.orderProductId;
+  let orderId = req.params.orderId;  
+  let userId = req.params.userId;
+  let newQuantity = req.body.quantity
+  console.log("--------------------" + userId)
+
+    OrderProduct.findOne({ where: { id: orderProductId } }).then(
+      (orderProduct) => {
+        let oldQuantity2 = orderProduct.dataValues.quantity;
+        orderProduct.update({
+          quantity: newQuantity,
+        });
+        BranchProduct.findOne({ where: { id: branchProductId } }).then(
+          async(branchProduct) => {
+            console.log(branchProduct)
+            let oldQuantity = branchProduct.dataValues.quantity;
+            let razlika = oldQuantity2 - newQuantity;
+            let quantBranch;
+              quantBranch = oldQuantity - razlika * -1
+            console.log(quantBranch)
+            branchProduct.update({
+              quantity: quantBranch,
+            });
+            res.redirect(`/user/orders/${orderId}/edit/${userId}`);
+          }
+        );
+      }
+    );
 };
 
 exports.addProductsToOrder = async (req, res) => {
