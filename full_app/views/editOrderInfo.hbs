@@ -1,0 +1,19 @@
+ <div class="wrapper">
+     {{#if newQuantity}}
+  <div>
+    <br>
+    <h4 style="color: red">You update quantity to: {{newQuantity}}</h4>
+  <div>
+    <br>
+  </div>
+  </div>
+  {{/if}}
+  {{#if userId}}
+  {{#if orderId}}
+   <div>
+    <button><a type="button" href="/user/orders/{{orderId}}/edit/{{userId}}" style="color: black; "><b>&nbsp <- USERS &nbsp</b> </a> <br></button>
+    <br>
+  </div>
+  {{/if}}
+  {{/if}}
+</div>

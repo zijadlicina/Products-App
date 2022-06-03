@@ -161,7 +161,6 @@ exports.editOrderView = async (req, res) => {
                 let orderProducts = orderProduct.dataValues;
                 //console.log(orderProduct);
                 let orderProductId = orderProducts.id;
-                let userId = order.userId
                 const elem = {
                   name,
                   price,
@@ -195,9 +194,9 @@ exports.editOrder = async (req, res) => {
   console.log("--------------------" + userId)
 
     OrderProduct.findOne({ where: { id: orderProductId } }).then(
-      (orderProduct) => {
+      async (orderProduct) => {
         let oldQuantity2 = orderProduct.dataValues.quantity;
-        orderProduct.update({
+        await orderProduct.update({
           quantity: newQuantity,
         });
         BranchProduct.findOne({ where: { id: branchProductId } }).then(
@@ -208,10 +207,16 @@ exports.editOrder = async (req, res) => {
             let quantBranch;
               quantBranch = oldQuantity - razlika * -1
             console.log(quantBranch)
-            branchProduct.update({
+            await branchProduct.update({
               quantity: quantBranch,
             });
-            res.redirect(`/user/orders/${orderId}/edit/${userId}`);
+            res.render("editOrderInfo", {
+              layout: "dashUser",
+              oldQuantity2,
+              newQuantity,
+              userId,
+              orderId,
+            });
           }
         );
       }
