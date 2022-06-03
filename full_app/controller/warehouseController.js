@@ -13,6 +13,46 @@ const BranchProduct = require("../models/BranchProduct")(sequelize, Sequelize);
 
 Category.hasMany(Product);
 
+
+exports.getSendingProducts = async(req, res) => {
+  let array = await BranchProduct.findAll();
+  let products = [];
+  array.forEach((elem) => {
+    console.log("da " + elem.dataValues.status)
+    if (elem.dataValues.status === "sent")
+    products.push(elem.dataValues,)
+  })
+  res.render("sendingProducts", {layout: "dashAdminWH", products});
+}
+
+exports.getDeliveryProducts = async (req, res) => {
+  let array = await BranchProduct.findAll();
+  let products = [];
+  array.forEach((elem) => {
+    console.log("da " + elem.dataValues.status);
+    if (elem.dataValues.status === "delivered") products.push(elem.dataValues);
+  });
+  res.render("deliveriesProducts", { layout: "dashAdminWH", products });
+};
+
+exports.getDeliveryFormProducts = async (req, res) => {
+  let array = await BranchProduct.findAll();
+  let products = [];
+  array.forEach((elem) => {
+    console.log("da " + elem.dataValues.status);
+    if (elem.dataValues.status === "sent") products.push(elem.dataValues);
+  });
+  res.render("deliveriesProductsForm", { layout: "dashAdminWH", products });
+};
+exports.addDeliveredProduct = async (req, res) => {
+  let id = req.params.id;
+  console.log(id)
+  let branchProd = await BranchProduct.findOne({ where: { id: id } });
+  branchProd.update({
+    status: "delivered"
+  })
+  res.redirect("/warehouse/delivery");
+}
 // POST methods for oneCategory
 exports.createCategory = (req, res) => {
   const category = {
@@ -301,9 +341,10 @@ exports.getAllBranches = (req, res) => {
 exports.getProductsOfBranchView = (req, res) => {
   const branchId = req.params.id;
   console.log(branchId);
+
   db.branches.findOne({ where: { id: branchId } }).then((branch) => {
-    branch.getProducts().then((products) => {
-      let productsO = [];
+     branch.getProducts().then((products) => {
+    let productsO = [];
       products.forEach((element) => {
         // let product = { ...element, quantity:  };
         let quo = element.branch_products.quantity;
@@ -319,9 +360,10 @@ exports.getProductsOfBranchView = (req, res) => {
         branch,
         productsO,
         alert,
-      });
+      });  
     });
   });
+
 };
 
 // GET method for allBranches

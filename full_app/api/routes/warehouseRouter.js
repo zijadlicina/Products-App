@@ -52,4 +52,17 @@ router
 router
   .route("/category/create")
   .post(authAdminWarehouse, warehouseController.createCategory);
+
+router
+    .route("/sending")
+    .get(authAdminWarehouse, warehouseController.getSendingProducts);
+router
+  .route("/delivery")
+  .get(authAdminWarehouse, warehouseController.getDeliveryProducts);
+router
+  .route("/delivery/add")
+  .get(authAdminWarehouse, warehouseController.getDeliveryFormProducts);
+router
+  .route("/delivery/addProduct/:id")
+  .post(authAdminWarehouse, warehouseController.addDeliveredProduct);
 module.exports = router;

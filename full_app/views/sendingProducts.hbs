@@ -1,0 +1,36 @@
+<h1 class="naslov"><i>Delivery status - sending</i></h1>
+
+<form class="forma">
+  <label>Status:</label>
+  <select class="select">
+    <option class="option">Unassigned</option>
+    <option class="option">Sent</option>
+    <option class="option">Delivered</option>
+    <option class="option">Received</option>
+  </select>
+
+</form>
+
+<table class="table">
+    <thead>
+      <tr>
+      <th class="th">Branch</th>
+      <th class="th">Product</th>
+      <th class="th">Quantity</th>
+      <th class="th">Unit</th>
+      </tr>
+    </thead>
+        {{#each products}}
+    <tbody>
+      <tr>
+        <td data-label="Branch">{{this.branchId}}</td>
+        <td data-label="Product">{{this.productId}}</td>
+        <td data-label="Quantity">{{this.quantity}}</td>
+        <td data-label="Unit">{{this.unit}}</td>
+      </tr>
+    </tbody>{{/each}}
+  </table>
+  
+  
+</div>
+  

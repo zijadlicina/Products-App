@@ -1,0 +1,48 @@
+<h1 class="naslov"><i>Delivery status - delivered</i></h1>
+
+<form class="forma">
+  <label>Status:</label>
+  <select class="select">
+    <option class="option">Unassigned</option>
+    <option class="option">Sent</option>
+    <option class="option">Delivered</option>
+    <option class="option">Received</option>
+  </select>
+
+</form>
+
+<table class="table">
+    <thead>
+      <tr>
+      <th class="th">Branch</th>
+      <th class="th">Product</th>
+      <th class="th">Quantity</th>
+      <th class="th">Unit</th>
+      </tr>
+    </thead>
+        {{#each products}}
+    <tbody>
+      <tr>
+        <td data-label="Branch">{{this.branchId}}</td>
+        <td data-label="Product">{{this.productId}}</td>
+        <td data-label="Quantity">{{this.quantity}}</td>
+        <td data-label="Unit">{{this.unit}}</td>
+      </tr>
+    </tbody>{{/each}}
+  </table>
+  
+   <div class="d-flex justify-content-between">
+         <div class="text-muted">
+            <br>
+         </div>
+         <div class="d-flex flex-column justify-content-end align-items-end">
+             <div class="d-flex px-3 pr-md-5 py-1 subtotal">
+               
+                 <button class="btn" class="px-4"><a href="/warehouse/delivery/add"
+                  style="color: black; text-decoration: none"><b>ADD Delivered Product+</b></a></button>
+             </div>
+         </div>
+     </div>
+  
+</div>
+  

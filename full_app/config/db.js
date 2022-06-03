@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 
 // novo ime baze u phpSql
-const db = new Sequelize("nova_baza4", "root", "", {
+const db = new Sequelize("nova_baza33", "root", "", {
   host: "localhost",
   dialect: "mysql",
   //port: 3306
@@ -57,9 +57,9 @@ db.orders.hasOne(Bill, {
   foreignKey: "order_id",
 });
 db.bill.belongsTo(Order);
-
+/*
 // veza delivery branchproduct
-/* Delivery.hasMany(branchProduct);
+Delivery.hasMany(branchProduct);
 branchProduct.belongsTo(Delivery, {
   foreignKey: "branchProductId"
 });

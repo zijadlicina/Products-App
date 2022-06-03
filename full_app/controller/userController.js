@@ -95,6 +95,7 @@ exports.addOrderForm = async (req, res) => {
 };
 
 exports.createOrder = async (req, res) => {
+ 
   const userId = req.params.id;
   db.users.findOne({ where: { id: userId } }).then((user) => {
     console.log("TAAAABBBBLEEEEE : " + req.body.table);
@@ -108,7 +109,7 @@ exports.createOrder = async (req, res) => {
       let branchId = user.dataValues.branchId;
       db.branches.findOne({ where: { id: branchId } }).then((branch) => {
         branch.getProducts().then((data) => {
-          const products = [];
+           const products = [];
           let orderId = order.dataValues.id;
           data.forEach((element) => {
             //console.log(element.dataValues.branch_products.dataValues);
@@ -138,10 +139,11 @@ exports.createOrder = async (req, res) => {
             });
           });
 
-        });
+        }); 
       });
     });
   });
+ 
 };
 
 exports.editOrderView = async (req, res) => {
@@ -165,7 +167,8 @@ exports.editOrderView = async (req, res) => {
             let branch_products = brancheproduct.dataValues;
             // console.log(branch_products);
             let branchProductId = branch_products.id;
-            OrderProduct.findOne({ where: { orderId: id } }).then(
+            let idO = order.dataValues.id
+            OrderProduct.findOne({ where: { orderId: idO } }).then(
               (orderProduct) => {
                 let orderProducts = orderProduct.dataValues;
                 //console.log(orderProduct);

@@ -1,0 +1,31 @@
+    <h1 >Add Delivered Product</h1>
+    <div>
+        <h2 style="color: blue">{{branchId}}</h4 >
+    </div>
+    <div class="wrapper">
+    {{#if alert}}
+    <div>
+        <br>
+        <h4 style="color: green">{{alert}}</h4 >
+    </div>
+    {{/if}}
+    {{#each products}}
+            <form action="/warehouse/delivery/addProduct/{{this.id}}" method="post">
+            <label>Branch ID</label>
+                <div class="input-box">
+                    <input type="text" placeholder="BranchId:" required name="name" value="{{this.branchId}}" required readonly/>
+                </div>
+            <label>Quantity</label>
+                <div class="input-box">
+                    <input type="text" placeholder="Quantity:" name="quantity2" value="{{this.quantity}}" required/>
+                </div>
+            <label>Unit</label>
+                <div class="input-box">
+                    <input type="text" placeholder="Unit:" name="unit" value="{{this.unit}}"/>
+                </div>
+                <div class="input-box button">
+                    <input type="Submit" value="Add">
+                </div>
+            </form> 
+    {{/each}}
+    
