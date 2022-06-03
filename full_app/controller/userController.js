@@ -124,11 +124,20 @@ exports.createOrder = async (req, res) => {
             products.push(elem);
           });
           branch = branch.dataValues;
-          res.render("addProductsOrder", {
-            layout: "dashUser",
-            branch,
-            products,
+          const logg = {
+            akcija: "ADD",
+            opisAkcije: "User: "+ user.username+" created new order",
+          };
+      
+          Logging.create(logg)        
+          .then((dataaa) => {
+            res.render("addProductsOrder", {
+              layout: "dashUser",
+              branch,
+              products,
+            });
           });
+
         });
       });
     });

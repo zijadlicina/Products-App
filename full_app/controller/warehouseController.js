@@ -6,6 +6,7 @@ const Product = require("../models/Product")(sequelize, Sequelize);
 const Branch = require("../models/Branch")(sequelize, Sequelize);
 const Category = require("../models/Category")(sequelize, Sequelize);
 const Delivery = require("../models/Delivery")(sequelize, Sequelize);
+const Logging = require("../models/Logging")(sequelize, Sequelize);
 
 const db = require("../config/db");
 const BranchProduct = require("../models/BranchProduct")(sequelize, Sequelize);
@@ -101,8 +102,18 @@ exports.createProduct = (req, res) => {
     category
       .createProduct(product)
       .then((data) => {
-        const alert = "Product successfully added!";
-        res.render("addProductWH", { layout: "dashAdminWH", alert });
+        const logg = {
+          akcija: "ADD",
+          opisAkcije: "Admin Warehouse added new product: "+req.body.name,
+        };
+    
+        Logging.create(logg)        
+        .then((data) => {
+          const alert = "Product successfully added!";
+          res.render("addProductWH", { layout: "dashAdminWH", alert });
+        });
+
+
       })
       .catch((err) => {
         res.status(500).send({
@@ -144,8 +155,17 @@ exports.deleteProduct = (req, res) => {
   })
     .then((num) => {
       if (num == 1) {
-        const alert = `Product deleted succesfully!`;
-        res.render("removeProductWH", { layout: "dashAdmin", alert });
+        const logg = {
+          akcija: "DELETE",
+          opisAkcije: "Admin Warehouse deleted product",
+        };
+    
+        Logging.create(logg)        
+        .then((data) => {
+          const alert = `Product deleted succesfully!`;
+          res.render("removeProductWH", { layout: "dashAdmin", alert });
+        });
+
       } else {
         res.send({
           message: "Not possible to delete the product.",
@@ -196,8 +216,16 @@ exports.updateProduct = (req, res) => {
   Product.update(object, { where: { id: productId } })
     .then((num) => {
       const data = object;
+      const logg = {
+        akcija: "EDIT",
+        opisAkcije: "Admin Warehouse edited product: "+data.name,
+      };
+  
+      Logging.create(logg)        
+      .then((dataa) => {
       const alert = "Product successfully updated!";
       res.render("editProductWH", { layout: "dashAdminWH", alert, data });
+      });
     })
     .catch((err) => {
       res.status(500).send({
