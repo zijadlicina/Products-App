@@ -2,8 +2,13 @@
   width: auto;
   margin-left: auto;
   margin-right: auto;
+  
   padding: 10px;
   max-height: 500px;
+}
+
+.naslov h1{
+  margin-top: 90px;
 }
 .logging thead{
   background-color: #778899;
@@ -65,9 +70,13 @@
   .logging tr {
     margin-bottom: 15px;
   }
+
+  .logging td{
+    min-height: 35px;
+  }
   .logging tbody tr td{
     text-align: right;
-    padding-left: 50%;
+    padding-left: 70%;
     position: relative;
   }
   .logging td:before{

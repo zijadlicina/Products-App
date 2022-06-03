@@ -52,7 +52,7 @@
   opacity: 1;
 }
 
-@media (max-width:768px) {
+/*@media (max-width:768px) {
   .table thead {
     display: none;
 

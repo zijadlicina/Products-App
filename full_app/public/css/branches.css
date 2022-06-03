@@ -86,6 +86,10 @@ body{
   .table tr {
     margin-bottom: 15px;
   }
+
+  .table td{
+    min-height: 35px;
+  }
   .table tbody tr td{
     text-align: right;
     padding-left: 50%;

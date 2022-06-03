@@ -1,19 +1,20 @@
 <table class="logging">
-  <h1>Logging</h1>
+  <div class="naslov"><h1>Logging</h1></div>
+
   <thead>
      
     <tr>
       <th>ID</th>
-      <th>Action type</th>
-      <th>Action description</th>
+      <th>Type</th>
+      <th>Description</th>
       <th>Time</th>
     </tr>
   </thead>
   <tbody> {{#each date}}
     <tr>
       <td data-label="ID">{{this.id}}</td>
-      <td data-label="Action type">{{this.akcija}}</td>
-      <td data-label="Action description">{{this.opisAkcije}}</td>
+      <td data-label="Type">{{this.akcija}}</td>
+      <td data-label="Description">{{this.opisAkcije}}</td>
       <td data-label="Time">{{this.createdAt}}</td>
     </tr>
    
