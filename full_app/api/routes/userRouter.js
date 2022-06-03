@@ -29,10 +29,10 @@ router
   .post(authUser, userController.addProductsToOrder);
 
 router
-  .route("/orders/:orderId/edit")
+  .route("/orders/:orderId/edit/:userId")
   .get(authUser, userController.editOrderView);
 router
-  .route("/orders/:orderId/editProduct/:branchId/:productId")
+  .route("/orders/:orderId/editProduct/:branchProductId/:orderProductId/:userId")
   .post(authUser, userController.editOrder);
 router
   .route("/orders/:orderId/report")

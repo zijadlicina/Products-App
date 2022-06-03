@@ -11,7 +11,7 @@
     </div>
     {{/if}}
        {{#each products}}
-            <form action="/user/orders/{{this.orderId}}/editProduct/{{this.branchId}}/{{this.id}}" method="post">
+            <form action="/user/orders/{{this.orderId}}/editProduct/{{this.branchProductId}}/{{this.orderProductId}}/{{this.userId}}" method="post">
                 <div class="input-box">
                     <input type="text" placeholder="Name:" required name="name" value="{{this.name}}" required readonly/>
                 </div>
