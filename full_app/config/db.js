@@ -31,15 +31,16 @@ db.orders = Order;
 db.branches = Branch;
 db.bill = Bill;
 db.categorys = Categorys;
+db.delivery = Delivery;
 
 // veze
 db.branchProduct = db.branches.belongsToMany(db.products, {
   through: branchProduct,
-  foreign_key: "branch_id",
+  foreign_key: "branchId",
 });
 db.products.belongsToMany(db.branches, {
   through: branchProduct,
-  foreign_key: "product_id",
+  foreign_key: "productId",
 });
 User.hasMany(Order);
 Order.belongsTo(User, { foreign_key: "user_id" });
@@ -57,10 +58,15 @@ db.orders.hasOne(Bill, {
 });
 db.bill.belongsTo(Order);
 
+// veza delivery branchproduct
+Delivery.hasMany(branchProduct);
+branchProduct.belongsTo(Delivery, {
+  foreignKey: "branchProductId"
+}); 
+
 db.sync(() => console.log(`Kreirane tabele i uneseni podaci!`));
 
 module.exports = db;
-/* POtrebno zakomentarisati zasada */
 
 
 
