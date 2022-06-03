@@ -16,7 +16,17 @@
                     <input type="text" placeholder="Name:" required name="name" value="{{this.name}}" required readonly/>
                 </div>
                 <div class="input-box">
-                    <input type="text" placeholder="Quantity:" name="quantity" value="{{this.quantity}}" required/>
+                 <div class="container">
+                    <span class="minus">-</span>
+                    <span class="num">
+                        1
+                    </span>
+                    <input class="inp" type="text" name="quantity" value="1" style="display: none;"/>
+                    <span class="plus">+</span>
+                  </div>
+                </div>
+                <div class="input-box">
+                    <input type="text" placeholder="Quantity:" name="quantity2" value="{{this.quantity}}" required/>
                 </div>
                 <div class="input-box">
                     <input type="text" placeholder="Unit:" name="unit" value="{{this.unit}}"/>
@@ -27,70 +37,11 @@
             </form> 
     {{/each}}
      {{/if}}
-    <!--
-        <div id="table" >
-             <hr>
-             <div class="table-responsive">
-                 <table class="table activitites">
-                     <thead>
-                         <tr>
-                             <th scope="col" class="text-uppercase header">ID</th>
-                             <th scope="col" class="text-uppercase header">Name</th>
-                             <th scope="col" class="text-uppercase">Quantity</th>
-                             <th scope="col" class="text-uppercase">Operations</th>
-                             
-                         </tr>
-                     </thead>
-                     <tbody>
-    
-                        {{#each products}}
-                         <tr>
-                             <td >{{this.id}}</td> 
-                             <td class="item" >
-                                 <div class="d-flex">
-                                     <div class="pl-2">
-                                         {{this.name}}
-                                         <div class="d-flex flex-column justify-content-center">
-                                         </div>
-                                     </div>
-                             </td>
-                             <td class="d-flex flex-column"><span class="red">{{this.quantity}} </span>
-                             </td>
-                             <td class="font-weight-bold">
-                                 <button type="button" class="btn btn-light">
-                                    <a href="/warehouse/branches/addbranchproduct/{{this.id}}">Add to branch</a></button>
-                                 <button type="button" class="btn btn-light">
-                                    <a href="/warehouse/products/edit/{{this.id}}">Edit</a></button>
-                           <!--      <button type="button" class="btn btn-dark">
-                                    <a href="/warehouse/products/removebranchproduct/{{this.id}}">Delete from branch</a></button>
-                          
-                             </td>
-                         </tr>
-                         <tr colspan="3">
-                            <td class="item">  </td>                                                   
-                            <td class="d-flex flex-column"> </td>
-                            <td class="font-weight-bold">                                                              
-                             </td>
-                         </tr>
-                        {{/each}}
-                     </tbody>
-                 </table>
-                  
-             </div>
-     </div> !-->
- <!--
-     <div class="d-flex justify-content-between">
-         <div class="text-muted">
-            
-         </div>
-         <div class="d-flex flex-column justify-content-end align-items-end">
-             <div class="d-flex px-3 pr-md-5 py-1 subtotal">
-                 <button class="btn" class="px-4"><a href="/warehouse/products/add"
-                  style="color: black; text-decoration: none"><b>ADD NEW PRODUCT+</b></a></button>
-             </div>
-         </div>
+     {{#if noProducts}}
+     <div>
+         <h4>{{noProducts}}</h4>
      </div>
- !-->
+     {{/if}}
   <div class="d-flex justify-content-between">
          <div class="text-muted">
             
@@ -103,3 +54,29 @@
          </div>
      </div> 
  </div>
+
+  <script>
+
+            const plus = document.querySelector(".plus"),
+             minus = document.querySelector(".minus"),
+             num = document.querySelector(".num");
+             inp = document.querySelector(".inp");
+             let a = 1;
+             plus.addEventListener("click", ()=>{
+               a++;
+               a = (a < 10) ? 0 + a : a;
+               num.innerText = a;
+               inp.setAttribute('value',a);
+                 console.log("da " +inp.textContent)
+             });
+         
+             minus.addEventListener("click", ()=>{
+               if(a > 1){
+                 a--;
+                 a = (a < 10) ? 0 + a : a;
+                 num.innerText = a;
+                 inp.setAttribute('value',a);
+                 console.log("da " +inp.textContent)
+               }
+             });
+           </script>

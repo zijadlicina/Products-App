@@ -10,7 +10,7 @@ const Delivery = require("../models/Delivery")(sequelize, Sequelize);
 const db = require("../config/db");
 const BranchProduct = require("../models/BranchProduct")(sequelize, Sequelize);
 
-Category.hasMany(Product) 
+Category.hasMany(Product);
 
 // POST methods for oneCategory
 exports.createCategory = (req, res) => {
@@ -18,10 +18,15 @@ exports.createCategory = (req, res) => {
     name: req.body.name,
     PDV: req.body.PDV,
   };
-
   Category.create(category)
     .then((data) => {
-      res.send(data)
+      Category.findAll().then((rows) => {
+        let data = [];
+        rows.forEach((element) => {
+          data.push(element.dataValues);
+        });
+        res.render("categories", { layout: "dashAdminWH", data });
+      });
     })
     .catch((err) => {
       res.status(500).send({
@@ -32,11 +37,12 @@ exports.createCategory = (req, res) => {
 
 // GET methods for allCategorys
 exports.getAllCategorys = (req, res) => {
-  Category.findAll().then((rows) => {
-    let data = [];
-    rows.forEach((element) => {
-      data.push(element.dataValues);
-    });
+  Category.findAll()
+    .then((rows) => {
+      let data = [];
+      rows.forEach((element) => {
+        data.push(element.dataValues);
+      });
       res.render("addProductWH", { layout: "dashAdminWH", data });
     })
     .catch((err) => {
@@ -46,35 +52,64 @@ exports.getAllCategorys = (req, res) => {
     });
 };
 
-
-// POST methods for oneProduct
-exports.createProduct = (req, res) => {
-
-  Category.findOne({ where: { name: req.body.category } })
-  .then((category) => {
-
-  const product = {
-    name: req.body.name,
-    quantity: req.body.quantity,
-    unit: req.body.unit,
-    warehouse: req.body.warehouse,
-    price: req.body.price,
-    city: req.body.city,
-  };
-
-  category.createProduct(product)
-    .then((data) => {
-      const alert = "Product successfully added!";
-      res.render("addProductWH", { layout: "dashAdminWH", alert });
+// GET methods for allCategorys
+exports.getListOfCategories = (req, res) => {
+  console.log("daa");
+  Category.findAll()
+    .then((rows) => {
+      let data = [];
+      rows.forEach((element) => {
+        data.push(element.dataValues);
+      });
+      res.render("categories", { layout: "dashAdminWH", data });
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Error creating the product.",
+        message: "Error getting categorys: ",
       });
     });
+};
 
+exports.addNewCategory = (req, res) => {
+  Category.findAll()
+    .then((rows) => {
+      let data = [];
+      rows.forEach((element) => {
+        data.push(element.dataValues);
+      });
+      res.render("categories", { layout: "dashAdminWH", data });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error getting categorys: ",
+      });
+    });
+};
+
+// POST methods for oneProduct
+exports.createProduct = (req, res) => {
+  Category.findOne({ where: { name: req.body.category } }).then((category) => {
+    const product = {
+      name: req.body.name,
+      quantity: req.body.quantity,
+      unit: req.body.unit,
+      warehouse: req.body.warehouse,
+      price: req.body.price,
+      city: req.body.city,
+    };
+
+    category
+      .createProduct(product)
+      .then((data) => {
+        const alert = "Product successfully added!";
+        res.render("addProductWH", { layout: "dashAdminWH", alert });
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: err.message || "Error creating the product.",
+        });
+      });
   });
-
 };
 
 // GET methods for allProducts
@@ -143,11 +178,10 @@ exports.editProduct = (req, res) => {
           price: product.price,
           city: product.city,
           category: product.categoryId,
-          categorys: data2
+          categorys: data2,
         };
         res.render("editProductWH", { layout: "dashAdminWH", data });
-    });
-      
+      });
     })
     .catch((err) => {
       res.status(500).send({
@@ -157,10 +191,8 @@ exports.editProduct = (req, res) => {
 };
 // PUT method for updating product
 exports.updateProduct = (req, res) => {
-  console.log("11111111111111111111111111111111111111111111")
   let productId = req.params.id;
   const object = { ...req.body, id: productId };
-  console.log("sdasdasdsadasdasasasd "+object)
   Product.update(object, { where: { id: productId } })
     .then((num) => {
       const data = object;
@@ -237,13 +269,19 @@ exports.getProductsOfBranchView = (req, res) => {
       let productsO = [];
       products.forEach((element) => {
         // let product = { ...element, quantity:  };
+        let quo = element.branch_products.quantity;
         let product = { ...element.dataValues, branchId };
+        product.quantity = quo;
         productsO.push(product);
       });
+      let alert;
+      if (productsO.length === 0) alert = "No products in stock";
+      branch = branch.dataValues;
       res.render("branchProductsWHView", {
         layout: "dashAdminWH",
-        branchId,
+        branch,
         productsO,
+        alert,
       });
     });
   });
@@ -312,62 +350,82 @@ exports.getProductsToAddToBranch = (req, res) => {
 
 // GET method for allBranches
 exports.addProductToBranch = async (req, res) => {
-  console.log("addProductToBranch");
+  console.log(req.body)
+  // console.log("addProductToBranch");
   const { quantity, unit } = req.body;
   let productId = req.params.id;
   let branchId = req.params.branchId;
+
   BranchProduct.count({
     where: {
-      productId: productId
-    }
-  }).then(count => {
+      productId: productId,
+      branchId: branchId,
+    },
+  }).then((count) => {
     console.log(count);
-    if(count==0){
+    if (count == 0) {
       const product = {
         branchId: branchId,
         productId: productId,
         quantity: quantity,
-        unit: unit
+        unit: unit,
       };
-      BranchProduct.create(product).
-        then(bp => {
+      BranchProduct.create(product);
+    } else {
+        BranchProduct.findOne({
+          where: {
+            productId: productId,
+          },
+        }).then((product) => {
+          console.log("daa " + product);
+          product.update({
+            quantity: product.quantity + quantity,
+          }); /* 
+        }).catch(err => {
+          res.status(500).send(err);
+      */
+        BranchProduct.create(product).
+          then(bp => {
+            // provjeriti da li kreira delivery za dobar branchProduct
+            const delivery = {
+              branchProductId: bp.id,
+              quantity: quantity,
+              unit: unit,
+              status: 'sent'
+            }
+            Delivery.create(delivery);
+          });
+    //}else{
+        BranchProduct.findOne({
+          where: {
+            productId: productId
+          }
+        }).then(product => {
+          BranchProduct.update({
+            quantity: product.quantity + quantity
+          });
           // provjeriti da li kreira delivery za dobar branchProduct
           const delivery = {
-            branchProductId: bp.id,
+            branchProductId: product.id,
             quantity: quantity,
             unit: unit,
             status: 'sent'
-          }
+          };
           Delivery.create(delivery);
+        }).catch(err => {
+          res.status(500).send(err);
         });
-    }else{
-      BranchProduct.findOne({
-        where: {
-          productId: productId
-        }
-      }).then(product => {
-        BranchProduct.update({
-          quantity: product.quantity + quantity
-        });
-        // provjeriti da li kreira delivery za dobar branchProduct
-        const delivery = {
-          branchProductId: product.id,
-          quantity: quantity,
-          unit: unit,
-          status: 'sent'
-        }
-        Delivery.create(delivery);
-      }).catch(err => {
-        res.status(500).send(err);
-      });
-    }
-    db.products.findByPk(productId). then(product => {
+      
+    });
+  }
+    db.products.findByPk(productId).then((product) => {
       oldQuantity = product.quantity;
       product.update({
-        quantity: oldQuantity - quantity
+        quantity: oldQuantity - quantity,
       });
     });
-    res.redirect(`/warehouse/branches/brancheproducts/${branchId}`)
+
+    res.redirect(`/warehouse/branches/brancheproducts/${branchId}`);
   });
   /* db.products.findAll().then((products) => {
     if (products) {

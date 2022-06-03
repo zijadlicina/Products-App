@@ -7,6 +7,9 @@ const homeController = require("../../controller/homeController");
 const Logging = require("../../models/Logging")(sequelize, Sequelize);
 
 router.route("/").get((req, res) => res.render("home"));
+router.route("/about").get((req, res) => res.render("about"));
+router.route("/contact").get((req, res) => res.render("contact"));
+
 router
   .route("/login")
   .get((req, res) => res.render("login"))

@@ -4,7 +4,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  /* z-index: -1; */
+  max-height: 500px;
   text-align: center;
   width: 100%;
   color: grey;
@@ -23,3 +23,121 @@
   color: red;
   font-size: 20px;
 }
+
+
+
+
+
+
+h1 {
+  color: #111;
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 44px;
+  font-weight: bold;
+  letter-spacing: -1px;
+  line-height: 1;
+  text-align: center;
+  margin: 30px;
+}
+
+
+.close:hover {
+  color: rgb(196, 196, 196);
+}
+
+.table {
+  overflow: hidden;
+  empty-cells: show;
+}
+
+.table thead tr th {
+  letter-spacing: 0.08rem;
+  font-weight: normal;
+}
+
+.table tr td,
+.table tr th {
+  border: none;
+  text-align: center;
+}
+
+
+
+.table tbody td.item {
+
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-align: left;
+}
+
+
+.table tbody tr {
+  padding-top: 10px;
+  padding: 10px 20px;
+  border-bottom: 1px solid rgb(139, 136, 136);
+  transition: all .4s ease-in-out;
+}
+
+.table tbody tr:last-child {
+  border: none;
+}
+
+td .close,
+
+.table tbody tr:hover {
+  transform: scale(1.004);
+  box-shadow: 2px 2px 10px #a5a5a5;
+  cursor: pointer;
+  overflow: hidden;
+  scroll-behavior: unset;
+}
+
+.table tbody tr:hover .close {
+  font-size: 1.5rem;
+  opacity: 1;
+}
+
+.table tbody tr:hover .close:hover {
+  color: #aaa;
+}
+
+div.text-uppercase {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1rem;
+}
+
+
+.fa-cog {
+  color: #a8a8a8;
+  font-size: 0.8rem;
+}
+
+
+
+
+a:hover {
+  text-decoration: none;
+}
+
+.table tbody tr:hover a {
+  visibility: visible;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

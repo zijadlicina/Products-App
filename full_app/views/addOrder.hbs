@@ -15,19 +15,23 @@
                 <div class="input-box">
                     <input type="text" placeholder="Name:" required name="name">
                 </div>
+                  <div class="box">
+                <select name="table" class="table" placeholder="Table:" required>
+                    <option value="Table1" >Table 1</option>
+                    <option value="Table2" >Table 2</option>
+                    <option value="Table3" >Table 3</option>
+                    <option value="Table4" >Table 4</option>
+                    <option value="Table5" >Table 5</option>
+                    <option value="Table6" >Table 6</option>
+                </select>  
+                </div>
                 <div class="input-box">
                     <input type="date" placeholder="category:" name="order_date">
                 </div>
                 <div class="input-box">
-                    {{#select branch}}
-                  <select name="branch" class="select" placeholder="Branches:" required>
-                    <option value="poslovnica_a">Poslovnica A</option>
-                    <option value="poslovnica_b">Poslovnica B</option>
-                  </select>  
-                  {{/select}}
                 </div>
                  <div class="input-box button">
-                    <input type="Submit" value="Add Product to Order">
+                    <input type="Submit" value="Add Products to Order">
                 </div>
             </form> 
             <div>

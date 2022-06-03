@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
         type: Sequelize.STRING,
         allowNull: true,
       },
+      table: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       order_date: {
         type: Sequelize.DATE,
         allowNull: false,
@@ -26,6 +30,11 @@ module.exports = (sequelize, DataTypes) => {
         type: Sequelize.DOUBLE,
         allowNull: true,
         defaultValue: 0
+      },
+      active: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: true,
       },
       createdAt: Sequelize.DATE,
       updatedAt: Sequelize.DATE,
