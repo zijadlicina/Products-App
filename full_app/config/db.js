@@ -1,5 +1,4 @@
 const Sequelize = require("sequelize");
-
 /*
 // novo ime baze u phpSql
 const db = new Sequelize("nova_baza33", "root", "", {
