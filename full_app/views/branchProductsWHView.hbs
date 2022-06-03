@@ -10,76 +10,29 @@
         <h4 style="color: green">{{alert}}</h4 >
     </div>
     {{/if}}
-    {{#each productsO}}
-            <form action="/warehouse/branches/addProduct/{{this.branchId}}/{{this.id}}" method="post">
-                <div class="input-box">
-                    <input type="text" placeholder="Name:" required name="name" value="{{this.name}}" required readonly/>
-                </div>
-                <div class="input-box">
-                    <input type="text" placeholder="Quantity:" name="quantity" value="{{this.quantity}}" required readonly/>
-                </div>
-                <div class="input-box">
-                    <input type="text" placeholder="Unit:" name="unit" value="{{this.unit}}" required readonly/>
-                </div>
-              <!--  <div class="input-box button">
-                    <input type="Submit" value="Add to branch">
-                </div>
-                !-->
-            </form> 
-    {{/each}}
-     {{/if}}
-    <!--
-        <div id="table" >
-             <hr>
-             <div class="table-responsive">
-                 <table class="table activitites">
-                     <thead>
-                         <tr>
-                             <th scope="col" class="text-uppercase header">ID</th>
-                             <th scope="col" class="text-uppercase header">Name</th>
-                             <th scope="col" class="text-uppercase">Quantity</th>
-                             <th scope="col" class="text-uppercase">Operations</th>
-                             
-                         </tr>
-                     </thead>
-                     <tbody>
-    
-                        {{#each products}}
-                         <tr>
-                             <td >{{this.id}}</td> 
-                             <td class="item" >
-                                 <div class="d-flex">
-                                     <div class="pl-2">
-                                         {{this.name}}
-                                         <div class="d-flex flex-column justify-content-center">
-                                         </div>
-                                     </div>
-                             </td>
-                             <td class="d-flex flex-column"><span class="red">{{this.quantity}} </span>
-                             </td>
-                             <td class="font-weight-bold">
-                                 <button type="button" class="btn btn-light">
-                                    <a href="/warehouse/branches/addbranchproduct/{{this.id}}">Add to branch</a></button>
-                                 <button type="button" class="btn btn-light">
-                                    <a href="/warehouse/products/edit/{{this.id}}">Edit</a></button>
-                           <!--      <button type="button" class="btn btn-dark">
-                                    <a href="/warehouse/products/removebranchproduct/{{this.id}}">Delete from branch</a></button>
-                          
-                             </td>
-                         </tr>
-                         <tr colspan="3">
-                            <td class="item">  </td>                                                   
-                            <td class="d-flex flex-column"> </td>
-                            <td class="font-weight-bold">                                                              
-                             </td>
-                         </tr>
-                        {{/each}}
-                     </tbody>
-                 </table>
-                  
-             </div>
-     </div> !-->
- 
+        <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Unit</th>
+                </tr>
+            </thead>
+               
+            <tbody> {{#each productsO}}
+                <tr>
+                    <td data-label="Name">{{this.name}}</td> 
+                    <td data-label="Quantity">{{this.quantity}}</td>
+                    <td data-label="Unit">{{this.unit}}</td>
+                </tr>
+            </tbody>
+             {{/each}}
+        </table>
+    </div>
+
+
+    {{/if}}
      <div class="d-flex justify-content-between">
          <div class="text-muted">
             

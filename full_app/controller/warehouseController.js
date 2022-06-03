@@ -350,6 +350,7 @@ exports.getProductsToAddToBranch = (req, res) => {
 
 // GET method for allBranches
 exports.addProductToBranch = async (req, res) => {
+  console.log(req.body)
   // console.log("addProductToBranch");
   const { quantity, unit } = req.body;
   let productId = req.params.id;
